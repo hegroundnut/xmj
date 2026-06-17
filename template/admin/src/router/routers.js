@@ -46,7 +46,7 @@ const frameIn = [
   {
     path: '/',
     meta: {
-      title: 'CRMEB',
+      title: '洗眉机',
     },
     redirect: {
       name: 'home_index',
@@ -109,7 +109,7 @@ const frameIn = [
   {
     path: routePre,
     meta: {
-      title: 'CRMEB',
+      title: '洗眉机',
     },
     redirect: {
       name: 'home_index',

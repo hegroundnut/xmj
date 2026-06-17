@@ -230,7 +230,7 @@ export default {
     // }
     // #endif
     // #ifdef H5
-    // 添加crmeb chat 统计
+    // 添加统计
     // var __s = document.createElement('script');
     // __s.src = `${HTTP_REQUEST_URL}/api/get_script`;
     // document.head.appendChild(__s);
