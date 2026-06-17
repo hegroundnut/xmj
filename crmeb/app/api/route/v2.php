@@ -108,3 +108,6 @@ Route::group('v2', function () {
         ->option(['mark' => 'common', 'mark_name' => '公共接口']);
 
 })->middleware(\app\http\middleware\AllowOriginMiddleware::class)->middleware(\app\api\middleware\StationOpenMiddleware::class);
+
+// 洗眉机教学路由
+require __DIR__ . '/v2/teaching.php';
