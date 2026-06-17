@@ -13,6 +13,32 @@
 			}
 		},
 		{
+			"path": "pages/teaching/product/index",
+			"style": {
+				"navigationBarTitleText": "洗眉机",
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/teaching/case/index",
+			"style": {
+				"navigationBarTitleText": "案例"
+			}
+		},
+		{
+			"path": "pages/teaching/course/index",
+			"style": {
+				"navigationBarTitleText": "教学课程"
+			}
+		},
+		{
+			"path": "pages/teaching/offline/index",
+			"style": {
+				"navigationBarTitleText": "线下课程"
+			}
+		},
+		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "",
@@ -1725,28 +1751,28 @@
 		"borderStyle": "white",
 		"backgroundColor": "#ffffff",
 		"list": [{
-				"pagePath": "pages/index/index",
+				"pagePath": "pages/teaching/product/index",
 				"iconPath": "static/images/1-001.png",
 				"selectedIconPath": "static/images/1-002.png",
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/goods_cate/goods_cate",
+				"pagePath": "pages/teaching/case/index",
 				"iconPath": "static/images/2-001.png",
 				"selectedIconPath": "static/images/2-002.png",
-				"text": "分类"
+				"text": "案例"
 			},
 			{
-				"pagePath": "pages/order_addcart/order_addcart",
+				"pagePath": "pages/teaching/course/index",
 				"iconPath": "static/images/3-001.png",
 				"selectedIconPath": "static/images/3-002.png",
-				"text": "购物车"
+				"text": "教学"
 			},
 			{
-				"pagePath": "pages/user/index",
+				"pagePath": "pages/teaching/offline/index",
 				"iconPath": "static/images/4-001.png",
 				"selectedIconPath": "static/images/4-002.png",
-				"text": "我的"
+				"text": "线下课"
 			}
 		]
 	},
