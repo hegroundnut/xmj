@@ -95,5 +95,9 @@ CREATE TABLE IF NOT EXISTS `eb_offline_booking` (
   KEY `idx_class_id` (`class_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机线下预约记录';
 
--- 7. 用户表新增教学会员字段
-ALTER TABLE `eb_user` ADD COLUMN IF NOT EXISTS `is_teaching_member` tinyint(1) NOT NULL DEFAULT 0 COMMENT '教学会员:0=否 1=是';
+-- 7. 用户表新增教学会员字段（MySQL 5.7 兼容写法）
+SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'eb_user' AND COLUMN_NAME = 'is_teaching_member');
+SET @sql = IF(@col_exists = 0, 'ALTER TABLE `eb_user` ADD COLUMN `is_teaching_member` tinyint(1) NOT NULL DEFAULT 0 COMMENT ''教学会员:0=否 1=是''', 'SELECT 1');
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
