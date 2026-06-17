@@ -506,4 +506,19 @@ class User extends AuthController
         CacheService::clear();
         return app('json')->success('保存成功');
     }
+
+    /**
+     * 设置/取消教学会员
+     * @param int $uid
+     */
+    public function setTeachingMember($uid)
+    {
+        [$status] = $this->request->getMore([
+            ['is_teaching_member', 0],
+        ], true);
+        /** @var \app\services\user\UserServices $userServices */
+        $userServices = app()->make(\app\services\user\UserServices::class);
+        $userServices->update((int)$uid, ['is_teaching_member' => (int)$status]);
+        return app('json')->success([], $status ? '已设为会员' : '已取消会员');
+    }
 }
