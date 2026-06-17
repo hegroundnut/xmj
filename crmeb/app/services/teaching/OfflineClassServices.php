@@ -27,7 +27,7 @@ class OfflineClassServices extends BaseServices
     {
         [$page, $limit] = $this->getPageValue();
         $field = 'id,title,cover,class_date,start_time,end_time,address,max_people,qrcode,desc,status,add_time';
-        $list = $this->dao->classList($where, $field, $page, $limit);
+        $list = $this->dao->offlineClassList($where, $field, $page, $limit);
         /** @var OfflineBookingServices $bookingServices */
         $bookingServices = app()->make(OfflineBookingServices::class);
         foreach ($list as &$item) {
@@ -35,7 +35,7 @@ class OfflineClassServices extends BaseServices
             $item['qrcode'] = set_file_url($item['qrcode']);
             $item['booked_count'] = $bookingServices->getBookedCount($item['id']);
         }
-        $count = $this->dao->classCount($where);
+        $count = $this->dao->offlineClassCount($where);
         return compact('list', 'count');
     }
 }

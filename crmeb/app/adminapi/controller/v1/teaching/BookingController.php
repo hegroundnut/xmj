@@ -37,7 +37,7 @@ class BookingController extends AuthController
             ['page', 1],
             ['limit', 15],
         ]);
-        return app('json')->success($this->services->getList(array_filter($where)));
+        return app('json')->success($this->services->getList($where));
     }
 
     /**

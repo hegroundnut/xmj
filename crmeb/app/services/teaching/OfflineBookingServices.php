@@ -68,11 +68,11 @@ class OfflineBookingServices extends BaseServices
     {
         [$page, $limit] = $this->getPageValue();
         $field = 'id,uid,class_id,name,phone,status,add_time';
-        $list = $this->dao->bookingList($where, $field, $page, $limit);
+        $list = $this->dao->offlineBookingList($where, $field, $page, $limit);
         foreach ($list as &$item) {
             $item['add_time'] = date('Y-m-d H:i', $item['add_time']);
         }
-        $count = $this->dao->bookingCount($where);
+        $count = $this->dao->offlineBookingCount($where);
         return compact('list', 'count');
     }
 }

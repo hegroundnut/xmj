@@ -82,5 +82,5 @@ export function cancelBooking(id) {
  * 用户会员管理
  */
 export function setTeachingMember(uid, status) {
-  return request({ url: `user/set_teaching_member/${uid}`, method: 'put', params: { is_teaching_member: status } });
+  return request({ url: `user/set_teaching_member/${uid}`, method: 'put', data: { is_teaching_member: status } });
 }
