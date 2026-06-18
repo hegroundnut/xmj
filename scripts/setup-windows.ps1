@@ -1,14 +1,14 @@
 <#
 ============================================================================
- 洗眉机小程序 — Windows 一键部署脚本 (PowerShell)
- 用法: 右键 "使用 PowerShell 运行" 或终端: .\setup-windows.ps1
- 涵盖: Docker 后端部署 + 数据库初始化 + 小程序客户端准备
+  Brow-Washing Mini Program — Windows Deployment Script
+  Usage: Right-click "Run with PowerShell" or: .\setup-windows.ps1
+  Covers: Docker backend + DB init + Admin build + Mini program prep
 ============================================================================
 #>
-$ErrorActionPreference = "Stop"
-$Host.UI.RawUI.WindowTitle = "洗眉机小程序部署"
+$ErrorActionPreference = "Continue"
+$Host.UI.RawUI.WindowTitle = "Brow-Washing Mini Program Setup"
 
-# ======================== 路径常量 ========================
+# Paths
 $ROOT = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $DOCKER_DIR = Join-Path $ROOT "help\docker"
 $MYSQL_CONF_DIR = Join-Path $DOCKER_DIR "mysql\conf.d"
@@ -22,162 +22,153 @@ $CRM_DIR = Join-Path $ROOT "crmeb"
 $CRMEB_SQL = Join-Path $CRM_DIR "public\install\crmeb.sql"
 $TEACHING_SQL = Join-Path $CRM_DIR "sql\migration_teaching.sql"
 $HIDE_MENUS_SQL = Join-Path $CRM_DIR "sql\hide_shop_menus.sql"
-$ENV_FILE = Join-Path $CRM_DIR ".env"
 
 $DB_ROOT_PASS = "123456"
 $HTTP_PORT = "8011"
 
-function Write-Step { param($Msg) Write-Host "`n============================================" -ForegroundColor Cyan; Write-Host "  $Msg" -ForegroundColor Cyan; Write-Host "============================================" -ForegroundColor Cyan }
-function info { Write-Host "[✓] $args" -ForegroundColor Green }
-function warn { Write-Host "[!] $args" -ForegroundColor Yellow }
-function err  { Write-Host "[✗] $args" -ForegroundColor Red; throw $args }
+function info  { Write-Host "[OK] $args" -ForegroundColor Green }
+function warn  { Write-Host "[!!] $args" -ForegroundColor Yellow }
+function fatal { Write-Host "[ERROR] $args" -ForegroundColor Red; pause; exit 1 }
 
 # ======================================================================
-#  主菜单
+#  Main Menu
 # ======================================================================
 Clear-Host
-Write-Host @'
-  ╔═══════════════════════════════════════╗
-  ║     洗眉机小程序 — Windows 部署     ║
-  ╚═══════════════════════════════════════╝
-'@
+Write-Host "============================================" -ForegroundColor Cyan
+Write-Host "  Brow-Washing Mini Program - Windows Setup" -ForegroundColor Cyan
+Write-Host "============================================" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "  1. 完整部署 (Docker 后端 + 数据库导入 + Admin 编译 + 小程序准备)"
-Write-Host "  2. 仅 Docker 后端 (启动容器 + 数据库导入)"
-Write-Host "  3. 仅 Admin 前端编译"
-Write-Host "  4. 仅小程序客户端准备 (改 IP / AppID / HBuilderX)"
-Write-Host "  0. 退出"
+Write-Host "  1. Full deploy (Docker + DB + Admin + Mini Program)"
+Write-Host "  2. Docker backend only (containers + DB init)"
+Write-Host "  3. Admin frontend build only"
+Write-Host "  4. Mini program client prep only (API URL + AppID + HBuilderX)"
+Write-Host "  0. Exit"
 Write-Host ""
-$choice = Read-Host "请选择 [1]"
-
+$choice = Read-Host "Choose [1]"
 if ($choice -eq '0') { exit }
 
 # ======================================================================
-#  Step A: Docker 后端部署
+#  Step A: Docker Backend
 # ======================================================================
 if ($choice -in '1','2') {
-    Write-Step "A-1. 检查 Docker Desktop"
+    Write-Host "`n--- A-1. Check Docker Desktop ---" -ForegroundColor Yellow
 
-    $docker = Get-Command docker -ErrorAction SilentlyContinue
-    if (-not $docker) { err "请先安装 Docker Desktop: https://www.docker.com/products/docker-desktop/" }
+    $dockerCmd = Get-Command docker -ErrorAction SilentlyContinue
+    if (-not $dockerCmd) { fatal "Docker Desktop not found. Install from: https://www.docker.com/products/docker-desktop/" }
 
-    $dockerRunning = docker info 2>&1
+    docker info 2>&1 | Out-Null
     if ($LASTEXITCODE -ne 0) {
-        warn "Docker 未运行，请先启动 Docker Desktop，然后回车继续..."
+        warn "Docker not running. Please start Docker Desktop, then press Enter..."
         Read-Host
-        docker info 2>&1
-        if ($LASTEXITCODE -ne 0) { err "Docker 仍然未运行" }
+        docker info 2>&1 | Out-Null
+        if ($LASTEXITCODE -ne 0) { fatal "Docker still not running. Start Docker Desktop manually." }
     }
-    info "Docker Desktop 已运行"
+    info "Docker Desktop is running"
 
-    # Docker Compose 命令
+    # Docker Compose
     docker compose version 2>&1 | Out-Null
     if ($LASTEXITCODE -eq 0) {
-        $compose = "docker compose"
+        $DOCKER_COMPOSE = "docker compose"
     } else {
         docker-compose --version 2>&1 | Out-Null
-        if ($LASTEXITCODE -eq 0) { $compose = "docker-compose" }
-        else { err "未找到 docker compose" }
+        if ($LASTEXITCODE -eq 0) { $DOCKER_COMPOSE = "docker-compose" }
+        else { fatal "docker compose not found" }
     }
-    info "Docker Compose: $compose"
+    info "Compose: $DOCKER_COMPOSE"
 
-    # ---- MySQL 配置 ----
-    Write-Step "A-2. 准备 MySQL 配置"
+    # ---- MySQL Config ----
+    Write-Host "`n--- A-2. MySQL config ---" -ForegroundColor Yellow
     New-Item -ItemType Directory -Force -Path $MYSQL_CONF_DIR | Out-Null
     New-Item -ItemType Directory -Force -Path (Join-Path $DOCKER_DIR "mysql\data") | Out-Null
     New-Item -ItemType Directory -Force -Path (Join-Path $DOCKER_DIR "mysql\log") | Out-Null
     New-Item -ItemType Directory -Force -Path (Join-Path $DOCKER_DIR "nginx\log") | Out-Null
 
     $customCnf = Join-Path $MYSQL_CONF_DIR "custom.cnf"
-    @"
-[mysqld]
-sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
-"@ | Out-File -FilePath $customCnf -Encoding ascii
-    info "MySQL sql_mode 配置已写入: $customCnf"
+    "[mysqld]`nsql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`n" | Out-File -FilePath $customCnf -Encoding ascii
+    info "MySQL sql_mode config written: $customCnf"
 
-    # ---- 启动容器 ----
-    Write-Step "A-3. 启动 Docker 容器"
+    # ---- Start Containers ----
+    Write-Host "`n--- A-3. Start Docker containers ---" -ForegroundColor Yellow
     Push-Location $DOCKER_DIR
     try {
-        Invoke-Expression "$compose down --remove-orphans 2>`$null" -ErrorAction SilentlyContinue
-        Invoke-Expression "$compose up -d"
+        Invoke-Expression "$DOCKER_COMPOSE down --remove-orphans 2>`$null" 2>&1 | Out-Null
+        Invoke-Expression "$DOCKER_COMPOSE up -d"
         if ($LASTEXITCODE -ne 0) {
             Pop-Location
-            err "Docker 启动失败，请检查 $DOCKER_DIR\docker-compose.yml"
+            fatal "Docker compose up failed. Check $DOCKER_DIR\docker-compose.yml"
         }
-        info "容器已启动"
+        info "Containers started"
     } finally {
         Pop-Location
     }
 
-    # ---- 等待 MySQL ----
-    Write-Host "等待 MySQL 就绪..." -NoNewline
-    for ($i=0; $i -lt 30; $i++) {
-        $ping = docker exec crmeb_mysql mysqladmin ping -uroot -p$DB_ROOT_PASS --silent 2>&1
-        if ($LASTEXITCODE -eq 0) { Write-Host ""; info "MySQL 已就绪"; break }
+    # ---- Wait for MySQL ----
+    Write-Host "Waiting for MySQL..." -NoNewline
+    for ($i = 0; $i -lt 30; $i++) {
+        docker exec crmeb_mysql mysqladmin ping -uroot -p$DB_ROOT_PASS --silent 2>&1 | Out-Null
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host " ready"
+            break
+        }
         Write-Host "." -NoNewline
         Start-Sleep -Seconds 2
     }
 
-    # ---- 导入 SQL ----
-    Write-Step "A-4. 初始化数据库"
+    # ---- Import SQL ----
+    Write-Host "`n--- A-4. Initialize database ---" -ForegroundColor Yellow
 
-    Write-Host "  创建数据库..."
-    docker exec crmeb_mysql mysql -uroot -p$DB_ROOT_PASS -e @"
-DROP DATABASE IF EXISTS crmeb;
-CREATE DATABASE crmeb CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-"@
+    Write-Host "  Creating database..."
+    docker exec crmeb_mysql mysql -uroot -p$DB_ROOT_PASS -e "DROP DATABASE IF EXISTS crmeb; CREATE DATABASE crmeb CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
 
-    Write-Host "  导入基础表 (crmeb.sql)..."
+    Write-Host "  Importing base tables (crmeb.sql)..."
     Get-Content $CRMEB_SQL -Raw | docker exec -i crmeb_mysql mysql -uroot -p$DB_ROOT_PASS crmeb --default-character-set=utf8mb4 --init-command="SET SESSION sql_mode='NO_ENGINE_SUBSTITUTION';"
 
-    Write-Host "  导入教学模块表..."
+    Write-Host "  Importing teaching module tables..."
     Get-Content $TEACHING_SQL -Raw | docker exec -i crmeb_mysql mysql -uroot -p$DB_ROOT_PASS crmeb --default-character-set=utf8mb4
 
-    Write-Host "  隐藏商城菜单..."
+    Write-Host "  Hiding shop menus..."
     Get-Content $HIDE_MENUS_SQL -Raw | docker exec -i crmeb_mysql mysql -uroot -p$DB_ROOT_PASS crmeb --default-character-set=utf8mb4
 
-    info "数据库初始化完成"
+    info "Database init complete"
 
-    # ---- 修复权限 ----
-    Write-Step "A-5. 修复 runtime 权限"
-    docker exec crmeb_php chown -R www-data:www-data /var/www/runtime 2>$null
-    info "权限已修复"
+    # ---- Fix Permissions ----
+    Write-Host "`n--- A-5. Fix permissions ---" -ForegroundColor Yellow
+    docker exec crmeb_php chown -R www-data:www-data /var/www/runtime 2>&1 | Out-Null
+    info "Permissions fixed"
 
-    $SERVER_IP = "localhost"
-    info "Docker 后端部署完成! 访问地址: http://localhost:$HTTP_PORT"
+    info "Docker backend deployed: http://localhost:$HTTP_PORT"
 }
 
 # ======================================================================
-#  Step B: Admin 前端编译
+#  Step B: Admin Frontend Build
 # ======================================================================
 if ($choice -in '1','3') {
-    Write-Step "B. 编译管理后台前端"
+    Write-Host "`n--- B. Build Admin Frontend ---" -ForegroundColor Yellow
 
     $nodeCmd = Get-Command node -ErrorAction SilentlyContinue
-    if (-not $nodeCmd) { err "未安装 Node.js，请从 https://nodejs.org 安装后重试" }
+    if (-not $nodeCmd) { fatal "Node.js not found. Install from: https://nodejs.org" }
     info "Node.js: $(node -v)"
 
     Push-Location $ADMIN_DIR
     try {
         if (-not (Test-Path "node_modules")) {
-            Write-Host "  安装依赖 (npm install)..."
+            Write-Host "  npm install..."
             npm install --registry=https://registry.npmmirror.com
-            if ($LASTEXITCODE -ne 0) { err "npm install 失败" }
+            if ($LASTEXITCODE -ne 0) { fatal "npm install failed" }
+            info "npm install done"
         }
 
-        Write-Host "  编译中 (npm run build)..."
+        Write-Host "  npm run build..."
         npm run build
-        if ($LASTEXITCODE -ne 0) { err "编译失败" }
+        if ($LASTEXITCODE -ne 0) { fatal "Build failed" }
 
         if (Test-Path "dist") {
-            Write-Host "  部署到 PHP 容器..."
-            docker exec crmeb_php rm -rf /var/www/public/admin 2>$null
+            Write-Host "  Deploying to PHP container..."
+            docker exec crmeb_php rm -rf /var/www/public/admin 2>&1 | Out-Null
             docker cp dist\. crmeb_php:/var/www/public/admin/
-            info "Admin 前端编译并部署完成"
-            info "访问: http://localhost:$HTTP_PORT/admin/"
+            info "Admin frontend deployed: http://localhost:$HTTP_PORT/admin/"
         } else {
-            err "编译产物 dist/ 不存在"
+            fatal "Build output dist/ not found"
         }
     } finally {
         Pop-Location
@@ -185,43 +176,45 @@ if ($choice -in '1','3') {
 }
 
 # ======================================================================
-#  Step C: 小程序客户端准备
+#  Step C: Mini Program Client Prep
 # ======================================================================
 if ($choice -in '1','4') {
-    Write-Step "C-1. 配置 API 地址"
+    Write-Host "`n--- C-1. Set API URL ---" -ForegroundColor Yellow
 
-    $useLocal = Read-Host "是否使用本地 Docker 后端? [Y/n]"
+    $useLocal = Read-Host "Use local Docker backend? [Y/n]"
     if ($useLocal -eq '' -or $useLocal -eq 'y' -or $useLocal -eq 'Y') {
         $NEW_URL = "http://localhost:$HTTP_PORT"
     } else {
-        $ip = Read-Host "请输入服务器 IP（如 121.41.54.226）"
+        $ip = Read-Host "Enter server IP (e.g. 121.41.54.226)"
         $NEW_URL = "http://${ip}:$HTTP_PORT"
     }
 
     $OLD_URL = "http://121.41.54.226:8011"
-    (Get-Content $CONFIG_FILE -Raw -Encoding UTF8).Replace($OLD_URL, $NEW_URL) | Set-Content $CONFIG_FILE -Encoding UTF8
-    info "API 地址: $NEW_URL"
+    if (Test-Path $CONFIG_FILE) {
+        (Get-Content $CONFIG_FILE -Raw -Encoding UTF8).Replace($OLD_URL, $NEW_URL) | Set-Content $CONFIG_FILE -Encoding UTF8
+        info "API URL: $NEW_URL"
+    } else {
+        warn "Config file not found: $CONFIG_FILE"
+    }
 
     # ---- AppID ----
-    Write-Host ""
-    Write-Host "[C-2] 配置微信小程序 AppID"
-    $appid = Read-Host "请输入 AppID（可回车跳过，先填占位符用测试号预览）"
+    Write-Host "`n--- C-2. Set WeChat AppID ---" -ForegroundColor Yellow
+    $appid = Read-Host "Enter WeChat Mini Program AppID (press Enter to skip)"
     if ($appid) {
         try {
             $manifest = Get-Content $MANIFEST_FILE -Raw -Encoding UTF8 | ConvertFrom-Json
             $manifest.'mp-weixin'.appid = $appid
             $manifest | ConvertTo-Json -Depth 20 | Set-Content $MANIFEST_FILE -Encoding UTF8
-            info "AppID: $appid"
+            info "AppID set to: $appid"
         } catch {
-            warn "AppID 写入失败，请手动修改 manifest.json 中 mp-weixin.appid 字段"
+            warn "Failed to set AppID. Edit manifest.json mp-weixin.appid manually."
         }
     } else {
-        warn "跳过 AppID（当前占位 AppID 仅可在测试号体验）"
+        warn "AppID not set (placeholder works for test account only)"
     }
 
     # ---- HBuilderX ----
-    Write-Host ""
-    Write-Host "[C-3] 检查 HBuilderX"
+    Write-Host "`n--- C-3. Check HBuilderX ---" -ForegroundColor Yellow
 
     $hbPaths = @(
         "$env:LOCALAPPDATA\Programs\HBuilderX\HBuilderX.exe",
@@ -236,51 +229,48 @@ if ($choice -in '1','4') {
     }
 
     if ($hbx) {
-        info "HBuilderX: $hbx"
-        $open = Read-Host "是否立即打开 HBuilderX? [Y/n]"
+        info "HBuilderX found: $hbx"
+        $open = Read-Host "Open HBuilderX now? [Y/n]"
         if ($open -eq '' -or $open -eq 'y') { Start-Process $hbx }
     } else {
-        warn "未找到 HBuilderX"
-        Write-Host "  下载: https://www.dcloud.io/hbuilderx.html"
-        Write-Host "  注意: 必须 HBuilderX，不要用 2018 版 HBuilder"
+        warn "HBuilderX not found. Download: https://www.dcloud.io/hbuilderx.html"
+        Write-Host "  NOTE: Must use HBuilderX (NOT HBuilder 2018 edition)" -ForegroundColor Red
     }
 }
 
 # ======================================================================
-#  验证 & 收尾
+#  Verify APIs
 # ======================================================================
 if ($choice -in '1','2') {
-    Write-Step "验证 API"
+    Write-Host "`n--- Verify APIs ---" -ForegroundColor Yellow
 
     $tests = @(
-        @{path="product/info";       desc="产品信息"},
-        @{path="case/list";          desc="案例列表"},
-        @{path="course/list";        desc="课程列表"},
-        @{path="offline_class/list"; desc="线下排期"}
+        @{path="product/info";       desc="Product Info"},
+        @{path="case/list";          desc="Case List"},
+        @{path="course/list";        desc="Course List"},
+        @{path="offline_class/list"; desc="Offline Class"}
     )
 
     foreach ($t in $tests) {
         try {
             $res = Invoke-WebRequest -Uri "http://localhost:$HTTP_PORT/api/v2/$($t.path)" -UseBasicParsing -TimeoutSec 5
-            if ($res.StatusCode -eq 200) { info "$($t.desc): OK" }
+            if ($res.StatusCode -eq 200) { info "$($t.desc): 200 OK" }
             else { warn "$($t.desc): $($res.StatusCode)" }
         } catch {
-            warn "$($t.desc): 无法访问"
+            warn "$($t.desc): unreachable"
         }
     }
 }
 
+Write-Host "`n============================================" -ForegroundColor Cyan
+Write-Host "  Setup Complete!" -ForegroundColor Cyan
+Write-Host "============================================" -ForegroundColor Cyan
 Write-Host ""
-Write-Host @'
-  ╔═══════════════════════════════════════╗
-  ║            部署完成!                  ║
-  ╚═══════════════════════════════════════╝
-
-  管理后台:  http://localhost:8011/admin/
-  产品 API:  http://localhost:8011/api/v2/product/info
-
-  【小程序下一步】在 HBuilderX 中:
-    文件 → 导入 → 从本地目录导入
-    → 选择 template\uni-app
-    → 运行 → 运行到小程序模拟器 → 微信小程序
-'@
+Write-Host "  Admin:    http://localhost:8011/admin/"
+Write-Host "  API:      http://localhost:8011/api/v2/product/info"
+Write-Host ""
+Write-Host "  [Next Steps for Mini Program]"
+Write-Host "  1. In HBuilderX: File -> Import -> From Local Directory"
+Write-Host "  2. Select: template\uni-app"
+Write-Host "  3. Run -> Run to Mini Program Simulator -> WeChat Mini Program"
+pause
