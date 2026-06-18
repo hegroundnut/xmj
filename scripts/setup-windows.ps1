@@ -67,14 +67,8 @@ if ($choice -in '1','2') {
 
     # Docker Compose
     docker compose version 2>&1 | Out-Null
-    if ($LASTEXITCODE -eq 0) {
-        $DOCKER_COMPOSE = "docker compose"
-    } else {
-        docker-compose --version 2>&1 | Out-Null
-        if ($LASTEXITCODE -eq 0) { $DOCKER_COMPOSE = "docker-compose" }
-        else { fatal "docker compose not found" }
-    }
-    info "Compose: $DOCKER_COMPOSE"
+    if ($LASTEXITCODE -ne 0) { fatal "docker compose not found — update Docker Desktop" }
+    info "Compose: docker compose"
 
     # ---- MySQL Config ----
     Write-Host "`n--- A-2. MySQL config ---" -ForegroundColor Yellow
@@ -89,13 +83,19 @@ if ($choice -in '1','2') {
 
     # ---- Start Containers ----
     Write-Host "`n--- A-3. Start Docker containers ---" -ForegroundColor Yellow
+    $COMPOSE_FILE = Join-Path $DOCKER_DIR "docker-compose.yml"
+    if (-not (Test-Path $COMPOSE_FILE)) {
+        fatal "Compose file not found: $COMPOSE_FILE"
+    }
+
     Push-Location $DOCKER_DIR
     try {
-        Invoke-Expression "$DOCKER_COMPOSE down --remove-orphans 2>`$null" 2>&1 | Out-Null
-        Invoke-Expression "$DOCKER_COMPOSE up -d"
+        # docker compose -f <file> down
+        & docker compose -f $COMPOSE_FILE down --remove-orphans *>$null
+        # docker compose -f <file> up -d
+        & docker compose -f $COMPOSE_FILE up -d
         if ($LASTEXITCODE -ne 0) {
-            Pop-Location
-            fatal "Docker compose up failed. Check $DOCKER_DIR\docker-compose.yml"
+            fatal "Docker compose up failed. Check: $COMPOSE_FILE"
         }
         info "Containers started"
     } finally {
