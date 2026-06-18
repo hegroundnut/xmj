@@ -23,7 +23,7 @@
 				</view>
 			</view>
 		</view>
-		<uni-load-more :status="loadStatus" />
+		<view class="load-more-text">{{ loadStatus === "noMore" ? "没有更多了" : loadStatus === "loading" ? "加载中..." : "上拉加载更多" }}</view>
 	</view>
 </template>
 

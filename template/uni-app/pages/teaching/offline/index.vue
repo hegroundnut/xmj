@@ -15,27 +15,27 @@
 			</view>
 			<button class="book-btn" @click.stop="handleBook(item)">预约</button>
 		</view>
-		<uni-load-more :status="loadStatus" />
+		<view class="load-more-text">{{ loadStatus === "noMore" ? "没有更多了" : loadStatus === "loading" ? "加载中..." : "上拉加载更多" }}</view>
 
 		<!-- 预约弹窗 -->
-		<uni-popup ref="bookPopup" type="center">
-			<view class="book-form">
+		<view v-if="showBookForm" class="popup-overlay" @click="showBookForm = false">
+			<view class="popup-content" @click.stop>
 				<text class="form-title">填写预约信息</text>
 				<input v-model="bookForm.name" placeholder="姓名" class="form-input" />
 				<input v-model="bookForm.phone" placeholder="手机号" class="form-input" />
 				<button class="submit-btn" :loading="submitting" @click="submitBook">确认预约</button>
-				<text class="close-btn" @click="$refs.bookPopup.close()">取消</text>
+				<text class="close-btn" @click="showBookForm = false">取消</text>
 			</view>
-		</uni-popup>
+		</view>
 
 		<!-- 预约成功二维码弹窗 -->
-		<uni-popup ref="qrcodePopup" type="center">
-			<view class="qrcode-modal">
+		<view v-if="showQrcode" class="popup-overlay" @click="showQrcode = false">
+			<view class="popup-content" @click.stop>
 				<text class="qrcode-title">请添加店主微信确认预约</text>
 				<image :src="qrcodeUrl" mode="widthFix" class="qrcode-img" />
-				<button class="close-qr-btn" @click="$refs.qrcodePopup.close()">关闭</button>
+				<button class="close-qr-btn" @click="showQrcode = false">关闭</button>
 			</view>
-		</uni-popup>
+		</view>
 	</view>
 </template>
 
@@ -50,6 +50,8 @@ export default {
 			bookForm: { name: '', phone: '' },
 			currentClass: null,
 			qrcodeUrl: '',
+			showBookForm: false,
+			showQrcode: false,
 		};
 	},
 	onLoad() {
@@ -87,7 +89,7 @@ export default {
 		handleBook(item) {
 			this.currentClass = item;
 			this.bookForm = { name: '', phone: '' };
-			this.$refs.bookPopup.open();
+			this.showBookForm = true;
 		},
 		async submitBook() {
 			if (!this.bookForm.name || !this.bookForm.phone) {
@@ -100,9 +102,9 @@ export default {
 					name: this.bookForm.name,
 					phone: this.bookForm.phone,
 				});
-				this.$refs.bookPopup.close();
+				this.showBookForm = false;
 				this.qrcodeUrl = res.data?.qrcode || this.currentClass.qrcode;
-				this.$refs.qrcodePopup.open();
+				this.showQrcode = true;
 			} catch (e) {
 				uni.showToast({ title: e.msg || '预约失败', icon: 'none' });
 			} finally {
@@ -148,7 +150,25 @@ export default {
 	color: #fff;
 	font-size: 28rpx;
 }
-.book-form {
+.load-more-text {
+	text-align: center;
+	padding: 20rpx;
+	color: #999;
+	font-size: 24rpx;
+}
+.popup-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0,0,0,0.4);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 999;
+}
+.popup-content {
 	background: #fff;
 	padding: 40rpx;
 	border-radius: 16rpx;
@@ -177,12 +197,6 @@ export default {
 	text-align: center;
 	color: #999;
 	margin-top: 16rpx;
-}
-.qrcode-modal {
-	background: #fff;
-	padding: 40rpx;
-	border-radius: 16rpx;
-	text-align: center;
 }
 .qrcode-title {
 	font-size: 28rpx;

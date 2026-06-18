@@ -18,6 +18,43 @@ import socket from './libs/new_chat.js'
 import i18n from './utils/lang.js';
 Vue.prototype.$util = util;
 Vue.prototype.$config = configs;
+
+// 简单 API 请求
+Vue.prototype.$api = {
+  get(url, data = {}) {
+    return new Promise((resolve, reject) => {
+      uni.request({
+        url: configs.HTTP_REQUEST_URL + '/api/' + url,
+        data,
+        method: 'GET',
+        header: configs.HEADER,
+        success: (res) => {
+          const d = res.data;
+          if (d.status === 200) resolve(d);
+          else reject(d);
+        },
+        fail: (err) => reject(err),
+      });
+    });
+  },
+  post(url, data = {}) {
+    return new Promise((resolve, reject) => {
+      uni.request({
+        url: configs.HTTP_REQUEST_URL + '/api/' + url,
+        data,
+        method: 'POST',
+        header: configs.HEADER,
+        success: (res) => {
+          const d = res.data;
+          if (d.status === 200) resolve(d);
+          else reject(d);
+        },
+        fail: (err) => reject(err),
+      });
+    });
+  },
+};
+
 Vue.prototype.$Cache = Cache;
 Vue.prototype.$eventHub = new Vue();
 Vue.prototype.$socket = new socket();
