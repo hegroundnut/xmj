@@ -45,10 +45,8 @@ class OfflineClassController
      */
     public function get_detail($id)
     {
-        $info = $this->services->dao->get((int)$id);
+        $info = $this->services->getDetail((int)$id);
         if (!$info) return app('json')->fail('课程不存在');
-        $info['cover'] = set_file_url($info['cover']);
-        $info['qrcode'] = set_file_url($info['qrcode']);
         return app('json')->success($info);
     }
 

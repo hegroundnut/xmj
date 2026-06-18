@@ -38,4 +38,23 @@ class OfflineClassServices extends BaseServices
         $count = $this->dao->offlineClassCount($where);
         return compact('list', 'count');
     }
+
+    /**
+     * 获取排期详情
+     * @param int $id
+     * @return array
+     */
+    public function getDetail($id)
+    {
+        $info = $this->dao->get($id);
+        if ($info) {
+            $info = $info->toArray();
+            $info['cover'] = set_file_url($info['cover']);
+            $info['qrcode'] = set_file_url($info['qrcode']);
+            /** @var OfflineBookingServices $bookingServices */
+            $bookingServices = app()->make(OfflineBookingServices::class);
+            $info['booked_count'] = $bookingServices->getBookedCount($info['id']);
+        }
+        return $info ?: [];
+    }
 }
