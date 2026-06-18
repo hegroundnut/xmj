@@ -16,7 +16,7 @@ use crmeb\traits\ModelTrait;
 /**
  * 洗眉案例
  */
-class Case extends BaseModel
+class TeachingCase extends BaseModel
 {
     use ModelTrait;
 

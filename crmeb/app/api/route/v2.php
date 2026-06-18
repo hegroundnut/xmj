@@ -107,7 +107,6 @@ Route::group('v2', function () {
     })->middleware(\app\api\middleware\AuthTokenMiddleware::class, false)
         ->option(['mark' => 'common', 'mark_name' => '公共接口']);
 
+    // 洗眉机教学路由
+    require __DIR__ . '/v2/teaching.php';
 })->middleware(\app\http\middleware\AllowOriginMiddleware::class)->middleware(\app\api\middleware\StationOpenMiddleware::class);
-
-// 洗眉机教学路由
-require __DIR__ . '/v2/teaching.php';

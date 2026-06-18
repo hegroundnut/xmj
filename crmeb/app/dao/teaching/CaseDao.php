@@ -11,7 +11,7 @@
 namespace app\dao\teaching;
 
 use app\dao\BaseDao;
-use app\model\teaching\Case;
+use app\model\teaching\TeachingCase;
 
 /**
  * 案例 DAO
@@ -20,7 +20,7 @@ class CaseDao extends BaseDao
 {
     protected function setModel(): string
     {
-        return Case::class;
+        return TeachingCase::class;
     }
 
     public function getConditionModel($where)

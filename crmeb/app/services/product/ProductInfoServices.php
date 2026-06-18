@@ -31,11 +31,12 @@ class ProductInfoServices extends BaseServices
     {
         $info = $this->dao->get(1);
         if ($info) {
+            $info = $info->toArray();
             $info['banner'] = json_decode($info['banner'], true) ?? [];
             $info['specs'] = json_decode($info['specs'], true) ?? [];
             if (isset($info['banner']) && is_array($info['banner'])) {
-                foreach ($info['banner'] as &$url) {
-                    $url = set_file_url($url);
+                foreach ($info['banner'] as $key => $url) {
+                    $info['banner'][$key] = set_file_url($url);
                 }
             }
         }

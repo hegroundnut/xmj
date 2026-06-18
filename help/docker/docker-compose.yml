@@ -2,7 +2,7 @@ services:
   # mysql 容器
   mysql:
     container_name: crmeb_mysql
-    image: ccr.ccs.tencentyun.com/crmebky_php/mysql:v8.0.45
+    image: mysql:5.7
     ports:
       - "33061:3306"
     environment:
