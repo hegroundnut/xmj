@@ -1,6 +1,6 @@
 {
 	"easycom": {
-		"autoscan": true,
+		"autoscan": false,
 		"custom": {}
 	},
 	"pages": [
@@ -37,36 +37,6 @@
 			"style": {
 				"navigationBarTitleText": "线下课程"
 			}
-		},
-		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "",
-				"navigationStyle": "custom",
-				"navigationBarTextStyle": "black",
-				"app-plus": {
-					"scrollIndicator": "none"
-				},
-				"mp-weixin": {
-					"componentPlaceholder": {
-						"page-design": "view"
-					}
-				}
-			}
-		},
-		{
-			"path": "pages/user/index",
-			"style": {
-				"navigationBarTitleText": "个人中心",
-				"mp-weixin": {
-					"componentPlaceholder": {
-						"page-design": "view"
-					}
-				},
-				"enablePullDownRefresh": true,
-				"navigationStyle": "custom",
-				"navigationBarTextStyle": "black"
-			}
 		}
 	],
 	"subPackages": [
@@ -78,141 +48,37 @@
 					"path": "wechat_login/index",
 					"style": {
 						"navigationBarTitleText": "",
-						"navigationStyle": "custom",
-						"app-plus": {
-							"scrollIndicator": "none"
-						}
+						"navigationStyle": "custom"
 					}
 				},
 				{
 					"path": "binding_phone/index",
 					"style": {
 						"navigationBarTitleText": "",
-						"navigationStyle": "custom",
-						"app-plus": {
-							"scrollIndicator": "none"
-						}
+						"navigationStyle": "custom"
 					}
 				},
 				{
 					"path": "login/index",
 					"style": {
-						"navigationBarTitleText": "登录",
-						"app-plus": {}
-					}
-				},
-				{
-					"path": "user_info/index",
-					"style": {
-						"navigationBarTitleText": "设置",
-						"app-plus": {}
+						"navigationBarTitleText": "登录"
 					}
 				},
 				{
 					"path": "privacy/index",
 					"style": {
-						"navigationBarTitleText": "隐私协议",
-						"app-plus": {}
-					}
-				},
-				{
-					"path": "user_cancellation/index",
-					"style": {
-						"navigationBarTitleText": "注销协议",
-						"app-plus": {}
-					}
-				},
-				{
-					"path": "message_center/index",
-					"style": {
-						"navigationBarTitleText": "消息中心",
-						"enablePullDownRefresh": true,
-						"app-plus": {}
-					}
-				},
-				{
-					"path": "message_center/messageDetail",
-					"style": {
-						"navigationBarTitleText": "消息详情",
-						"app-plus": {}
-					}
-				},
-				{
-					"path": "user_vip_areer/index",
-					"style": {
-						"navigationBarTitleText": "经验记录",
-						"app-plus": {}
-					}
-				},
-				{
-					"path": "user_sgin/index",
-					"style": {
-						"navigationBarTitleText": "签到",
-						"app-plus": {}
-					}
-				},
-				{
-					"path": "user_sgin_list/index",
-					"style": {
-						"navigationBarTitleText": "签到记录",
-						"app-plus": {}
-					}
-				},
-				{
-					"path": "user_coupon/index",
-					"style": {
-						"navigationBarTitleText": "我的优惠券",
-						"app-plus": {}
-					}
-				},
-				{
-					"path": "user_get_coupon/index",
-					"style": {
-						"navigationBarTitleText": "领取优惠券",
-						"app-plus": {}
-					}
-				},
-				{
-					"path": "user_address_list/index",
-					"style": {
-						"navigationBarTitleText": "地址管理",
-						"app-plus": {}
-					}
-				},
-				{
-					"path": "user_address/index",
-					"style": {
-						"navigationBarTitleText": "添加地址",
-						"app-plus": {}
-					}
-				},
-				{
-					"path": "user_phone/index",
-					"style": {
-						"navigationBarTitleText": "绑定手机",
-						"app-plus": {}
-					}
-				},
-				{
-					"path": "retrievePassword/index",
-					"style": {
-						"navigationBarTitleText": "忘记密码",
-						"app-plus": {}
+						"navigationBarTitleText": "隐私协议"
 					}
 				}
 			]
-		},
-		{
-			"root": "subpackage/diyComponents",
-			"name": "diyComponents",
-			"pages": [{
-				"path": "pages/placeholder",
-				"style": {
-					"navigationBarTitleText": ""
-				}
-			}]
 		}
 	],
+	"preloadRule": {
+		"pages/guide/index": {
+			"network": "all",
+			"packages": ["users"]
+		}
+	},
 	"tabBar": {
 		"color": "#282828",
 		"selectedColor": "#ff3366",
@@ -223,7 +89,7 @@
 				"pagePath": "pages/teaching/product/index",
 				"iconPath": "static/images/1-001.png",
 				"selectedIconPath": "static/images/1-002.png",
-				"text": "首页"
+				"text": "产品"
 			},
 			{
 				"pagePath": "pages/teaching/case/index",
@@ -247,7 +113,7 @@
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "加载中",
+		"navigationBarTitleText": "洗眉机",
 		"navigationBarBackgroundColor": "#fff",
 		"backgroundColor": "#F8F8F8",
 		"titleNView": false,
@@ -256,8 +122,8 @@
 	"condition": {
 		"current": 0,
 		"list": [{
-			"name": "",
-			"path": "",
+			"name": "产品页",
+			"path": "pages/teaching/product/index",
 			"query": ""
 		}]
 	}

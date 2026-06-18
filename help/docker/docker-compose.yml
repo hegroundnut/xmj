@@ -14,6 +14,7 @@ services:
     volumes:
       - ./mysql/data:/var/lib/mysql
       - ./mysql/log:/var/log/mysql
+      - ./mysql/conf.d:/etc/mysql/conf.d
     networks:
       app_net:
         ipv4_address: 192.168.10.11
