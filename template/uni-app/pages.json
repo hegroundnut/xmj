@@ -116,7 +116,6 @@
 		"navigationBarTitleText": "洗眉机",
 		"navigationBarBackgroundColor": "#fff",
 		"backgroundColor": "#F8F8F8",
-		"titleNView": false,
 		"pageOrientation": "portrait"
 	},
 	"condition": {

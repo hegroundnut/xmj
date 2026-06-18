@@ -16,7 +16,7 @@ export default {
 		return {
 			guidePages: false,
 			advData: [],
-			indexUrl: '/pages/index/index'
+			indexUrl: '/pages/teaching/product/index'
 		};
 	},
 	onLoad(options) {
