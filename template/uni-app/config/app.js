@@ -1,17 +1,17 @@
-module.exports = {
-	// 小程序 / APP请求配置
+﻿module.exports = {
+	// 灏忕▼搴?/ APP璇锋眰閰嶇疆
 	// #ifdef MP || APP-PLUS
-	// 请求域名 格式： https://您的域名
-	HTTP_REQUEST_URL: `http://121.41.54.226:8011`,
+	// 璇锋眰鍩熷悕 鏍煎紡锛?https://鎮ㄧ殑鍩熷悕
+	HTTP_REQUEST_URL: `http://127.0.0.1:8011`,
 	// #endif
 
-	// H5请求配置
+	// H5璇锋眰閰嶇疆
 	// #ifdef H5
-	// H5接口是浏览器地址，非单独部署不用修改
+	// H5鎺ュ彛鏄祻瑙堝櫒鍦板潃锛岄潪鍗曠嫭閮ㄧ讲涓嶇敤淇敼
 	HTTP_REQUEST_URL: window.location.protocol + "//" + window.location.host,
 	// #endif 
 
-	// 以下配置在不做二开的前提下,不需要做任何的修改
+	// 浠ヤ笅閰嶇疆鍦ㄤ笉鍋氫簩寮€鐨勫墠鎻愪笅,涓嶉渶瑕佸仛浠讳綍鐨勪慨鏀?
 	HEADER: {
 		'content-type': 'application/json',
 		//#ifdef H5
@@ -24,12 +24,13 @@ module.exports = {
 		'Form-type': 'app',
 		//#endif
 	},
-	// 回话密钥名称 请勿修改此配置
+	// 鍥炶瘽瀵嗛挜鍚嶇О 璇峰嬁淇敼姝ら厤缃?
 	TOKENNAME: 'Authori-zation',
-	// 缓存时间 0 永久
+	// 缂撳瓨鏃堕棿 0 姘镐箙
 	EXPIRE: 0,
-	//分页最多显示条数
+	//鍒嗛〉鏈€澶氭樉绀烘潯鏁?
 	LIMIT: 10,
-	// 请求超时限制 默认10秒
+	// 璇锋眰瓒呮椂闄愬埗 榛樿10绉?
 	TIMEOUT: 100000
 }
+

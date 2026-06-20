@@ -9,7 +9,7 @@ $ErrorActionPreference = "Continue"
 $Host.UI.RawUI.WindowTitle = "Brow-Washing Mini Program Setup"
 
 # Paths
-$ROOT = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+$ROOT = Split-Path -Parent $PSScriptRoot
 $DOCKER_DIR = Join-Path $ROOT "help\docker"
 $MYSQL_CONF_DIR = Join-Path $DOCKER_DIR "mysql\conf.d"
 
