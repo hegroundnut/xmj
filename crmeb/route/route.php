@@ -33,11 +33,7 @@ Route::miss(function () {
                 if (is_dir(app()->getRootPath() . 'public' . DS . 'home') && !request()->get('mdType')) {
                     return view(app()->getRootPath() . 'public' . DS . 'home' . DS . 'index.html');
                 } else {
-                    if (request()->get('type')) {
-                        return view(app()->getRootPath() . 'public' . DS . 'index.html');
-                    } else {
-                        return view(app()->getRootPath() . 'public' . DS . 'mobile.html', ['siteName' => sys_config('site_name'), 'siteUrl' => sys_config('site_url') . '/pages/index/index']);
-                    }
+                    return view(app()->getRootPath() . 'public' . DS . 'index.html');
                 }
             } else {
                 return view(app()->getRootPath() . 'public' . DS . 'index.html');

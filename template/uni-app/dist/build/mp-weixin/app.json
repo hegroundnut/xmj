@@ -1,0 +1,89 @@
+{
+  "pages": [
+    "pages/guide/index",
+    "pages/teaching/product/index",
+    "pages/teaching/case/index",
+    "pages/teaching/course/index",
+    "pages/teaching/offline/index"
+  ],
+  "subPackages": [
+    {
+      "root": "pages/users",
+      "pages": [
+        "wechat_login/index",
+        "binding_phone/index",
+        "login/index",
+        "privacy/index"
+      ],
+      "name": "users"
+    }
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "洗眉机",
+    "navigationBarBackgroundColor": "#fff",
+    "backgroundColor": "#F8F8F8",
+    "pageOrientation": "portrait"
+  },
+  "tabBar": {
+    "color": "#282828",
+    "selectedColor": "#ff3366",
+    "borderStyle": "white",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/teaching/product/index",
+        "iconPath": "static/images/1-001.png",
+        "selectedIconPath": "static/images/1-002.png",
+        "text": "产品"
+      },
+      {
+        "pagePath": "pages/teaching/case/index",
+        "iconPath": "static/images/2-001.png",
+        "selectedIconPath": "static/images/2-002.png",
+        "text": "案例"
+      },
+      {
+        "pagePath": "pages/teaching/course/index",
+        "iconPath": "static/images/3-001.png",
+        "selectedIconPath": "static/images/3-002.png",
+        "text": "教学"
+      },
+      {
+        "pagePath": "pages/teaching/offline/index",
+        "iconPath": "static/images/4-001.png",
+        "selectedIconPath": "static/images/4-002.png",
+        "text": "线下课"
+      }
+    ]
+  },
+  "preloadRule": {
+    "pages/guide/index": {
+      "network": "all",
+      "packages": [
+        "users"
+      ]
+    }
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于查看与门店的距离"
+    }
+  },
+  "lazyCodeLoading": "requiredComponents",
+  "requiredPrivateInfos": [
+    "getLocation",
+    "onLocationChange",
+    "startLocationUpdateBackground",
+    "chooseAddress"
+  ],
+  "__usePrivacyCheck__": true,
+  "usingComponents": {
+    "skeleton": "/components/skeleton/index",
+    "page-loading": "/components/pageLoading",
+    "easy-loadimage": "/components/easy-loadimage/easy-loadimage",
+    "base-money": "/components/BaseMoney",
+    "base-tag": "/components/BaseTag",
+    "base-drawer": "/components/tuiDrawer/tui-drawer"
+  }
+}
