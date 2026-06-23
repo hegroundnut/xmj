@@ -37,6 +37,9 @@ Route::group('v2', function () {
     // 用户路由
     require __DIR__ . '/v2/user.php';
 
+    // 案例收藏路由
+    require __DIR__ . '/v2/case_favorite.php';
+
     // 朋友圈路由
     require __DIR__ . '/v2/moment.php';
 
