@@ -2,6 +2,7 @@
   "name": "uni-app",
   "version": "1.0.0",
   "scripts": {
+    "postinstall": "node scripts/patch-compiler.js",
     "build:h5": "cross-env NODE_ENV=production UNI_PLATFORM=h5 UNI_CLI_CONTEXT=. vue-cli-service uni-build",
     "dev:h5": "cross-env NODE_ENV=development UNI_PLATFORM=h5 UNI_CLI_CONTEXT=. vue-cli-service uni-serve",
     "build:mp-weixin": "cross-env NODE_ENV=production UNI_PLATFORM=mp-weixin UNI_CLI_CONTEXT=. vue-cli-service uni-build"

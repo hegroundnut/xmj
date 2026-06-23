@@ -125,8 +125,9 @@ CREATE TABLE IF NOT EXISTS `eb_teaching_home_config` (
   UNIQUE KEY `uk_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机首页配置';
 
--- 9. 用户表新增教学会员字段（MySQL 5.7 兼容写法）
-SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'eb_user' AND COLUMN_NAME = 'is_teaching_member');
+-- 9. 用户表新增教学会员字段（仅当 eb_user 表存在时执行）
+SET @tbl_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'eb_user');
+SET @col_exists = IF(@tbl_exists > 0, (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'eb_user' AND COLUMN_NAME = 'is_teaching_member'), 1);
 SET @sql = IF(@col_exists = 0, 'ALTER TABLE `eb_user` ADD COLUMN `is_teaching_member` tinyint(1) NOT NULL DEFAULT 0 COMMENT ''教学会员:0=否 1=是''', 'SELECT 1');
 PREPARE stmt FROM @sql;
 EXECUTE stmt;
