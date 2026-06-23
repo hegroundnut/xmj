@@ -1,167 +1,181 @@
 {
-	"easycom": {
-		"autoscan": false,
-		"custom": {}
-	},
-	"pages": [
-		{
-			"path": "pages/teaching/home/index",
-			"style": {
-				"navigationBarTitleText": "首页",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/guide/index",
-			"style": {
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-		},
-		{
-			"path": "pages/teaching/product/index",
-			"style": {
-				"navigationBarTitleText": "洗眉机",
-				"navigationStyle": "custom",
-				"navigationBarTextStyle": "black"
-			}
-		},
-		{
-			"path": "pages/teaching/case/index",
-			"style": {
-				"navigationBarTitleText": "案例"
-			}
-		},
-		{
-			"path": "pages/teaching/course/index",
-			"style": {
-				"navigationBarTitleText": "教学课程"
-			}
-		},
-		{
-			"path": "pages/teaching/offline/index",
-			"style": {
-				"navigationBarTitleText": "线下课程"
-			}
-		},
-		{
-			"path": "pages/moment/index",
-			"style": {
-				"navigationBarTitleText": "朋友圈",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/moment/detail",
-			"style": {
-				"navigationBarTitleText": "帖子详情"
-			}
-		},
-		{
-			"path": "pages/moment/publish",
-			"style": {
-				"navigationBarTitleText": "发布"
-			}
-		},
-		{
-			"path": "pages/moment/my_favorites",
-			"style": {
-				"navigationBarTitleText": "我的收藏"
-			}
-		}
-	],
-	"subPackages": [
-		{
-			"root": "pages/users",
-			"name": "users",
-			"pages": [
-				{
-					"path": "wechat_login/index",
-					"style": {
-						"navigationBarTitleText": "",
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "binding_phone/index",
-					"style": {
-						"navigationBarTitleText": "",
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "login/index",
-					"style": {
-						"navigationBarTitleText": "登录"
-					}
-				},
-				{
-					"path": "privacy/index",
-					"style": {
-						"navigationBarTitleText": "隐私协议"
-					}
-				}
-			]
-		}
-	],
-	"preloadRule": {
-		"pages/teaching/home/index": {
-			"network": "all",
-			"packages": ["users"]
-		}
-	},
-	"tabBar": {
-		"color": "#282828",
-		"selectedColor": "#e93323",
-		"borderStyle": "white",
-		"backgroundColor": "#ffffff",
-		"list": [
-			{
-				"pagePath": "pages/teaching/home/index",
-				"iconPath": "static/images/1-001.png",
-				"selectedIconPath": "static/images/1-002.png",
-				"text": "首页"
-			},
-			{
-				"pagePath": "pages/teaching/case/index",
-				"iconPath": "static/images/2-001.png",
-				"selectedIconPath": "static/images/2-002.png",
-				"text": "案例"
-			},
-			{
-				"pagePath": "pages/moment/index",
-				"iconPath": "static/images/3-001.png",
-				"selectedIconPath": "static/images/3-002.png",
-				"text": "朋友圈"
-			},
-			{
-				"pagePath": "pages/teaching/course/index",
-				"iconPath": "static/images/4-001.png",
-				"selectedIconPath": "static/images/4-002.png",
-				"text": "教学"
-			},
-			{
-				"pagePath": "pages/teaching/offline/index",
-				"iconPath": "static/images/5-001.png",
-				"selectedIconPath": "static/images/5-002.png",
-				"text": "线下课"
-			}
-		]
-	},
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "洗眉机",
-		"navigationBarBackgroundColor": "#fff",
-		"backgroundColor": "#F8F8F8",
-		"pageOrientation": "portrait"
-	},
-	"condition": {
-		"current": 0,
-		"list": [{
-			"name": "首页",
-			"path": "pages/teaching/home/index",
-			"query": ""
-		}]
-	}
+  "easycom": {
+    "autoscan": false,
+    "custom": {}
+  },
+  "pages": [
+    {
+      "path": "pages/home/index",
+      "style": {
+        "navigationBarTitleText": "首页",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/case/index",
+      "style": {
+        "navigationBarTitleText": "案例"
+      }
+    },
+    {
+      "path": "pages/moment/index",
+      "style": {
+        "navigationBarTitleText": "朋友圈",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/moment/detail",
+      "style": {
+        "navigationBarTitleText": "帖子详情"
+      }
+    },
+    {
+      "path": "pages/moment/publish",
+      "style": {
+        "navigationBarTitleText": "发布"
+      }
+    },
+    {
+      "path": "pages/teaching/index",
+      "style": {
+        "navigationBarTitleText": "教学"
+      }
+    },
+    {
+      "path": "pages/my/index",
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
+    },
+    {
+      "path": "pages/my/favorites",
+      "style": {
+        "navigationBarTitleText": "我的收藏"
+      }
+    },
+    {
+      "path": "pages/my/courses",
+      "style": {
+        "navigationBarTitleText": "已购课程"
+      }
+    },
+    {
+      "path": "pages/my/bookings",
+      "style": {
+        "navigationBarTitleText": "线下课预约"
+      }
+    },
+    {
+      "path": "pages/my/comments",
+      "style": {
+        "navigationBarTitleText": "我的评论"
+      }
+    },
+    {
+      "path": "pages/my/posts",
+      "style": {
+        "navigationBarTitleText": "我的发帖"
+      }
+    },
+    {
+      "path": "pages/guide/index",
+      "style": {
+        "app-plus": { "titleNView": false }
+      }
+    }
+  ],
+  "subPackages": [
+    {
+      "root": "pages/users",
+      "name": "users",
+      "pages": [
+        {
+          "path": "wechat_login/index",
+          "style": {
+            "navigationBarTitleText": "",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "binding_phone/index",
+          "style": {
+            "navigationBarTitleText": "",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "login/index",
+          "style": {
+            "navigationBarTitleText": "登录"
+          }
+        },
+        {
+          "path": "privacy/index",
+          "style": {
+            "navigationBarTitleText": "隐私协议"
+          }
+        }
+      ]
+    }
+  ],
+  "preloadRule": {
+    "pages/home/index": {
+      "network": "all",
+      "packages": ["users"]
+    }
+  },
+  "tabBar": {
+    "color": "#282828",
+    "selectedColor": "#e93323",
+    "borderStyle": "white",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "iconPath": "static/images/1-001.png",
+        "selectedIconPath": "static/images/1-002.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/case/index",
+        "iconPath": "static/images/2-001.png",
+        "selectedIconPath": "static/images/2-002.png",
+        "text": "案例"
+      },
+      {
+        "pagePath": "pages/moment/index",
+        "iconPath": "static/images/3-001.png",
+        "selectedIconPath": "static/images/3-002.png",
+        "text": "朋友圈"
+      },
+      {
+        "pagePath": "pages/teaching/index",
+        "iconPath": "static/images/4-001.png",
+        "selectedIconPath": "static/images/4-002.png",
+        "text": "教学"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "iconPath": "static/images/5-001.png",
+        "selectedIconPath": "static/images/5-002.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "洗眉机",
+    "navigationBarBackgroundColor": "#fff",
+    "backgroundColor": "#F8F8F8",
+    "pageOrientation": "portrait"
+  },
+  "condition": {
+    "current": 0,
+    "list": [{
+      "name": "首页",
+      "path": "pages/home/index",
+      "query": ""
+    }]
+  }
 }
