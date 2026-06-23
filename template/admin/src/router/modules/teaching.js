@@ -76,5 +76,34 @@ export default {
       },
       component: () => import('@/pages/teaching/booking/index'),
     },
+    {
+      path: 'case_comment',
+      name: `${pre}caseComment`,
+      meta: {
+        title: '评论管理',
+        auth: ['admin-teaching-case-comment'],
+        keepAlive: true,
+      },
+      component: () => import('@/pages/teaching/caseComment/index'),
+    },
+    {
+      path: 'home_config',
+      name: `${pre}homeConfig`,
+      meta: {
+        title: '首页配置',
+        auth: ['admin-teaching-home-config'],
+      },
+      component: () => import('@/pages/teaching/homeConfig/index'),
+    },
+    {
+      path: 'member',
+      name: `${pre}member`,
+      meta: {
+        title: '会员管理',
+        auth: ['admin-teaching-member'],
+        keepAlive: true,
+      },
+      component: () => import('@/pages/teaching/member/index'),
+    },
   ],
 };

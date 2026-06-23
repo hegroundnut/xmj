@@ -64,6 +64,29 @@ Route::group('teaching_offline', function () {
     \app\adminapi\middleware\AdminLogMiddleware::class
 ])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
 
+// 首页配置管理
+Route::group('teaching_home_config', function () {
+    Route::get('info', 'v1.teaching.HomeConfigController/index')->option(['real_name' => '首页配置信息']);
+    Route::post('save', 'v1.teaching.HomeConfigController/save')->option(['real_name' => '保存首页配置']);
+})->middleware([
+    \app\http\middleware\AllowOriginMiddleware::class,
+    \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
+    \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
+    \app\adminapi\middleware\AdminLogMiddleware::class
+])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
+
+// 案例评论管理
+Route::group('teaching_case_comment', function () {
+    Route::get('list', 'v1.teaching.CaseCommentController/index')->option(['real_name' => '评论列表']);
+    Route::put('status/:id', 'v1.teaching.CaseCommentController/setStatus')->option(['real_name' => '审核评论']);
+    Route::delete('delete/:id', 'v1.teaching.CaseCommentController/delete')->option(['real_name' => '删除评论']);
+})->middleware([
+    \app\http\middleware\AllowOriginMiddleware::class,
+    \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
+    \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
+    \app\adminapi\middleware\AdminLogMiddleware::class
+])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
+
 // 预约记录
 Route::group('teaching_booking', function () {
     Route::get('list', 'v1.teaching.BookingController/index')->option(['real_name' => '预约记录列表']);
@@ -75,7 +98,13 @@ Route::group('teaching_booking', function () {
     \app\adminapi\middleware\AdminLogMiddleware::class
 ])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
 
-// 用户会员管理（新增到已有用户管理下）
-Route::group('user', function () {
-    Route::put('set_teaching_member/:uid', 'v1.user.User/setTeachingMember')->option(['real_name' => '设置教学会员']);
-});
+// 用户会员管理
+Route::group('teaching_member', function () {
+    Route::get('list', 'v1.teaching.MemberController/index')->option(['real_name' => '教学会员列表']);
+    Route::put('set/:uid', 'v1.teaching.MemberController/setMember')->option(['real_name' => '设置教学会员']);
+})->middleware([
+    \app\http\middleware\AllowOriginMiddleware::class,
+    \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
+    \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
+    \app\adminapi\middleware\AdminLogMiddleware::class
+])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);

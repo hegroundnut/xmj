@@ -95,7 +95,37 @@ CREATE TABLE IF NOT EXISTS `eb_offline_booking` (
   KEY `idx_class_id` (`class_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机线下预约记录';
 
--- 7. 用户表新增教学会员字段（MySQL 5.7 兼容写法）
+-- 7. 案例评论表
+CREATE TABLE IF NOT EXISTS `eb_case_comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `case_id` int(11) NOT NULL DEFAULT 0 COMMENT '案例ID',
+  `uid` int(11) NOT NULL DEFAULT 0 COMMENT '用户ID',
+  `nickname` varchar(100) DEFAULT '' COMMENT '用户昵称',
+  `avatar` varchar(500) DEFAULT '' COMMENT '用户头像',
+  `content` text COMMENT '评论内容',
+  `pid` int(11) NOT NULL DEFAULT 0 COMMENT '父评论ID(0=顶级评论)',
+  `reply_uid` int(11) NOT NULL DEFAULT 0 COMMENT '回复用户ID',
+  `reply_nickname` varchar(100) DEFAULT '' COMMENT '回复用户昵称',
+  `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1=显示 0=隐藏',
+  `add_time` int(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_case_id` (`case_id`),
+  KEY `idx_uid` (`uid`),
+  KEY `idx_pid` (`pid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机案例评论';
+
+-- 8. 首页配置表
+CREATE TABLE IF NOT EXISTS `eb_teaching_home_config` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '配置键名',
+  `value` longtext COMMENT '配置值(JSON)',
+  `add_time` int(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `update_time` int(11) NOT NULL DEFAULT 0 COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机首页配置';
+
+-- 9. 用户表新增教学会员字段（MySQL 5.7 兼容写法）
 SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'eb_user' AND COLUMN_NAME = 'is_teaching_member');
 SET @sql = IF(@col_exists = 0, 'ALTER TABLE `eb_user` ADD COLUMN `is_teaching_member` tinyint(1) NOT NULL DEFAULT 0 COMMENT ''教学会员:0=否 1=是''', 'SELECT 1');
 PREPARE stmt FROM @sql;

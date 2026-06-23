@@ -11,6 +11,7 @@
 namespace app\services\teaching;
 
 use app\dao\teaching\CaseDao;
+use app\dao\teaching\CaseCommentDao;
 use app\services\BaseServices;
 
 /**
@@ -23,15 +24,23 @@ class CaseServices extends BaseServices
         $this->dao = $dao;
     }
 
+    /**
+     * 获取案例列表（含评论数）
+     * @param array $where
+     * @return array
+     */
     public function getList(array $where)
     {
         [$page, $limit] = $this->getPageValue();
         $field = 'id,title,type,cover,media_url,sort,status,add_time';
         $list = $this->dao->caseList($where, $field, $page, $limit);
+        /** @var CaseCommentDao $commentDao */
+        $commentDao = app()->make(CaseCommentDao::class);
         foreach ($list as &$item) {
             $item['cover'] = set_file_url($item['cover']);
             $item['media_url'] = set_file_url($item['media_url']);
             $item['add_time'] = date('Y-m-d H:i', $item['add_time']);
+            $item['comment_count'] = $commentDao->commentCount((int)$item['id']);
         }
         $count = $this->dao->caseCount($where);
         return compact('list', 'count');

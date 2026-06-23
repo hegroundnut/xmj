@@ -79,8 +79,34 @@ export function cancelBooking(id) {
 }
 
 /**
- * 用户会员管理
+ * 案例评论管理
  */
+export function getCaseCommentList(params) {
+  return request({ url: 'teaching_case_comment/list', method: 'get', params });
+}
+export function setCaseCommentStatus(id, status) {
+  return request({ url: `teaching_case_comment/status/${id}`, method: 'put', data: { status } });
+}
+export function deleteCaseComment(id) {
+  return request({ url: `teaching_case_comment/delete/${id}`, method: 'delete' });
+}
+
+/**
+ * 首页配置
+ */
+export function getHomeConfig() {
+  return request({ url: 'teaching_home_config/info', method: 'get' });
+}
+export function saveHomeConfig(data) {
+  return request({ url: 'teaching_home_config/save', method: 'post', data });
+}
+
+/**
+ * 教学会员管理
+ */
+export function getTeachingMemberList(params) {
+  return request({ url: 'teaching_member/list', method: 'get', params });
+}
 export function setTeachingMember(uid, status) {
-  return request({ url: `user/set_teaching_member/${uid}`, method: 'put', data: { is_teaching_member: status } });
+  return request({ url: `teaching_member/set/${uid}`, method: 'put', data: { is_teaching_member: status } });
 }

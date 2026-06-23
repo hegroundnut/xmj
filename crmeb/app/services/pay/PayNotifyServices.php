@@ -14,6 +14,7 @@ namespace app\services\pay;
 use app\services\order\OtherOrderServices;
 use app\services\order\StoreOrderSuccessServices;
 use app\services\user\UserRechargeServices;
+use app\services\teaching\CourseOrderServices;
 
 /**
  * 支付成功回调 所有的异步通知回调都会走下面的三个方法,不在取分微信/支付宝支付回调
@@ -76,6 +77,24 @@ class PayNotifyServices
             if (!$orderInfo) return true;
             if ($orderInfo->paid) return true;
             return $services->paySuccess($orderInfo->toArray(), $payType, ['trade_no' => $trade_no]);
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * 课程订单支付成功
+     * @param string|null $order_id
+     * @param string|null $trade_no
+     * @param string $payType
+     * @return bool
+     */
+    public function wechatCoursePaySuccess(string $order_id = null, string $trade_no = null, string $payType = PayServices::WEIXIN_PAY)
+    {
+        try {
+            /** @var CourseOrderServices $services */
+            $services = app()->make(CourseOrderServices::class);
+            return $services->paySuccess($order_id);
         } catch (\Exception $e) {
             return false;
         }
