@@ -12,6 +12,7 @@ namespace app\api\controller\v2;
 
 use app\services\teaching\CourseServices;
 use app\services\teaching\CourseOrderServices;
+use app\services\teaching\CoursePayServices;
 use think\facade\App;
 
 /**
@@ -61,12 +62,21 @@ class CourseController
         ], true);
         if (!$courseId) return app('json')->fail('参数错误');
         $uid = request()->uid;
-        // 查课程
         $course = $this->services->getDetail((int)$courseId, $uid);
-        // 生成订单
+        if ($course['can_watch']) {
+            return app('json')->fail('您已可观看此课程，无需购买');
+        }
         $orderSn = $orderServices->createOrder($uid, (int)$courseId, (float)$course['price']);
-        // 调起微信支付（复用 CRMEB 支付）
-        // 返回支付参数给小程序调起支付
-        return app('json')->success(['order_sn' => $orderSn, 'price' => $course['price']]);
+
+        $result = ['order_sn' => $orderSn, 'price' => $course['price']];
+        try {
+            /** @var CoursePayServices $coursePayServices */
+            $coursePayServices = app()->make(CoursePayServices::class);
+            $payParams = $coursePayServices->pay($orderSn, (float)$course['price'], 'routine');
+            $result['pay_params'] = $payParams;
+        } catch (\Exception $e) {
+            $result['pay_error'] = $e->getMessage();
+        }
+        return app('json')->success($result);
     }
 }

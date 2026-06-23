@@ -14,6 +14,11 @@ use think\facade\Route;
  * 洗眉机教学路由
  */
 
+// 首页配置 — 无需登录
+Route::group('home', function () {
+    Route::get('config', 'v2.HomeConfigController/get_config')->option(['real_name' => '首页配置']);
+});
+
 // 产品 — 无需登录
 Route::group('product', function () {
     Route::get('info', 'v2.ProductController/get_info')->option(['real_name' => '产品信息']);
@@ -22,6 +27,14 @@ Route::group('product', function () {
 // 案例 — 无需登录
 Route::group('case', function () {
     Route::get('list', 'v2.CaseController/get_list')->option(['real_name' => '案例列表']);
+});
+
+// 案例评论 — 列表无需登录，发表需要登录
+Route::group('case_comment', function () {
+    Route::get('list', 'v2.CaseCommentController/get_list')->option(['real_name' => '案例评论列表']);
+    Route::post('add', 'v2.CaseCommentController/add')
+        ->middleware(\app\api\middleware\AuthTokenMiddleware::class, false)
+        ->option(['real_name' => '发表评论']);
 });
 
 // 教学课程 — 需要登录
