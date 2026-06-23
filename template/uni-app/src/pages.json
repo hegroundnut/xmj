@@ -44,6 +44,31 @@
 			"style": {
 				"navigationBarTitleText": "线下课程"
 			}
+		},
+		{
+			"path": "pages/moment/index",
+			"style": {
+				"navigationBarTitleText": "朋友圈",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/moment/detail",
+			"style": {
+				"navigationBarTitleText": "帖子详情"
+			}
+		},
+		{
+			"path": "pages/moment/publish",
+			"style": {
+				"navigationBarTitleText": "发布"
+			}
+		},
+		{
+			"path": "pages/moment/my_favorites",
+			"style": {
+				"navigationBarTitleText": "我的收藏"
+			}
 		}
 	],
 	"subPackages": [
@@ -105,15 +130,21 @@
 				"text": "案例"
 			},
 			{
-				"pagePath": "pages/teaching/course/index",
+				"pagePath": "pages/moment/index",
 				"iconPath": "static/images/3-001.png",
 				"selectedIconPath": "static/images/3-002.png",
+				"text": "朋友圈"
+			},
+			{
+				"pagePath": "pages/teaching/course/index",
+				"iconPath": "static/images/4-001.png",
+				"selectedIconPath": "static/images/4-002.png",
 				"text": "教学"
 			},
 			{
 				"pagePath": "pages/teaching/offline/index",
-				"iconPath": "static/images/4-001.png",
-				"selectedIconPath": "static/images/4-002.png",
+				"iconPath": "static/images/5-001.png",
+				"selectedIconPath": "static/images/5-002.png",
 				"text": "线下课"
 			}
 		]

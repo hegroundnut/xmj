@@ -59,6 +59,9 @@ Route::group(function () {
 // 洗眉机教学管理路由（需要授权）
 require __DIR__ . '/teaching.php';
 
+// 朋友圈管理路由（需要授权）
+require __DIR__ . '/moment.php';
+
 /**
  * miss 路由
  */

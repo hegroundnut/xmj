@@ -11,6 +11,7 @@
 namespace app\adminapi\controller\v1\teaching;
 
 use app\services\user\UserServices;
+use app\model\user\User;
 use think\facade\App;
 
 /**
@@ -43,7 +44,7 @@ class MemberController
             ['is_teaching_member', ''],
         ]);
         [$page, $limit] = $this->services->getPageValue();
-        $model = $this->services->getModel();
+        $model = User::where('is_del', 0);
         if (!empty($where['keyword'])) {
             $model = $model->where(function ($q) use ($where) {
                 $q->whereLike('nickname', '%' . $where['keyword'] . '%')

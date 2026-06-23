@@ -34,6 +34,12 @@ Route::group('v2', function () {
     // 洗眉机教学路由
     require __DIR__ . '/v2/teaching.php';
 
+    // 用户路由
+    require __DIR__ . '/v2/user.php';
+
+    // 朋友圈路由
+    require __DIR__ . '/v2/moment.php';
+
     // ==================== 以下商城路由已隐藏 ====================
     // 如需恢复商城功能，请取消注释:
     //   require __DIR__ . '/v2/shop.php'; (将原商城路由移至此文件)

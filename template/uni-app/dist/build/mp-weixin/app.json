@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/teaching/home/index",
     "pages/guide/index",
     "pages/teaching/product/index",
     "pages/teaching/case/index",
@@ -27,15 +28,15 @@
   },
   "tabBar": {
     "color": "#282828",
-    "selectedColor": "#ff3366",
+    "selectedColor": "#e93323",
     "borderStyle": "white",
     "backgroundColor": "#ffffff",
     "list": [
       {
-        "pagePath": "pages/teaching/product/index",
+        "pagePath": "pages/teaching/home/index",
         "iconPath": "static/images/1-001.png",
         "selectedIconPath": "static/images/1-002.png",
-        "text": "产品"
+        "text": "首页"
       },
       {
         "pagePath": "pages/teaching/case/index",
@@ -58,7 +59,7 @@
     ]
   },
   "preloadRule": {
-    "pages/guide/index": {
+    "pages/teaching/home/index": {
       "network": "all",
       "packages": [
         "users"

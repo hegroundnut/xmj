@@ -25,6 +25,7 @@ import statistic from './modules/statistic';
 import frameOut from './modules/frameOut';
 import division from './modules/division';
 import teaching from './modules/teaching';
+import moment from './modules/moment';
 import settings from '@/setting';
 import crud from './modules/crud';
 
@@ -172,6 +173,7 @@ const frameIn = [
   statistic,
   division,
   teaching,
+  moment,
   ...routers,
   crud,
 ];

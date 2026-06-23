@@ -14,6 +14,8 @@ fi
 
 # Always fix runtime permissions (needed for www-data to write cache/logs/sessions)
 chown -R www-data:www-data /var/www_native/runtime
+chmod -R 777 /var/www_native/backup /var/www_native/public
+chmod 666 /var/www_native/.env /var/www_native/.version /var/www_native/.constant
 
 # Install OPcache if not already loaded
 if ! php -m | grep -q opcache; then

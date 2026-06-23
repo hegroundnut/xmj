@@ -1,0 +1,886 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "洗眉机小程序 API",
+    "description": "洗眉机教学平台全部接口文档\n\n## 环境\n- 开发环境: http://localhost:8011\n- API前缀: /api/v2 (小程序) /adminapi (管理后台)\n\n## 认证\n- 小程序API: Bearer Token (JWT), 除标注\"无需登录\"外的接口均需在 Header 中传 `Authori-zation: Bearer <token>`\n- 管理后台API: 同上, token 通过 POST /adminapi/login 获取",
+    "version": "1.0.0"
+  },
+  "servers": [
+    { "url": "http://localhost:8011", "description": "本地开发" }
+  ],
+  "tags": [
+    { "name": "登录认证", "description": "微信小程序授权登录" },
+    { "name": "首页", "description": "首页配置" },
+    { "name": "产品", "description": "洗眉机产品信息" },
+    { "name": "案例", "description": "案例展示" },
+    { "name": "案例评论", "description": "案例评论" },
+    { "name": "课程", "description": "教学课程" },
+    { "name": "线下课", "description": "线下课程排期" },
+    { "name": "朋友圈-帖子", "description": "朋友圈帖子" },
+    { "name": "朋友圈-评论", "description": "朋友圈评论" },
+    { "name": "朋友圈-点赞", "description": "朋友圈点赞" },
+    { "name": "朋友圈-收藏", "description": "朋友圈收藏" },
+    { "name": "朋友圈-分享", "description": "朋友圈分享" },
+    { "name": "用户", "description": "用户信息" },
+    { "name": "管理后台-登录", "description": "后台登录" },
+    { "name": "管理后台-教学", "description": "教学模块管理" },
+    { "name": "管理后台-朋友圈", "description": "朋友圈管理" }
+  ],
+  "paths": {
+    "/api/v2/home/config": {
+      "get": {
+        "tags": ["首页"],
+        "summary": "获取首页配置",
+        "description": "无需登录。返回Banner、公告、快捷导航、精选案例、热门课程等",
+        "security": [],
+        "responses": {
+          "200": { "description": "成功", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Success" } } } }
+        }
+      }
+    },
+    "/api/v2/product/info": {
+      "get": {
+        "tags": ["产品"],
+        "summary": "获取产品信息",
+        "description": "无需登录。返回洗眉机产品详情(banner/标题/描述/规格/视频等)",
+        "security": [],
+        "responses": {
+          "200": { "description": "成功" }
+        }
+      }
+    },
+    "/api/v2/case/list": {
+      "get": {
+        "tags": ["案例"],
+        "summary": "获取案例列表",
+        "description": "无需登录。支持按类型筛选",
+        "security": [],
+        "parameters": [
+          { "name": "type", "in": "query", "schema": { "type": "integer" }, "description": "0=全部 1=图片 2=视频" },
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 10 } }
+        ],
+        "responses": {
+          "200": { "description": "成功" }
+        }
+      }
+    },
+    "/api/v2/case_comment/list": {
+      "get": {
+        "tags": ["案例评论"],
+        "summary": "获取案例评论列表",
+        "description": "无需登录",
+        "security": [],
+        "parameters": [
+          { "name": "case_id", "in": "query", "required": true, "schema": { "type": "integer" }, "description": "案例ID" }
+        ],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/api/v2/case_comment/add": {
+      "post": {
+        "tags": ["案例评论"],
+        "summary": "发表案例评论",
+        "description": "需要登录",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["case_id", "content"],
+                "properties": {
+                  "case_id": { "type": "integer", "description": "案例ID" },
+                  "content": { "type": "string", "description": "评论内容" },
+                  "pid": { "type": "integer", "default": 0, "description": "父评论ID(回复时使用)" },
+                  "reply_uid": { "type": "integer", "default": 0, "description": "被回复用户ID" },
+                  "reply_nickname": { "type": "string", "description": "被回复用户昵称" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/api/v2/course/list": {
+      "get": {
+        "tags": ["课程"],
+        "summary": "获取课程列表",
+        "description": "需要登录(用于判断会员状态)",
+        "parameters": [
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 10 } }
+        ],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/api/v2/course/detail/{id}": {
+      "get": {
+        "tags": ["课程"],
+        "summary": "获取课程详情",
+        "description": "需要登录",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" }, "description": "课程ID" }
+        ],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/api/v2/course/create_order": {
+      "post": {
+        "tags": ["课程"],
+        "summary": "创建试听订单",
+        "description": "需要登录。会员免费课程不需创建订单",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["course_id"],
+                "properties": {
+                  "course_id": { "type": "integer", "description": "课程ID" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "返回 order_sn + price + pay_params(微信支付参数)" } }
+      }
+    },
+    "/api/v2/offline_class/list": {
+      "get": {
+        "tags": ["线下课"],
+        "summary": "获取线下排期列表",
+        "description": "无需登录",
+        "security": [],
+        "parameters": [
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 10 } }
+        ],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/api/v2/offline_class/detail/{id}": {
+      "get": {
+        "tags": ["线下课"],
+        "summary": "获取排期详情",
+        "description": "无需登录",
+        "security": [],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/api/v2/offline_class/booking": {
+      "post": {
+        "tags": ["线下课"],
+        "summary": "提交线下预约",
+        "description": "需要登录",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["class_id", "name", "phone"],
+                "properties": {
+                  "class_id": { "type": "integer", "description": "排期ID" },
+                  "name": { "type": "string", "description": "联系人姓名" },
+                  "phone": { "type": "string", "description": "联系人手机号" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/api/v2/moment/list": {
+      "get": {
+        "tags": ["朋友圈-帖子"],
+        "summary": "帖子列表(朋友圈动态流)",
+        "description": "需要登录。返回帖子列表，含当前用户的点赞/收藏状态、前3条预览评论",
+        "parameters": [
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 10 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "integer", "example": 200 },
+                    "msg": { "type": "string", "example": "success" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "list": {
+                          "type": "array",
+                          "items": { "$ref": "#/components/schemas/Moment" }
+                        },
+                        "count": { "type": "integer" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/moment/detail/{id}": {
+      "get": {
+        "tags": ["朋友圈-帖子"],
+        "summary": "帖子详情(含完整评论树)",
+        "description": "需要登录。返回帖子详情+嵌套评论树(parent→children递归)",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/api/v2/moment/create": {
+      "post": {
+        "tags": ["朋友圈-帖子"],
+        "summary": "发布帖子",
+        "description": "需要登录 + 教学会员。content/images/video_url至少填一项",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": { "type": "string", "description": "文字内容" },
+                  "images": { "type": "string", "description": "图片列表JSON,例: [\"url1\",\"url2\"]" },
+                  "video_url": { "type": "string", "description": "视频URL" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/api/v2/moment/delete/{id}": {
+      "post": {
+        "tags": ["朋友圈-帖子"],
+        "summary": "删除帖子(软删除)",
+        "description": "需要登录。只能删除自己的帖子",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/api/v2/moment/like/{id}": {
+      "post": {
+        "tags": ["朋友圈-点赞"],
+        "summary": "点赞/取消点赞(切换)",
+        "description": "需要登录 + 教学会员。自动判断当前状态并切换",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" }, "description": "帖子ID" }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "action": { "type": "string", "enum": ["liked", "unliked"], "description": "liked=已点赞 unliked=已取消" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/moment/favorite/{id}": {
+      "post": {
+        "tags": ["朋友圈-收藏"],
+        "summary": "收藏/取消收藏(切换)",
+        "description": "需要登录 + 教学会员",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "action": { "type": "string", "enum": ["favorited", "unfavorited"] }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/moment/favorites": {
+      "get": {
+        "tags": ["朋友圈-收藏"],
+        "summary": "我的收藏列表",
+        "description": "需要登录",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/api/v2/moment/comment": {
+      "post": {
+        "tags": ["朋友圈-评论"],
+        "summary": "发表评论/回复",
+        "description": "需要登录 + 教学会员。parent_id>0表示回复某评论",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["moment_id", "content"],
+                "properties": {
+                  "moment_id": { "type": "integer", "description": "帖子ID" },
+                  "content": { "type": "string", "description": "评论内容" },
+                  "parent_id": { "type": "integer", "default": 0, "description": "父评论ID,0=一级评论" },
+                  "reply_uid": { "type": "integer", "default": 0, "description": "被回复用户ID" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/api/v2/moment/comment/delete/{id}": {
+      "post": {
+        "tags": ["朋友圈-评论"],
+        "summary": "删除评论(软删除)",
+        "description": "需要登录。只能删除自己的评论",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/api/v2/moment/share/{id}": {
+      "post": {
+        "tags": ["朋友圈-分享"],
+        "summary": "分享计数+1",
+        "description": "需要登录 + 教学会员",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/api/v2/user/info": {
+      "get": {
+        "tags": ["用户"],
+        "summary": "获取当前用户信息",
+        "description": "需要登录。返回uid/nickname/avatar/phone/is_teaching_member/overdue_time。用于前端判断会员状态",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "uid": { "type": "integer" },
+                        "nickname": { "type": "string" },
+                        "avatar": { "type": "string" },
+                        "phone": { "type": "string" },
+                        "is_teaching_member": { "type": "integer", "description": "0=非会员 1=会员" },
+                        "overdue_time": { "type": "integer", "description": "会员过期时间戳,0=无过期" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/adminapi/login": {
+      "post": {
+        "tags": ["管理后台-登录"],
+        "summary": "管理员登录",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["account", "pwd"],
+                "properties": {
+                  "account": { "type": "string", "description": "管理员账号" },
+                  "pwd": { "type": "string", "description": "密码(6-32位)" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "返回token和菜单",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": { "type": "string", "description": "JWT Token" },
+                        "expires_time": { "type": "integer", "description": "过期时间戳" },
+                        "menus": { "type": "array", "description": "侧边栏菜单" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/adminapi/teaching_product/info": {
+      "get": {
+        "tags": ["管理后台-教学"],
+        "summary": "获取产品信息(编辑回显)",
+        "security": [{ "adminAuth": [] }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_product/save": {
+      "post": {
+        "tags": ["管理后台-教学"],
+        "summary": "保存产品信息",
+        "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "banner": { "type": "array", "items": { "type": "string" }, "description": "轮播图URL数组" },
+                  "title": { "type": "string" },
+                  "desc": { "type": "string" },
+                  "detail": { "type": "string", "description": "图文详情HTML" },
+                  "specs": { "type": "array", "description": "规格参数" },
+                  "video_url": { "type": "string" },
+                  "status": { "type": "integer", "enum": [0, 1] }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_case/list": {
+      "get": {
+        "tags": ["管理后台-教学"],
+        "summary": "案例列表(含已隐藏)",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "title", "in": "query", "schema": { "type": "string" } },
+          { "name": "type", "in": "query", "schema": { "type": "integer" }, "description": "1=图片 2=视频" },
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 15 } }
+        ],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_case/save": {
+      "post": {
+        "tags": ["管理后台-教学"],
+        "summary": "新增案例",
+        "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["title"],
+                "properties": {
+                  "title": { "type": "string" },
+                  "type": { "type": "integer", "enum": [1, 2], "default": 1 },
+                  "cover": { "type": "string", "description": "封面图URL" },
+                  "media_url": { "type": "string", "description": "图片/视频URL" },
+                  "sort": { "type": "integer", "default": 0 },
+                  "status": { "type": "integer", "enum": [0, 1], "default": 1 }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_case/update/{id}": {
+      "put": {
+        "tags": ["管理后台-教学"],
+        "summary": "编辑案例",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_case/delete/{id}": {
+      "delete": {
+        "tags": ["管理后台-教学"],
+        "summary": "删除案例(软删除)",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_course/list": {
+      "get": {
+        "tags": ["管理后台-教学"],
+        "summary": "课程列表",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "title", "in": "query", "schema": { "type": "string" } },
+          { "name": "status", "in": "query", "schema": { "type": "string" } },
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 15 } }
+        ],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_course/save": {
+      "post": {
+        "tags": ["管理后台-教学"],
+        "summary": "新增课程",
+        "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "cover": { "type": "string" },
+                  "desc": { "type": "string" },
+                  "video_url": { "type": "string" },
+                  "price": { "type": "number", "default": 9.90 },
+                  "is_free_for_member": { "type": "integer", "enum": [0, 1], "default": 1, "description": "1=会员免费" },
+                  "sort": { "type": "integer", "default": 0 },
+                  "status": { "type": "integer", "enum": [0, 1], "default": 1 }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_course/update/{id}": {
+      "put": {
+        "tags": ["管理后台-教学"],
+        "summary": "编辑课程",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_course/delete/{id}": {
+      "delete": {
+        "tags": ["管理后台-教学"],
+        "summary": "删除课程(软删除)",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_offline/list": {
+      "get": {
+        "tags": ["管理后台-教学"],
+        "summary": "线下排期列表",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "title", "in": "query", "schema": { "type": "string" } },
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 15 } }
+        ],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_offline/save": {
+      "post": {
+        "tags": ["管理后台-教学"],
+        "summary": "新增排期",
+        "security": [{ "adminAuth": [] }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_offline/update/{id}": {
+      "put": {
+        "tags": ["管理后台-教学"],
+        "summary": "编辑排期",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_offline/delete/{id}": {
+      "delete": {
+        "tags": ["管理后台-教学"],
+        "summary": "删除排期(软删除)",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_home_config/info": {
+      "get": {
+        "tags": ["管理后台-教学"],
+        "summary": "获取首页配置",
+        "security": [{ "adminAuth": [] }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_home_config/save": {
+      "post": {
+        "tags": ["管理后台-教学"],
+        "summary": "保存首页配置",
+        "security": [{ "adminAuth": [] }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_case_comment/list": {
+      "get": {
+        "tags": ["管理后台-教学"],
+        "summary": "案例评论列表",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "case_id", "in": "query", "schema": { "type": "integer" } },
+          { "name": "status", "in": "query", "schema": { "type": "string" }, "description": "1=显示 0=隐藏" },
+          { "name": "keyword", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_case_comment/status/{id}": {
+      "put": {
+        "tags": ["管理后台-教学"],
+        "summary": "审核评论(显示/隐藏)",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "integer", "enum": [0, 1], "default": 1 }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_case_comment/delete/{id}": {
+      "delete": {
+        "tags": ["管理后台-教学"],
+        "summary": "删除评论",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_booking/list": {
+      "get": {
+        "tags": ["管理后台-教学"],
+        "summary": "预约记录列表",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "class_id", "in": "query", "schema": { "type": "integer" } },
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 15 } }
+        ],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_booking/cancel/{id}": {
+      "put": {
+        "tags": ["管理后台-教学"],
+        "summary": "取消预约",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_member/list": {
+      "get": {
+        "tags": ["管理后台-教学"],
+        "summary": "会员管理列表",
+        "description": "查看所有用户及其会员状态",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "keyword", "in": "query", "schema": { "type": "string" }, "description": "搜索昵称/手机号/UID" },
+          { "name": "is_teaching_member", "in": "query", "schema": { "type": "string" }, "description": "1=会员 0=非会员 空=全部" },
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } }
+        ],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_member/set/{uid}": {
+      "put": {
+        "tags": ["管理后台-教学"],
+        "summary": "设置/取消教学会员",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "uid", "in": "path", "required": true, "schema": { "type": "integer" }, "description": "用户UID" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "is_teaching_member": { "type": "integer", "enum": [0, 1], "description": "1=设为会员 0=取消会员" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/moment/list": {
+      "get": {
+        "tags": ["管理后台-朋友圈"],
+        "summary": "帖子管理列表(含已删除)",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "keyword", "in": "query", "schema": { "type": "string" }, "description": "搜索内容" },
+          { "name": "status", "in": "query", "schema": { "type": "string" }, "description": "1=正常 0=已删除 空=全部" },
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 15 } }
+        ],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/moment/delete/{id}": {
+      "delete": {
+        "tags": ["管理后台-朋友圈"],
+        "summary": "删除帖子(管理员强制删除)",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/moment_comment/list": {
+      "get": {
+        "tags": ["管理后台-朋友圈"],
+        "summary": "评论管理列表(含已删除)",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "moment_id", "in": "query", "schema": { "type": "integer" }, "description": "按帖子ID筛选" },
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 15 } }
+        ],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/moment_comment/delete/{id}": {
+      "delete": {
+        "tags": ["管理后台-朋友圈"],
+        "summary": "删除评论(管理员强制删除)",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "小程序用户Token, 登录接口返回"
+      },
+      "adminAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "管理后台Token, POST /adminapi/login 获取; Header名: Authori-zation"
+      }
+    },
+    "schemas": {
+      "Success": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "integer", "example": 200 },
+          "msg": { "type": "string", "example": "success" },
+          "data": { "type": "object" }
+        }
+      },
+      "Moment": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "uid": { "type": "integer" },
+          "content": { "type": "string", "description": "文字内容" },
+          "images": { "type": "array", "items": { "type": "string" }, "description": "图片URL列表" },
+          "video_url": { "type": "string" },
+          "like_count": { "type": "integer" },
+          "comment_count": { "type": "integer" },
+          "share_count": { "type": "integer" },
+          "status": { "type": "integer", "description": "1=正常 0=已删除" },
+          "add_time": { "type": "string", "description": "发布时间" },
+          "user_nickname": { "type": "string" },
+          "user_avatar": { "type": "string" },
+          "is_liked": { "type": "boolean", "description": "当前用户是否点赞" },
+          "is_favorited": { "type": "boolean", "description": "当前用户是否收藏" },
+          "preview_comments": { "type": "array", "description": "前3条预览评论" }
+        }
+      }
+    }
+  }
+}
