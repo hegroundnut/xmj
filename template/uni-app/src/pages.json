@@ -5,6 +5,13 @@
 	},
 	"pages": [
 		{
+			"path": "pages/teaching/home/index",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path": "pages/guide/index",
 			"style": {
 				"app-plus": {
@@ -74,22 +81,22 @@
 		}
 	],
 	"preloadRule": {
-		"pages/guide/index": {
+		"pages/teaching/home/index": {
 			"network": "all",
 			"packages": ["users"]
 		}
 	},
 	"tabBar": {
 		"color": "#282828",
-		"selectedColor": "#ff3366",
+		"selectedColor": "#e93323",
 		"borderStyle": "white",
 		"backgroundColor": "#ffffff",
 		"list": [
 			{
-				"pagePath": "pages/teaching/product/index",
+				"pagePath": "pages/teaching/home/index",
 				"iconPath": "static/images/1-001.png",
 				"selectedIconPath": "static/images/1-002.png",
-				"text": "产品"
+				"text": "首页"
 			},
 			{
 				"pagePath": "pages/teaching/case/index",
@@ -121,8 +128,8 @@
 	"condition": {
 		"current": 0,
 		"list": [{
-			"name": "产品页",
-			"path": "pages/teaching/product/index",
+			"name": "首页",
+			"path": "pages/teaching/home/index",
 			"query": ""
 		}]
 	}
