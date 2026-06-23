@@ -6,7 +6,7 @@
 export default {
 	onLoad() {
 		uni.switchTab({
-			url: '/pages/teaching/home/index'
+			url: '/pages/home/index'
 		});
 	}
 };
