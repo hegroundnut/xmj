@@ -14,10 +14,10 @@ class CaseFavoriteServices extends BaseServices
 
     public function toggleFavorite($caseId, $uid)
     {
-        $exists = $this->dao->getModel()
-            ->where('case_id', $caseId)
-            ->where('uid', $uid)
-            ->find();
+        $exists = $this->dao->getOrderOne([
+            'case_id' => $caseId,
+            'uid' => $uid,
+        ]);
         if ($exists) {
             $this->dao->delete($exists->id);
             return 'unfavorited';

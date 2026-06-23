@@ -5,9 +5,7 @@ use app\dao\moment\MomentFavoriteDao;
 use app\dao\teaching\CaseFavoriteDao;
 use app\dao\teaching\CourseOrderDao;
 use app\dao\teaching\OfflineBookingDao;
-use app\dao\teaching\CaseCommentDao;
 use app\dao\moment\MomentDao;
-use app\dao\moment\MomentCommentDao;
 
 class MyController
 {
@@ -21,7 +19,7 @@ class MyController
         [$page, $limit] = request()->getMore([
             ['page', 1],
             ['limit', 10],
-        ]);
+        ], true);
         return [(int)$page, (int)$limit];
     }
 
@@ -128,15 +126,15 @@ class MyController
         $uid = $this->uid();
 
         if ($type === 'moment') {
-            $dao = app()->make(MomentCommentDao::class);
-            $list = $dao->getModel()
+            $model = app()->make(\app\model\moment\MomentComment::class);
+            $list = $model
                 ->where('uid', $uid)
                 ->where('status', 1)
                 ->field('id,moment_id,parent_id,reply_uid,content,status,add_time')
                 ->order('id desc')
                 ->page($page, $limit)
                 ->select()->toArray();
-            $count = $dao->getModel()->where('uid', $uid)->where('status', 1)->count();
+            $count = $model->where('uid', $uid)->where('status', 1)->count();
             $momentIds = array_column($list, 'moment_id');
             if ($momentIds) {
                 $moments = app()->make(\app\model\moment\Moment::class)
@@ -147,15 +145,15 @@ class MyController
                 }
             }
         } else {
-            $dao = app()->make(CaseCommentDao::class);
-            $list = $dao->getModel()
+            $model = app()->make(\app\model\teaching\CaseComment::class);
+            $list = $model
                 ->where('uid', $uid)
                 ->where('status', 1)
                 ->field('id,case_id,content,pid,reply_nickname,status,add_time')
                 ->order('id desc')
                 ->page($page, $limit)
                 ->select()->toArray();
-            $count = $dao->getModel()->where('uid', $uid)->where('status', 1)->count();
+            $count = $model->where('uid', $uid)->where('status', 1)->count();
             $caseIds = array_column($list, 'case_id');
             if ($caseIds) {
                 $cases = app()->make(\app\model\teaching\TeachingCase::class)
