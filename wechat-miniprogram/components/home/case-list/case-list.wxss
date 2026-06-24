@@ -1,0 +1,9 @@
+.section-block { background: #fff; margin: 12rpx 20rpx; border-radius: 12rpx; padding: 24rpx; }
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20rpx; }
+.section-title { font-size: 32rpx; font-weight: 500; }
+.section-more { font-size: 26rpx; color: #999; }
+.case-scroll { white-space: nowrap; }
+.case-scroll-item { display: inline-block; width: 240rpx; margin-right: 20rpx; }
+.case-scroll-item:last-child { margin-right: 0; }
+.case-scroll-img { width: 240rpx; height: 180rpx; border-radius: 8rpx; }
+.case-scroll-title { font-size: 26rpx; margin-top: 8rpx; display: block; }

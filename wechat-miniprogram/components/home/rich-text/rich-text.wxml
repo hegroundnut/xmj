@@ -1,0 +1,5 @@
+<template name="home-rich-text">
+  <view class="rich-text-block" wx:if="{{data.html}}">
+    <rich-text nodes="{{data.html}}"/>
+  </view>
+</template>

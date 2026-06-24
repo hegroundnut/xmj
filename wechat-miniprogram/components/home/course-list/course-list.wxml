@@ -1,0 +1,11 @@
+<template name="home-course-list">
+  <view class="section-block" wx:if="{{data.courses && data.courses.length}}">
+    <view class="section-header">
+      <text class="section-title">{{data.title || '热门课程'}}</text>
+      <text class="section-more" bindtap="onGoTeaching">查看更多 ></text>
+    </view>
+    <view class="course-grid">
+      <course-card wx:for="{{data.courses}}" wx:key="id" item="{{item}}" bind:tap="onCourseTap"/>
+    </view>
+  </view>
+</template>
