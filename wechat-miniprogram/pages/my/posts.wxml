@@ -1,0 +1,14 @@
+<view class="posts-page">
+  <loading show="{{loading}}"/>
+  <empty wx:elif="{{!loading && list.length === 0}}" text="暂无发帖"/>
+  <view wx:else class="post-list">
+    <view class="post-item" wx:for="{{list}}" wx:key="id" bindtap="onTap" data-id="{{item.id}}">
+      <view class="post-header">
+        <text class="post-content">{{item.content || '无文字'}}</text>
+        <text class="post-delete" catchtap="onDelete" data-id="{{item.id}}">删除</text>
+      </view>
+      <image-preview images="{{item.images}}" wx:if="{{item.images && item.images.length}}"/>
+      <text class="post-time">{{item.add_time}}</text>
+    </view>
+  </view>
+</view>

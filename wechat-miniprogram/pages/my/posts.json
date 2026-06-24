@@ -1,0 +1,1 @@
+{ "navigationBarTitleText": "我的发帖", "usingComponents": { "loading": "/components/loading/loading", "empty": "/components/empty/empty", "image-preview": "/components/image-preview/image-preview" } }
