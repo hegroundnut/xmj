@@ -1,0 +1,44 @@
+<view class="moment-page">
+  <view class="publish-fab" wx:if="{{isMember}}" bindtap="onPublish">
+    <text class="fab-text">+</text>
+  </view>
+
+  <loading show="{{loading && page === 1}}"/>
+  <view wx:elif="{{error && page === 1}}" class="error-box" bindtap="loadData">加载失败，点击重试</view>
+  <empty wx:elif="{{!loading && list.length === 0}}" text="暂无动态，成为会员即可发布"/>
+
+  <block wx:for="{{list}}" wx:key="id">
+    <view class="moment-item">
+      <view class="moment-header">
+        <image src="{{item.user_avatar || '/static/images/def_avatar.png'}}" class="moment-avatar"/>
+        <view class="moment-user">
+          <text class="moment-nickname">{{item.user_nickname || '用户'}}</text>
+          <text class="moment-time">{{item.add_time}}</text>
+        </view>
+      </view>
+      <view class="moment-body">
+        <text class="moment-content">{{item.content}}</text>
+        <image-preview images="{{item.images}}" wx:if="{{item.images && item.images.length}}"/>
+        <video src="{{item.video_url}}" wx:if="{{item.video_url}}" class="moment-video" controls/>
+      </view>
+      <view class="moment-actions">
+        <view class="action-item" bindtap="onLike" data-index="{{index}}" data-id="{{item.id}}">
+          <text class="{{item.is_liked ? 'action-active' : ''}}">{{item.is_liked ? '❤' : '🤍'}} {{item.like_count || 0}}</text>
+        </view>
+        <view class="action-item" bindtap="onComment" data-id="{{item.id}}">
+          <text>💬 {{item.comment_count || 0}}</text>
+        </view>
+        <view class="action-item" bindtap="onFavorite" data-index="{{index}}" data-id="{{item.id}}">
+          <text class="{{item.is_favorited ? 'action-active' : ''}}">{{item.is_favorited ? '⭐' : '☆'}}</text>
+        </view>
+        <view class="action-item" bindtap="onShare" data-id="{{item.id}}">
+          <text>↗</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <view class="load-more" wx:if="{{hasMore && list.length}}">
+    <text bindtap="loadMore">加载更多</text>
+  </view>
+</view>

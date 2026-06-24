@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "朋友圈",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "image-preview": "/components/image-preview/image-preview",
+    "loading": "/components/loading/loading",
+    "empty": "/components/empty/empty"
+  }
+}
