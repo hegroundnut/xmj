@@ -1,0 +1,9 @@
+<view class="navbar" style="padding-top: {{statusBarHeight}}px;">
+  <view class="navbar-inner">
+    <view class="navbar-back" wx:if="{{showBack}}" bindtap="onBack">
+      <image src="/static/images/left.png" mode="aspectFit"/>
+    </view>
+    <text class="navbar-title">{{title}}</text>
+    <view class="navbar-back" wx:if="{{!showBack}}"></view>
+  </view>
+</view>
