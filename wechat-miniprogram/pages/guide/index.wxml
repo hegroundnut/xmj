@@ -1,1 +1,12 @@
-<view>引导页</view>
+<view class="guide-page">
+  <swiper class="guide-swiper" indicator-dots indicator-color="rgba(255,255,255,0.3)" indicator-active-color="#e93323">
+    <swiper-item wx:for="{{slides}}" wx:key="index">
+      <image src="{{item.image}}" mode="aspectFill" class="guide-img"/>
+      <view class="guide-text">
+        <text class="guide-title">{{item.title}}</text>
+        <text class="guide-desc">{{item.desc}}</text>
+      </view>
+    </swiper-item>
+  </swiper>
+  <button class="guide-btn" bindtap="onEnter">立即体验</button>
+</view>
