@@ -1,0 +1,12 @@
+.publish-page { padding: 20rpx; }
+.publish-textarea { width: 100%; min-height: 300rpx; font-size: 30rpx; padding: 20rpx; background: #fff; border-radius: 8rpx; }
+.publish-media { display: flex; flex-wrap: wrap; margin-top: 20rpx; }
+.media-item, .media-add { width: 200rpx; height: 200rpx; margin: 0 12rpx 12rpx 0; border-radius: 8rpx; position: relative; }
+.media-item { background: #eee; }
+.media-img { width: 100%; height: 100%; border-radius: 8rpx; }
+.media-delete { position: absolute; top: -8rpx; right: -8rpx; width: 40rpx; height: 40rpx; background: rgba(0,0,0,0.5); color: #fff; border-radius: 50%; text-align: center; line-height: 40rpx; font-size: 28rpx; }
+.media-add { border: 2rpx dashed #ccc; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #999; font-size: 26rpx; }
+.add-icon { font-size: 48rpx; }
+.publish-video { width: 100%; height: 360rpx; border-radius: 8rpx; }
+.publish-footer { margin-top: 40rpx; }
+.publish-btn { width: 100%; height: 88rpx; line-height: 88rpx; background: #e93323; color: #fff; font-size: 32rpx; border-radius: 8rpx; border: none; }
