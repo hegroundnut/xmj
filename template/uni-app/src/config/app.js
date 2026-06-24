@@ -2,7 +2,7 @@
 	// 灏忕▼搴?/ APP璇锋眰閰嶇疆
 	// #ifdef MP || APP-PLUS
 	// 璇锋眰鍩熷悕 鏍煎紡锛?https://鎮ㄧ殑鍩熷悕
-	HTTP_REQUEST_URL: `http://localhost:8011`,
+	HTTP_REQUEST_URL: `http://121.41.54.226:8011`,
 	// #endif
 
 	// H5璇锋眰閰嶇疆

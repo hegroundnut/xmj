@@ -42,7 +42,6 @@ export default {
     },
   },
   async onLaunch(option) {
-    uni.hideTabBar();
     let that = this;
 
     // #ifdef MP
