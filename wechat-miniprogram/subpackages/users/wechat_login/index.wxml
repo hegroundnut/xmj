@@ -1,0 +1,13 @@
+<view class="login-page">
+  <view class="login-logo">
+    <image src="/static/images/1-001.png" mode="aspectFit" class="logo-img"/>
+    <text class="logo-text">洗眉机</text>
+    <text class="logo-sub">微信一键登录，体验全部功能</text>
+  </view>
+  <view class="login-bottom">
+    <button class="login-btn" bindtap="onWechatLogin" loading="{{loading}}">
+      微信一键登录
+    </button>
+    <text class="login-tips">登录即同意 <text class="link" bindtap="onPrivacy">隐私协议</text></text>
+  </view>
+</view>
