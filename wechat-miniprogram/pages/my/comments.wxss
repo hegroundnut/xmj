@@ -1,0 +1,5 @@
+.comment-item { background: #fff; margin: 12rpx 20rpx; border-radius: 12rpx; padding: 24rpx; }
+.comment-content { font-size: 28rpx; line-height: 1.5; }
+.comment-meta { display: flex; justify-content: space-between; margin-top: 12rpx; }
+.comment-target { font-size: 24rpx; color: #576b95; }
+.comment-time { font-size: 24rpx; color: #999; }

@@ -1,0 +1,13 @@
+<view class="comments-page">
+  <loading show="{{loading}}"/>
+  <empty wx:elif="{{!loading && list.length === 0}}" text="暂无评论"/>
+  <view wx:else class="comment-list">
+    <view class="comment-item" wx:for="{{list}}" wx:key="id">
+      <text class="comment-content">{{item.content}}</text>
+      <view class="comment-meta">
+        <text class="comment-target">{{item.target_type === 'moment' ? '帖子' : '案例'}}评论</text>
+        <text class="comment-time">{{item.add_time}}</text>
+      </view>
+    </view>
+  </view>
+</view>
