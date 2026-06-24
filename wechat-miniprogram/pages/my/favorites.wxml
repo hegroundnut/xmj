@@ -1,0 +1,17 @@
+<view class="fav-page">
+  <view class="fav-tabs">
+    <text class="tab-item {{activeTab === 'moment' ? 'active' : ''}}" bindtap="onTabChange" data-tab="moment">帖子</text>
+    <text class="tab-item {{activeTab === 'case' ? 'active' : ''}}" bindtap="onTabChange" data-tab="case">案例</text>
+  </view>
+  <loading show="{{loading}}"/>
+  <empty wx:elif="{{!loading && list.length === 0}}" text="暂无收藏"/>
+  <view wx:else class="fav-list">
+    <view class="fav-item" wx:for="{{list}}" wx:key="id" bindtap="onTap" data-id="{{item.id}}" data-type="{{activeTab}}">
+      <image src="{{item.cover || item.user_avatar || '/static/images/def_avatar.png'}}" class="fav-thumb" mode="aspectFill"/>
+      <view class="fav-info">
+        <text class="fav-title text-ellipsis">{{item.title || item.content || '无标题'}}</text>
+        <text class="fav-time">{{item.add_time}}</text>
+      </view>
+    </view>
+  </view>
+</view>
