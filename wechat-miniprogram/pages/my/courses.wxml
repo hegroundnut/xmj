@@ -1,0 +1,7 @@
+<view class="courses-page">
+  <loading show="{{loading}}"/>
+  <empty wx:elif="{{!loading && list.length === 0}}" text="暂无已购课程"/>
+  <view wx:else class="course-list">
+    <course-card wx:for="{{list}}" wx:key="id" item="{{item}}" bind:tap="onTap"/>
+  </view>
+</view>

@@ -1,0 +1,1 @@
+{ "navigationBarTitleText": "已购课程", "usingComponents": { "loading": "/components/loading/loading", "empty": "/components/empty/empty", "course-card": "/components/course-card/course-card" } }
