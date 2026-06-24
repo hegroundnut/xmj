@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/case/index",
+    "pages/moment/index",
+    "pages/moment/detail",
+    "pages/moment/publish",
+    "pages/teaching/index",
+    "pages/my/index",
+    "pages/my/favorites",
+    "pages/my/courses",
+    "pages/my/bookings",
+    "pages/my/comments",
+    "pages/my/posts",
+    "pages/guide/index"
+  ],
+  "subPackages": [
+    {
+      "root": "subpackages/users",
+      "name": "users",
+      "pages": [
+        "wechat_login/index",
+        "binding_phone/index",
+        "privacy/index"
+      ]
+    }
+  ],
+  "preloadRule": {
+    "pages/home/index": {
+      "network": "all",
+      "packages": ["users"]
+    }
+  },
+  "tabBar": {
+    "color": "#282828",
+    "selectedColor": "#e93323",
+    "borderStyle": "white",
+    "backgroundColor": "#ffffff",
+    "list": [
+      { "pagePath": "pages/home/index", "text": "首页", "iconPath": "static/images/1-001.png", "selectedIconPath": "static/images/1-002.png" },
+      { "pagePath": "pages/case/index", "text": "案例", "iconPath": "static/images/2-001.png", "selectedIconPath": "static/images/2-002.png" },
+      { "pagePath": "pages/moment/index", "text": "朋友圈", "iconPath": "static/images/3-001.png", "selectedIconPath": "static/images/3-002.png" },
+      { "pagePath": "pages/teaching/index", "text": "教学", "iconPath": "static/images/4-001.png", "selectedIconPath": "static/images/4-002.png" },
+      { "pagePath": "pages/my/index", "text": "我的", "iconPath": "static/images/5-001.png", "selectedIconPath": "static/images/5-002.png" }
+    ]
+  },
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "洗眉机",
+    "navigationBarBackgroundColor": "#fff",
+    "backgroundColor": "#F8F8F8"
+  }
+}
