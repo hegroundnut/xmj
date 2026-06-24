@@ -1,0 +1,36 @@
+<loading show="{{loading}}"/>
+<view wx:if="{{!loading && moment}}" class="detail-page">
+  <view class="moment-header">
+    <image src="{{moment.user_avatar || '/static/images/def_avatar.png'}}" class="moment-avatar"/>
+    <view class="moment-user">
+      <text class="moment-nickname">{{moment.user_nickname || '用户'}}</text>
+      <text class="moment-time">{{moment.add_time}}</text>
+    </view>
+  </view>
+  <view class="moment-body">
+    <text class="moment-content">{{moment.content}}</text>
+    <image-preview images="{{moment.images}}" wx:if="{{moment.images && moment.images.length}}"/>
+    <video src="{{moment.video_url}}" wx:if="{{moment.video_url}}" class="moment-video" controls/>
+  </view>
+  <view class="moment-actions">
+    <view class="action-item" bindtap="onLike">
+      <text class="{{moment.is_liked ? 'action-active' : ''}}">{{moment.is_liked ? '❤' : '🤍'}} {{moment.like_count || 0}}</text>
+    </view>
+    <view class="action-item" bindtap="onFavorite">
+      <text class="{{moment.is_favorited ? 'action-active' : ''}}">{{moment.is_favorited ? '⭐' : '☆'}}</text>
+    </view>
+    <view class="action-item" bindtap="onShare"><text>↗ 分享</text></view>
+  </view>
+
+  <view class="comment-section">
+    <text class="section-title">评论 ({{moment.comment_count || 0}})</text>
+    <comment-list comments="{{moment.comments}}" bind:reply="onReply" bind:delete="onDeleteComment"/>
+  </view>
+
+  <view class="comment-input-bar">
+    <input class="comment-input" placeholder="写评论..." value="{{commentText}}" bindinput="onCommentInput"
+      confirm-type="send" bindconfirm="onSendComment"/>
+    <text class="send-btn" bindtap="onSendComment">发送</text>
+  </view>
+</view>
+<view class="error-box" wx:if="{{error}}" bindtap="loadData">加载失败，点击重试</view>

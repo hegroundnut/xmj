@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "帖子详情",
+  "usingComponents": {
+    "image-preview": "/components/image-preview/image-preview",
+    "comment-list": "/components/comment-list/comment-list",
+    "loading": "/components/loading/loading"
+  }
+}
