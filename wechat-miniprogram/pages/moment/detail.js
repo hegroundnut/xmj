@@ -1,4 +1,4 @@
-const { momentApi } = require('../../../utils/api/index')
+const { momentApi } = require('../../utils/api/index')
 
 Page({
   data: { moment: null, commentText: '', replyTo: null, loading: true, error: false },

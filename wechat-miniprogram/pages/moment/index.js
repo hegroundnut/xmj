@@ -1,5 +1,5 @@
-const { momentApi } = require('../../../utils/api/index')
-const { store } = require('../../../store/app')
+const { momentApi } = require('../../utils/api/index')
+const { store } = require('../../store/app')
 
 Page({
   data: { list: [], page: 1, limit: 10, hasMore: true, loading: false, error: false, isMember: false },
