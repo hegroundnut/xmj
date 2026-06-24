@@ -1,0 +1,15 @@
+<view class="auth-mask" wx:if="{{visible}}" catchtouchmove="preventScroll">
+  <view class="auth-dialog">
+    <view class="auth-header">
+      <text class="auth-title">需要登录</text>
+      <text class="auth-close" bindtap="onClose">×</text>
+    </view>
+    <view class="auth-body">
+      <text class="auth-desc">{{description}}</text>
+    </view>
+    <view class="auth-footer">
+      <button class="auth-btn auth-cancel" bindtap="onClose">暂不登录</button>
+      <button class="auth-btn auth-confirm" bindtap="onConfirm">去登录</button>
+    </view>
+  </view>
+</view>
