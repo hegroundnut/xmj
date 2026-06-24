@@ -1,0 +1,5 @@
+<view class="video-wrap" wx:if="{{src}}">
+  <video src="{{src}}" poster="{{poster}}" controls
+    object-fit="contain" class="video-player"
+    bindplay="onPlay" bindended="onEnded" />
+</view>
