@@ -1,0 +1,19 @@
+<view class="comment-list">
+  <block wx:for="{{comments}}" wx:key="id">
+    <view class="comment-item">
+      <image class="comment-avatar" src="{{item.user_avatar || '/static/images/def_avatar.png'}}" mode="aspectFill"/>
+      <view class="comment-body">
+        <view class="comment-header">
+          <text class="comment-name">{{item.user_nickname || '用户'}}</text>
+          <text class="comment-time">{{item.add_time}}</text>
+        </view>
+        <text class="comment-content" wx:if="{{item.content}}">{{item.content}}</text>
+        <view class="comment-actions">
+          <text class="action-btn" bindtap="onReply" data-id="{{item.id}}" data-nickname="{{item.user_nickname}}">回复</text>
+          <text class="action-btn action-delete" wx:if="{{item.can_delete}}" bindtap="onDelete" data-id="{{item.id}}">删除</text>
+        </view>
+        <comment-list wx:if="{{item.children && item.children.length}}" comments="{{item.children}}" bind:reply="onReply" bind:delete="onDelete"/>
+      </view>
+    </view>
+  </block>
+</view>

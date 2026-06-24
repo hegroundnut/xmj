@@ -1,0 +1,10 @@
+.comment-item { display: flex; padding: 20rpx 0; border-bottom: 1rpx solid #f0f0f0; }
+.comment-avatar { width: 64rpx; height: 64rpx; border-radius: 50%; flex-shrink: 0; }
+.comment-body { flex: 1; margin-left: 16rpx; }
+.comment-header { display: flex; align-items: center; }
+.comment-name { font-size: 26rpx; color: #576b95; }
+.comment-time { font-size: 22rpx; color: #999; margin-left: 12rpx; }
+.comment-content { font-size: 28rpx; color: #333; margin-top: 8rpx; display: block; }
+.comment-actions { margin-top: 8rpx; }
+.action-btn { font-size: 24rpx; color: #576b95; margin-right: 24rpx; }
+.action-delete { color: #999; }
