@@ -1,0 +1,10 @@
+.case-tabs { display: flex; background: #fff; padding: 0 20rpx; position: sticky; top: 0; z-index: 10; }
+.tab-item { flex: 1; text-align: center; padding: 24rpx 0; font-size: 28rpx; color: #666; }
+.tab-item.active { color: #e93323; font-weight: 500; border-bottom: 4rpx solid #e93323; }
+.case-grid { display: flex; flex-wrap: wrap; padding: 12rpx; }
+.case-grid-item { width: calc(50% - 12rpx); margin: 6rpx; background: #fff; border-radius: 8rpx; overflow: hidden; }
+.case-grid-img { width: 100%; height: 360rpx; display: block; }
+.case-grid-info { padding: 12rpx; }
+.case-grid-title { font-size: 26rpx; }
+.load-more { text-align: center; padding: 30rpx; color: #999; font-size: 26rpx; }
+.error-box { text-align: center; padding: 100rpx; color: #999; }
