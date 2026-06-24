@@ -7,7 +7,7 @@
 
     <!-- 帖子收藏 -->
     <view v-if="type === 'moment'">
-      <view v-for="item in list" :key="'m'+item.id" class="moment-item" @click="goMomentDetail(item.id)">
+      <view v-for="item in list" :key="item.id" class="moment-item" @click="goMomentDetail(item.id)">
         <text class="moment-content">{{ item.content || '[图片]' }}</text>
         <text class="moment-time">{{ item.fav_time }}</text>
       </view>
@@ -15,7 +15,7 @@
 
     <!-- 案例收藏 -->
     <view v-if="type === 'case'">
-      <view v-for="item in list" :key="'c'+item.id" class="case-item">
+      <view v-for="item in list" :key="item.id" class="case-item">
         <image :src="item.cover" mode="aspectFill" class="case-cover" />
         <view class="case-info">
           <text class="case-title">{{ item.title }}</text>
