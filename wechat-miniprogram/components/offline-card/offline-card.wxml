@@ -1,0 +1,11 @@
+<view class="offline-card" bindtap="onTap">
+  <image src="{{item.cover || '/static/images/def_avatar.png'}}" mode="aspectFill" class="offline-cover" wx:if="{{item.cover}}"/>
+  <view class="offline-info">
+    <text class="offline-title">{{item.title}}</text>
+    <view class="offline-meta">
+      <text class="meta-item">🕐 {{item.class_date}} {{item.start_time}}-{{item.end_time}}</text>
+      <text class="meta-item">📍 {{item.address}}</text>
+      <text class="meta-item" wx:if="{{item.max_people}}">👤 限额 {{item.max_people}} 人</text>
+    </view>
+  </view>
+</view>
