@@ -1,0 +1,13 @@
+.bind-page { min-height: 100vh; padding: 80rpx 60rpx; background: #fff; }
+.bind-header { text-align: center; margin-bottom: 80rpx; }
+.bind-title { font-size: 40rpx; font-weight: bold; display: block; }
+.bind-desc { font-size: 28rpx; color: #999; margin-top: 16rpx; display: block; }
+.bind-phone-btn { width: 100%; height: 88rpx; line-height: 88rpx; background: #07C160; color: #fff; font-size: 30rpx; border-radius: 8rpx; border: none; }
+.bind-divider { display: flex; align-items: center; margin: 40rpx 0; }
+.bind-divider text { flex: 1; text-align: center; font-size: 26rpx; color: #ccc; }
+.bind-divider::before, .bind-divider::after { content: ''; flex: 2; height: 1rpx; background: #eee; }
+.phone-input-row { display: flex; margin-bottom: 20rpx; }
+.phone-input { flex: 1; height: 88rpx; border: 1rpx solid #ddd; border-radius: 8rpx; padding: 0 20rpx; font-size: 28rpx; }
+.code-btn { width: 200rpx; height: 88rpx; line-height: 88rpx; font-size: 24rpx; border-radius: 8rpx; margin-left: 16rpx; }
+.code-input { width: 100%; height: 88rpx; border: 1rpx solid #ddd; border-radius: 8rpx; padding: 0 20rpx; font-size: 28rpx; margin-bottom: 40rpx; }
+.bind-submit { width: 100%; height: 88rpx; line-height: 88rpx; background: #e93323; color: #fff; font-size: 30rpx; border-radius: 8rpx; border: none; }
