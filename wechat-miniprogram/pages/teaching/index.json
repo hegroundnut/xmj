@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "教学",
+  "usingComponents": {
+    "course-card": "/components/course-card/course-card",
+    "offline-card": "/components/offline-card/offline-card",
+    "loading": "/components/loading/loading",
+    "empty": "/components/empty/empty"
+  }
+}

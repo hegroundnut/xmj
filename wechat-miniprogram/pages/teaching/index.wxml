@@ -1,0 +1,31 @@
+<view class="teaching-page">
+  <view class="teaching-tabs">
+    <text class="tab-item {{activeTab === 'course' ? 'active' : ''}}" bindtap="onTabChange" data-tab="course">线上课程</text>
+    <text class="tab-item {{activeTab === 'offline' ? 'active' : ''}}" bindtap="onTabChange" data-tab="offline">线下课</text>
+  </view>
+
+  <view wx:if="{{activeTab === 'course'}}">
+    <view class="member-banner" wx:if="{{!isMember}}">
+      <text class="member-text">开通会员，全部课程免费看</text>
+      <text class="member-btn" bindtap="onOpenMember">开通会员</text>
+    </view>
+    <loading show="{{loading}}"/>
+    <view wx:elif="{{error}}" class="error-box" bindtap="loadData">加载失败，点击重试</view>
+    <empty wx:elif="{{!loading && courseList.length === 0}}" text="暂无课程"/>
+    <view wx:else class="course-list">
+      <course-card wx:for="{{courseList}}" wx:key="id" item="{{item}}" bind:tap="onCourseTap"/>
+    </view>
+  </view>
+
+  <view wx:if="{{activeTab === 'offline'}}">
+    <view class="member-banner" wx:if="{{!isMember}}">
+      <text class="member-text">开通会员，参加线下培训</text>
+    </view>
+    <loading show="{{loading}}"/>
+    <view wx:elif="{{error}}" class="error-box" bindtap="loadData">加载失败，点击重试</view>
+    <empty wx:elif="{{!loading && offlineList.length === 0}}" text="暂无排期"/>
+    <view wx:else class="offline-list">
+      <offline-card wx:for="{{offlineList}}" wx:key="id" item="{{item}}" bind:tap="onOfflineTap"/>
+    </view>
+  </view>
+</view>
