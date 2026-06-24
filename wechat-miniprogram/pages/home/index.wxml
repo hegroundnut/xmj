@@ -1,0 +1,23 @@
+<navbar title="洗眉机"/>
+<view class="home-page" style="padding-top: {{navHeight}}px;">
+  <loading show="{{loading}}"/>
+  <view wx:elif="{{error}}" class="error-box" bindtap="loadData">加载失败，点击重试</view>
+  <block wx:elif="{{sections.length > 0}}">
+    <block wx:for="{{sections}}" wx:key="type">
+      <template wx:if="{{item.type === 'banner'}}" is="home-banner" data="{{data: item.data}}"/>
+      <template wx:elif="{{item.type === 'notice'}}" is="home-notice" data="{{data: item.data}}"/>
+      <template wx:elif="{{item.type === 'nav_icons'}}" is="home-nav-icons" data="{{data: item.data}}"/>
+      <template wx:elif="{{item.type === 'case_list'}}" is="home-case-list" data="{{data: item.data}}"/>
+      <template wx:elif="{{item.type === 'course_list'}}" is="home-course-list" data="{{data: item.data}}"/>
+      <template wx:elif="{{item.type === 'rich_text'}}" is="home-rich-text" data="{{data: item.data}}"/>
+    </block>
+  </block>
+  <empty wx:elif="{{!loading && sections.length === 0}}" text="暂无内容"/>
+</view>
+
+<import src="/components/home/banner/banner.wxml"/>
+<import src="/components/home/notice/notice.wxml"/>
+<import src="/components/home/nav-icons/nav-icons.wxml"/>
+<import src="/components/home/case-list/case-list.wxml"/>
+<import src="/components/home/course-list/course-list.wxml"/>
+<import src="/components/home/rich-text/rich-text.wxml"/>
