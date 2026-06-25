@@ -1,5 +1,5 @@
 <view class="posts-page">
-  <loading show="{{loading}}"/>
+  <loading wx:if="{{loading}}" show="{{loading}}"/>
   <empty wx:elif="{{!loading && list.length === 0}}" text="暂无发帖"/>
   <view wx:else class="post-list">
     <view class="post-item" wx:for="{{list}}" wx:key="id" bindtap="onTap" data-id="{{item.id}}">

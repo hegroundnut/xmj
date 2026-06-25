@@ -4,7 +4,7 @@
     <text class="tab-item {{activeType === 1 ? 'active' : ''}}" bindtap="onTabChange" data-type="1">图片</text>
     <text class="tab-item {{activeType === 2 ? 'active' : ''}}" bindtap="onTabChange" data-type="2">视频</text>
   </view>
-  <loading show="{{loading}}"/>
+  <loading wx:if="{{loading}}" show="{{loading}}"/>
   <view wx:elif="{{error}}" class="error-box" bindtap="loadData">加载失败，点击重试</view>
   <view wx:elif="{{list.length}}" class="case-grid">
     <view class="case-grid-item" wx:for="{{list}}" wx:key="id" bindtap="onCaseTap" data-id="{{item.id}}">
@@ -14,7 +14,7 @@
       </view>
     </view>
   </view>
-  <empty wx:elif="{{!loading && list.length === 0}}" text="暂无案例"/>
+  <empty wx:else text="暂无案例"/>
   <view class="load-more" wx:if="{{hasMore && list.length}}">
     <text bindtap="loadMore">加载更多</text>
   </view>

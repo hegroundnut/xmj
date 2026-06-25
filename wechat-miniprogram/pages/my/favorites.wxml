@@ -3,7 +3,7 @@
     <text class="tab-item {{activeTab === 'moment' ? 'active' : ''}}" bindtap="onTabChange" data-tab="moment">帖子</text>
     <text class="tab-item {{activeTab === 'case' ? 'active' : ''}}" bindtap="onTabChange" data-tab="case">案例</text>
   </view>
-  <loading show="{{loading}}"/>
+  <loading wx:if="{{loading}}" show="{{loading}}"/>
   <empty wx:elif="{{!loading && list.length === 0}}" text="暂无收藏"/>
   <view wx:else class="fav-list">
     <view class="fav-item" wx:for="{{list}}" wx:key="id" bindtap="onTap" data-id="{{item.id}}" data-type="{{activeTab}}">

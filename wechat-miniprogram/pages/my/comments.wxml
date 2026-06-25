@@ -1,5 +1,5 @@
 <view class="comments-page">
-  <loading show="{{loading}}"/>
+  <loading wx:if="{{loading}}" show="{{loading}}"/>
   <empty wx:elif="{{!loading && list.length === 0}}" text="暂无评论"/>
   <view wx:else class="comment-list">
     <view class="comment-item" wx:for="{{list}}" wx:key="id">

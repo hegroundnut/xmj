@@ -1,5 +1,5 @@
 <view class="bookings-page">
-  <loading show="{{loading}}"/>
+  <loading wx:if="{{loading}}" show="{{loading}}"/>
   <empty wx:elif="{{!loading && list.length === 0}}" text="暂无预约记录"/>
   <view wx:else class="booking-list">
     <view class="booking-item" wx:for="{{list}}" wx:key="id">

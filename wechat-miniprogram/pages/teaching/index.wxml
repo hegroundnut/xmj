@@ -9,7 +9,7 @@
       <text class="member-text">开通会员，全部课程免费看</text>
       <text class="member-btn" bindtap="onOpenMember">开通会员</text>
     </view>
-    <loading show="{{loading}}"/>
+    <loading wx:if="{{loading}}" show="{{loading}}"/>
     <view wx:elif="{{error}}" class="error-box" bindtap="loadData">加载失败，点击重试</view>
     <empty wx:elif="{{!loading && courseList.length === 0}}" text="暂无课程"/>
     <view wx:else class="course-list">
@@ -21,7 +21,7 @@
     <view class="member-banner" wx:if="{{!isMember}}">
       <text class="member-text">开通会员，参加线下培训</text>
     </view>
-    <loading show="{{loading}}"/>
+    <loading wx:if="{{loading}}" show="{{loading}}"/>
     <view wx:elif="{{error}}" class="error-box" bindtap="loadData">加载失败，点击重试</view>
     <empty wx:elif="{{!loading && offlineList.length === 0}}" text="暂无排期"/>
     <view wx:else class="offline-list">

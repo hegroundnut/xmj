@@ -1,6 +1,6 @@
 <navbar title="洗眉机"/>
 <view class="home-page" style="padding-top: {{navHeight}}px;">
-  <loading show="{{loading}}"/>
+  <loading wx:if="{{loading}}" show="{{loading}}"/>
   <view wx:elif="{{error}}" class="error-box" bindtap="loadData">加载失败，点击重试</view>
   <block wx:elif="{{sections.length > 0}}">
     <block wx:for="{{sections}}" wx:key="type">
@@ -12,7 +12,7 @@
       <template wx:elif="{{item.type === 'rich_text'}}" is="home-rich-text" data="{{data: item.data}}"/>
     </block>
   </block>
-  <empty wx:elif="{{!loading && sections.length === 0}}" text="暂无内容"/>
+  <empty wx:else text="暂无内容"/>
 </view>
 
 <import src="/components/home/banner/banner.wxml"/>
