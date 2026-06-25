@@ -4,6 +4,7 @@
   "usingComponents": {
     "navbar": "/components/navbar/navbar",
     "loading": "/components/loading/loading",
-    "empty": "/components/empty/empty"
+    "empty": "/components/empty/empty",
+    "course-card": "/components/course-card/course-card"
   }
 }
