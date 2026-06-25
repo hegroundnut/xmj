@@ -104,8 +104,8 @@ class MiniProgramService
             $appId = isset($wechat['wechat_app_appid']) ? trim($wechat['wechat_app_appid']) : '';
             $appsecret = isset($wechat['wechat_app_appsecret']) ? trim($wechat['wechat_app_appsecret']) : '';
         } else {
-            $appId = isset($wechat['routine_appId']) ? trim($wechat['routine_appId']) : '';
-            $appsecret = isset($wechat['routine_appsecret']) ? trim($wechat['routine_appsecret']) : '';
+            $appId = 'wx3bebb7300327492c';
+            $appsecret = 'FIXME_YOUR_APPSECRET';
         }
         $config = [
             'token' => isset($wechat['routine_token']) ? trim($wechat['routine_token']) : '',
