@@ -14,8 +14,8 @@ const store = {
   KEYS,
   EVENTS,
 
-  init() {
-    const app = getApp()
+  init(app) {
+    app = app || getApp()
     app.globalData.token = wx.getStorageSync(KEYS.TOKEN) || ''
     app.globalData.userInfo = wx.getStorageSync(KEYS.USER_INFO) || null
     app.globalData.isLogin = !!app.globalData.token

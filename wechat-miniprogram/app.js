@@ -10,7 +10,7 @@ App({
   },
 
   onLaunch() {
-    store.init()
+    store.init(this)
 
     const updateManager = wx.getUpdateManager()
     if (wx.canIUse('getUpdateManager')) {

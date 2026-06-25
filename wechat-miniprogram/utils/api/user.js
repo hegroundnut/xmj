@@ -1,7 +1,7 @@
 const api = require('../request')
 
 function getUserInfo() {
-  return api.get('v2/user/info')
+  return api.get('user/info')
 }
 
 module.exports = { getUserInfo }

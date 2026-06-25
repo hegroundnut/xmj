@@ -1,23 +1,23 @@
 const api = require('../request')
 
 function getCaseList(params) {
-  return api.get('v2/case/list', params || {}, { noAuth: true })
+  return api.get('case/list', params || {}, { noAuth: true })
 }
 
 function getCaseComments(caseId) {
-  return api.get('v2/case_comment/list', { case_id: caseId }, { noAuth: true })
+  return api.get('case_comment/list', { case_id: caseId }, { noAuth: true })
 }
 
 function addCaseComment(data) {
-  return api.post('v2/case_comment/add', data)
+  return api.post('case_comment/add', data)
 }
 
 function toggleCaseFavorite(id) {
-  return api.post('v2/case/favorite/' + id)
+  return api.post('case/favorite/' + id)
 }
 
 function getCaseFavorites(params) {
-  return api.get('v2/case/favorites', params)
+  return api.get('case/favorites', params)
 }
 
 module.exports = { getCaseList, getCaseComments, addCaseComment, toggleCaseFavorite, getCaseFavorites }
