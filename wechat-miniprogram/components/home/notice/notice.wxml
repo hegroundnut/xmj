@@ -1,6 +1,6 @@
 <template name="home-notice">
   <view class="notice-bar" wx:if="{{data.text}}" bindtap="onNoticeTap" data-link="{{data.link}}">
-    <image src="/static/images/horn.png" class="notice-icon"/>
+    <text class="notice-icon">📢</text>
     <text class="notice-text text-ellipsis">{{data.text}}</text>
   </view>
 </template>
