@@ -47,13 +47,13 @@ Page({
       this.setData({ list })
     })
   },
-  onComment(e) {
-    const { id } = e.currentTarget.dataset
+  onContentTap(e) {
+    var id = e.currentTarget.dataset.id
     wx.navigateTo({ url: '/pages/moment/detail?id=' + id })
   },
-  onShare(e) {
-    const { id } = e.currentTarget.dataset
-    momentApi.shareMoment(id).then(() => wx.showToast({ title: '已分享', icon: 'success' }))
+  onComment(e) {
+    var id = e.currentTarget.dataset.id
+    wx.navigateTo({ url: '/pages/moment/detail?id=' + id })
   },
   onPublish() {
     if (!getApp().globalData.isLogin) {

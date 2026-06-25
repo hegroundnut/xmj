@@ -16,7 +16,7 @@
           <text class="moment-time">{{item.add_time}}</text>
         </view>
       </view>
-      <view class="moment-body">
+      <view class="moment-body" bindtap="onContentTap" data-id="{{item.id}}">
         <text class="moment-content">{{item.content}}</text>
         <image-preview images="{{item.images}}" wx:if="{{item.images && item.images.length}}"/>
         <video src="{{item.video_url}}" wx:if="{{item.video_url}}" class="moment-video" controls/>
@@ -30,9 +30,6 @@
         </view>
         <view class="action-item" bindtap="onFavorite" data-index="{{index}}" data-id="{{item.id}}">
           <text class="{{item.is_favorited ? 'action-active' : ''}}">{{item.is_favorited ? '⭐' : '☆'}}</text>
-        </view>
-        <view class="action-item" bindtap="onShare" data-id="{{item.id}}">
-          <text>↗</text>
         </view>
       </view>
     </view>
