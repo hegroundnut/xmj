@@ -11,7 +11,7 @@ Page({
         store.emit(store.EVENTS.LOGIN)
         wx.navigateBack({ delta: 1 })
       } else {
-        wx.redirectTo({ url: '/subpackages/users/binding_phone/index' })
+        wx.redirectTo({ url: '/subpackages/users/binding_phone/index?key=' + (res.authKey || '') })
       }
     }).catch(err => {
       wx.showToast({ title: err.msg || '登录失败', icon: 'none' })
