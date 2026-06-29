@@ -157,8 +157,11 @@ Authori-zation: Bearer <token>   (需要登录的接口必传)
 
 ### 无需登录的公开接口
 - GET /api/v2/home/config — 首页配置
-- GET /api/v2/product/info — 产品信息
-- GET /api/v2/case/list — 案例列表
+- GET /api/v2/product/info — 产品信息（首页展示的产品，is_home=1）
+- GET /api/v2/product/list — 全部产品列表（仅启用的，按is_home倒序）
+- GET /api/v2/category/case — 案例分类列表（仅启用）
+- GET /api/v2/category/course — 课程分类列表（仅启用）
+- GET /api/v2/case/list — 案例列表（支持 category_id 筛选，返回含 category_name）
 - GET /api/v2/case_comment/list — 案例评论
 - GET /api/v2/offline_class/list — 线下排期列表
 - GET /api/v2/offline_class/detail/:id — 排期详情
@@ -166,7 +169,7 @@ Authori-zation: Bearer <token>   (需要登录的接口必传)
 
 ### 需要登录的接口
 - GET /api/v2/user/info — 用户信息
-- GET /api/v2/course/list — 课程列表
+- GET /api/v2/course/list — 课程列表（支持 category_id 筛选，返回含 category_name）
 - GET /api/v2/course/detail/:id — 课程详情
 - POST /api/v2/course/create_order — 创建订单
 - POST /api/v2/offline_class/booking — 提交预约

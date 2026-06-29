@@ -11,8 +11,9 @@
   "tags": [
     { "name": "登录认证", "description": "微信小程序授权登录" },
     { "name": "首页", "description": "首页配置" },
-    { "name": "产品", "description": "洗眉机产品信息" },
-    { "name": "案例", "description": "案例展示" },
+    { "name": "产品", "description": "洗眉机产品信息（支持多产品）" },
+    { "name": "分类", "description": "案例/课程分类" },
+    { "name": "案例", "description": "案例展示（含分类）" },
     { "name": "案例评论", "description": "案例评论" },
     { "name": "课程", "description": "教学课程" },
     { "name": "线下课", "description": "线下课程排期" },
@@ -41,11 +42,44 @@
     "/api/v2/product/info": {
       "get": {
         "tags": ["产品"],
-        "summary": "获取产品信息",
-        "description": "无需登录。返回洗眉机产品详情(banner/标题/描述/规格/视频等)",
+        "summary": "获取首页产品信息",
+        "description": "无需登录。返回 is_home=1 的产品（兼容旧逻辑，若无 is_home 则返回 id=1）",
         "security": [],
         "responses": {
           "200": { "description": "成功" }
+        }
+      }
+    },
+    "/api/v2/product/list": {
+      "get": {
+        "tags": ["产品"],
+        "summary": "获取全部产品列表",
+        "description": "无需登录。返回所有启用产品，按 is_home 倒序",
+        "security": [],
+        "responses": {
+          "200": { "description": "成功" }
+        }
+      }
+    },
+    "/api/v2/category/case": {
+      "get": {
+        "tags": ["分类"],
+        "summary": "获取案例分类列表",
+        "description": "无需登录。返回所有启用的案例分类",
+        "security": [],
+        "responses": {
+          "200": { "description": "成功，返回 [{id, name, type, sort, status, add_time}]" }
+        }
+      }
+    },
+    "/api/v2/category/course": {
+      "get": {
+        "tags": ["分类"],
+        "summary": "获取课程分类列表",
+        "description": "无需登录。返回所有启用的课程分类",
+        "security": [],
+        "responses": {
+          "200": { "description": "成功，返回 [{id, name, type, sort, status, add_time}]" }
         }
       }
     },
@@ -53,10 +87,11 @@
       "get": {
         "tags": ["案例"],
         "summary": "获取案例列表",
-        "description": "无需登录。支持按类型筛选",
+        "description": "无需登录。支持按类型和分类筛选。返回值含 category_id 和 category_name",
         "security": [],
         "parameters": [
           { "name": "type", "in": "query", "schema": { "type": "integer" }, "description": "0=全部 1=图片 2=视频" },
+          { "name": "category_id", "in": "query", "schema": { "type": "integer" }, "description": "0=全部，其他=指定分类ID" },
           { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
           { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 10 } }
         ],
@@ -108,8 +143,9 @@
       "get": {
         "tags": ["课程"],
         "summary": "获取课程列表",
-        "description": "需要登录(用于判断会员状态)",
+        "description": "需要登录(用于判断会员状态)。支持按分类筛选。返回值含 category_id 和 category_name",
         "parameters": [
+          { "name": "category_id", "in": "query", "schema": { "type": "integer" }, "description": "0=全部，其他=指定分类ID" },
           { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
           { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 10 } }
         ],
@@ -482,18 +518,29 @@
         }
       }
     },
-    "/adminapi/teaching_product/info": {
+    "/adminapi/teaching_product/list": {
       "get": {
         "tags": ["管理后台-教学"],
-        "summary": "获取产品信息(编辑回显)",
+        "summary": "产品列表",
+        "description": "获取全部产品（含已停用）",
         "security": [{ "adminAuth": [] }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_product/detail/{id}": {
+      "get": {
+        "tags": ["管理后台-教学"],
+        "summary": "产品详情",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
         "responses": { "200": { "description": "成功" } }
       }
     },
     "/adminapi/teaching_product/save": {
       "post": {
         "tags": ["管理后台-教学"],
-        "summary": "保存产品信息",
+        "summary": "保存产品信息(新增或编辑)",
+        "description": "id>0 时为编辑，id=0 时为新增",
         "security": [{ "adminAuth": [] }],
         "requestBody": {
           "content": {
@@ -501,18 +548,82 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "id": { "type": "integer", "default": 0, "description": "0=新增，>0=编辑" },
                   "banner": { "type": "array", "items": { "type": "string" }, "description": "轮播图URL数组" },
                   "title": { "type": "string" },
                   "desc": { "type": "string" },
                   "detail": { "type": "string", "description": "图文详情HTML" },
                   "specs": { "type": "array", "description": "规格参数" },
                   "video_url": { "type": "string" },
-                  "status": { "type": "integer", "enum": [0, 1] }
+                  "status": { "type": "integer", "enum": [0, 1] },
+                  "is_home": { "type": "integer", "enum": [0, 1], "description": "1=首页显示 0=不显示" }
                 }
               }
             }
           }
         },
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_product/delete/{id}": {
+      "delete": {
+        "tags": ["管理后台-教学"],
+        "summary": "删除产品",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_category/list": {
+      "get": {
+        "tags": ["管理后台-教学"],
+        "summary": "分类列表",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "type", "in": "query", "schema": { "type": "integer" }, "description": "1=案例分类 2=课程分类" }
+        ],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_category/save": {
+      "post": {
+        "tags": ["管理后台-教学"],
+        "summary": "新增分类",
+        "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "type"],
+                "properties": {
+                  "name": { "type": "string", "description": "分类名称" },
+                  "type": { "type": "integer", "enum": [1, 2], "description": "1=案例 2=课程" },
+                  "sort": { "type": "integer", "default": 0 },
+                  "status": { "type": "integer", "enum": [0, 1], "default": 1 }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_category/update/{id}": {
+      "put": {
+        "tags": ["管理后台-教学"],
+        "summary": "编辑分类",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_category/delete/{id}": {
+      "delete": {
+        "tags": ["管理后台-教学"],
+        "summary": "删除分类",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
         "responses": { "200": { "description": "成功" } }
       }
     },
@@ -524,6 +635,7 @@
         "parameters": [
           { "name": "title", "in": "query", "schema": { "type": "string" } },
           { "name": "type", "in": "query", "schema": { "type": "integer" }, "description": "1=图片 2=视频" },
+          { "name": "category_id", "in": "query", "schema": { "type": "integer" }, "description": "分类ID筛选" },
           { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
           { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 15 } }
         ],
@@ -544,6 +656,7 @@
                 "properties": {
                   "title": { "type": "string" },
                   "type": { "type": "integer", "enum": [1, 2], "default": 1 },
+                  "category_id": { "type": "integer", "default": 0, "description": "分类ID" },
                   "cover": { "type": "string", "description": "封面图URL" },
                   "media_url": { "type": "string", "description": "图片/视频URL" },
                   "sort": { "type": "integer", "default": 0 },
@@ -582,6 +695,7 @@
         "parameters": [
           { "name": "title", "in": "query", "schema": { "type": "string" } },
           { "name": "status", "in": "query", "schema": { "type": "string" } },
+          { "name": "category_id", "in": "query", "schema": { "type": "integer" }, "description": "分类ID筛选" },
           { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
           { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 15 } }
         ],
@@ -600,6 +714,7 @@
                 "type": "object",
                 "properties": {
                   "title": { "type": "string" },
+                  "category_id": { "type": "integer", "default": 0, "description": "分类ID" },
                   "cover": { "type": "string" },
                   "desc": { "type": "string" },
                   "video_url": { "type": "string" },
