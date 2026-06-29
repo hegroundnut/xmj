@@ -48,7 +48,7 @@ class MomentController extends AuthController
     public function delete($id)
     {
         $this->services->deleteMoment((int) $id, 0, true);
-        return app('json')->success([], '删除成功');
+        return app('json')->success('删除成功');
     }
 
     /**
@@ -71,6 +71,6 @@ class MomentController extends AuthController
     public function delete_comment($id)
     {
         $this->services->deleteComment((int) $id, 0, true);
-        return app('json')->success([], '删除成功');
+        return app('json')->success('删除成功');
     }
 }

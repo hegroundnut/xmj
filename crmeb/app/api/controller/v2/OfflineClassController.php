@@ -66,6 +66,6 @@ class OfflineClassController
         }
         $uid = request()->uid;
         $bookingServices->createBooking($uid, (int)$classId, $name, $phone);
-        return app('json')->success([], '预约成功');
+        return app('json')->success('预约成功');
     }
 }

@@ -56,7 +56,7 @@ class CourseController extends AuthController
         ]);
         $data['add_time'] = time();
         $this->services->save($data);
-        return app('json')->success([], '添加成功');
+        return app('json')->success('添加成功');
     }
 
     public function update($id, CourseValidator $validator)
@@ -73,12 +73,12 @@ class CourseController extends AuthController
             ['status', 1],
         ]);
         $this->services->update((int)$id, $data);
-        return app('json')->success([], '修改成功');
+        return app('json')->success('修改成功');
     }
 
     public function delete($id)
     {
         $this->services->update((int)$id, ['status' => 0]);
-        return app('json')->success([], '删除成功');
+        return app('json')->success('删除成功');
     }
 }

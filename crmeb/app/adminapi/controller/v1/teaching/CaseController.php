@@ -61,7 +61,7 @@ class CaseController extends AuthController
         ]);
         $data['add_time'] = time();
         $this->services->save($data);
-        return app('json')->success([], '添加成功');
+        return app('json')->success('添加成功');
     }
 
     /**
@@ -79,7 +79,7 @@ class CaseController extends AuthController
             ['status', 1],
         ]);
         $this->services->update((int)$id, $data);
-        return app('json')->success([], '修改成功');
+        return app('json')->success('修改成功');
     }
 
     /**
@@ -88,6 +88,6 @@ class CaseController extends AuthController
     public function delete($id)
     {
         $this->services->update((int)$id, ['status' => 0]);
-        return app('json')->success([], '删除成功');
+        return app('json')->success('删除成功');
     }
 }

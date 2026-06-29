@@ -73,7 +73,7 @@ class ProductInfoController extends AuthController
         if (is_array($data['banner'])) $data['banner'] = json_encode($data['banner']);
         if (is_array($data['specs'])) $data['specs'] = json_encode($data['specs']);
         $this->services->saveProductInfo($data, $id);
-        return app('json')->success([], '保存成功');
+        return app('json')->success('保存成功');
     }
 
     /**
@@ -83,6 +83,6 @@ class ProductInfoController extends AuthController
     public function delete($id)
     {
         $this->services->deleteProduct((int)$id);
-        return app('json')->success([], '删除成功');
+        return app('json')->success('删除成功');
     }
 }
