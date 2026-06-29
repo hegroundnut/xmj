@@ -26,12 +26,22 @@ class ProductController
     }
 
     /**
-     * 获取产品信息
+     * 获取产品信息（首页展示）
      * GET /api/v2/product/info
      */
     public function get_info()
     {
         $info = $this->services->getProductInfo();
         return app('json')->success($info);
+    }
+
+    /**
+     * 获取全部产品列表
+     * GET /api/v2/product/list
+     */
+    public function get_list()
+    {
+        $list = $this->services->getActiveProductList();
+        return app('json')->success($list);
     }
 }

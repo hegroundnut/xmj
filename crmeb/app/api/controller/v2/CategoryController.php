@@ -10,33 +10,40 @@
 // +----------------------------------------------------------------------
 namespace app\api\controller\v2;
 
-use app\services\teaching\CaseServices;
+use app\services\teaching\TeachingCategoryServices;
 use think\facade\App;
 
 /**
- * 案例控制器
+ * 分类控制器（前端公开接口）
  */
-class CaseController
+class CategoryController
 {
     protected $services;
 
-    public function __construct(App $app, CaseServices $services)
+    public function __construct(App $app, TeachingCategoryServices $services)
     {
         $this->services = $services;
     }
 
     /**
-     * 案例列表（支持按类型筛选）
-     * GET /api/v2/case/list
+     * 获取案例分类列表
+     * GET /api/v2/category/case
+     * @return mixed
      */
-    public function get_list()
+    public function case_categories()
     {
-        $where = request()->getMore([
-            ['type', 0],         // 0=全部 1=图片 2=视频
-            ['category_id', 0],  // 0=全部
-            ['page', 0],
-            ['limit', 0],
-        ]);
-        return app('json')->success($this->services->getList(array_filter($where)));
+        $list = $this->services->getCategoryList(1, true);
+        return app('json')->success($list);
+    }
+
+    /**
+     * 获取课程分类列表
+     * GET /api/v2/category/course
+     * @return mixed
+     */
+    public function course_categories()
+    {
+        $list = $this->services->getCategoryList(2, true);
+        return app('json')->success($list);
     }
 }

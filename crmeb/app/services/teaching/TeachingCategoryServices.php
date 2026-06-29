@@ -8,35 +8,29 @@
 // +----------------------------------------------------------------------
 // | Author: CRMEB Team <admin@crmeb.com>
 // +----------------------------------------------------------------------
-namespace app\api\controller\v2;
+namespace app\services\teaching;
 
-use app\services\teaching\CaseServices;
-use think\facade\App;
+use app\dao\teaching\TeachingCategoryDao;
+use app\services\BaseServices;
 
 /**
- * 案例控制器
+ * 教学分类服务
  */
-class CaseController
+class TeachingCategoryServices extends BaseServices
 {
-    protected $services;
-
-    public function __construct(App $app, CaseServices $services)
+    public function __construct(TeachingCategoryDao $dao)
     {
-        $this->services = $services;
+        $this->dao = $dao;
     }
 
     /**
-     * 案例列表（支持按类型筛选）
-     * GET /api/v2/case/list
+     * 获取分类列表
+     * @param int $type 1=案例 2=课程
+     * @param bool $onlyActive
+     * @return array
      */
-    public function get_list()
+    public function getCategoryList(int $type, bool $onlyActive = false)
     {
-        $where = request()->getMore([
-            ['type', 0],         // 0=全部 1=图片 2=视频
-            ['category_id', 0],  // 0=全部
-            ['page', 0],
-            ['limit', 0],
-        ]);
-        return app('json')->success($this->services->getList(array_filter($where)));
+        return $this->dao->getCategoryList($type, $onlyActive);
     }
 }

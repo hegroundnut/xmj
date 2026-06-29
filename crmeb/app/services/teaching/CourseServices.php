@@ -11,6 +11,7 @@
 namespace app\services\teaching;
 
 use app\dao\teaching\CourseDao;
+use app\dao\teaching\TeachingCategoryDao;
 use app\services\BaseServices;
 use app\services\user\UserServices;
 use crmeb\exceptions\ApiException;
@@ -34,7 +35,7 @@ class CourseServices extends BaseServices
     public function getList(array $where, int $uid)
     {
         [$page, $limit] = $this->getPageValue();
-        $field = 'id,title,cover,desc,price,is_free_for_member,sort,status,add_time';
+        $field = 'id,title,category_id,cover,desc,price,is_free_for_member,sort,status,add_time';
         $list = $this->dao->courseList($where, $field, $page, $limit);
         // 检查是否教学会员
         $isMember = false;
@@ -43,11 +44,16 @@ class CourseServices extends BaseServices
             $userServices = app()->make(UserServices::class);
             $isMember = (bool)$userServices->value(['uid' => $uid], 'is_teaching_member');
         }
+        /** @var TeachingCategoryDao $categoryDao */
+        $categoryDao = app()->make(TeachingCategoryDao::class);
+        $categories = $categoryDao->getCategoryList(2);
+        $categoryMap = array_column($categories, 'name', 'id');
         foreach ($list as &$item) {
             $item['cover'] = set_file_url($item['cover']);
             $item['is_member'] = $isMember;
             $item['can_watch'] = $isMember || $item['is_free_for_member'];
             $item['add_time'] = date('Y-m-d H:i', $item['add_time']);
+            $item['category_name'] = $categoryMap[$item['category_id']] ?? '';
         }
         $count = $this->dao->courseCount($where);
         return compact('list', 'count');
