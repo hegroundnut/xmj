@@ -34,6 +34,7 @@ class CourseController
     public function get_list()
     {
         $where = request()->getMore([
+            ['category_id', 0],
             ['page', 0],
             ['limit', 0],
         ]);

@@ -11,74 +11,81 @@
 namespace app\adminapi\controller\v1\teaching;
 
 use app\adminapi\controller\AuthController;
-use app\services\teaching\CourseServices;
-use app\adminapi\validate\v1\teaching\CourseValidator;
+use app\services\teaching\TeachingCategoryServices;
 use think\facade\App;
 
 /**
- * 课程管理控制器
+ * 教学分类管理控制器
  */
-class CourseController extends AuthController
+class CategoryController extends AuthController
 {
     protected $services;
 
-    public function __construct(App $app, CourseServices $services)
+    public function __construct(App $app, TeachingCategoryServices $services)
     {
         parent::__construct($app);
         $this->services = $services;
     }
 
+    /**
+     * 分类列表（按类型）
+     * @param int $type 1=案例 2=课程
+     * @return mixed
+     */
     public function index()
     {
-        $where = $this->request->getMore([
-            ['title', ''],
-            ['status', ''],
-            ['category_id', 0],
-            ['page', 1],
-            ['limit', 15],
-        ]);
-        $where['show_all'] = 1;
-        return app('json')->success($this->services->getList($where, 0));
+        $type = (int)$this->request->get('type', 1);
+        $list = $this->services->getCategoryList($type);
+        return app('json')->success($list);
     }
 
-    public function save(CourseValidator $validator)
+    /**
+     * 新增分类
+     * @return mixed
+     */
+    public function save()
     {
         $data = $this->request->getMore([
-            ['title', ''],
-            ['category_id', 0],
-            ['cover', ''],
-            ['desc', ''],
-            ['video_url', ''],
-            ['price', 9.90],
-            ['is_free_for_member', 1],
+            ['name', ''],
+            ['type', 1],
             ['sort', 0],
             ['status', 1],
         ]);
+        if (empty($data['name'])) {
+            return app('json')->fail('分类名称不能为空');
+        }
         $data['add_time'] = time();
         $this->services->save($data);
         return app('json')->success([], '添加成功');
     }
 
-    public function update($id, CourseValidator $validator)
+    /**
+     * 编辑分类
+     * @param int $id
+     * @return mixed
+     */
+    public function update($id)
     {
         $data = $this->request->getMore([
-            ['title', ''],
-            ['category_id', 0],
-            ['cover', ''],
-            ['desc', ''],
-            ['video_url', ''],
-            ['price', 9.90],
-            ['is_free_for_member', 1],
+            ['name', ''],
             ['sort', 0],
             ['status', 1],
         ]);
+        if (empty($data['name'])) {
+            return app('json')->fail('分类名称不能为空');
+        }
         $this->services->update((int)$id, $data);
         return app('json')->success([], '修改成功');
     }
 
+    /**
+     * 删除分类
+     * @param int $id
+     * @return mixed
+     */
     public function delete($id)
     {
-        $this->services->update((int)$id, ['status' => 0]);
+        $this->services->delete((int)$id);
         return app('json')->success([], '删除成功');
     }
 }

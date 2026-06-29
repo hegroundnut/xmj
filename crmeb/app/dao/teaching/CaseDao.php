@@ -25,9 +25,15 @@ class CaseDao extends BaseDao
 
     public function getConditionModel($where)
     {
-        return $this->getModel()->where('status', 1)
+        return $this->getModel()
+            ->when(!isset($where['show_all']), function ($query) {
+                $query->where('status', 1);
+            })
             ->when(isset($where['type']) && $where['type'] > 0, function ($query) use ($where) {
                 $query->where('type', $where['type']);
+            })
+            ->when(isset($where['category_id']) && $where['category_id'] > 0, function ($query) use ($where) {
+                $query->where('category_id', $where['category_id']);
             });
     }
 

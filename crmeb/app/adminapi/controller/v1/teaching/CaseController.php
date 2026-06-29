@@ -36,6 +36,7 @@ class CaseController extends AuthController
         $where = $this->request->getMore([
             ['title', ''],
             ['type', 0],
+            ['category_id', 0],
             ['page', 1],
             ['limit', 15],
         ]);
@@ -52,6 +53,7 @@ class CaseController extends AuthController
         $data = $this->request->getMore([
             ['title', ''],
             ['type', 1],
+            ['category_id', 0],
             ['cover', ''],
             ['media_url', ''],
             ['sort', 0],
@@ -70,6 +72,7 @@ class CaseController extends AuthController
         $data = $this->request->getMore([
             ['title', ''],
             ['type', 1],
+            ['category_id', 0],
             ['cover', ''],
             ['media_url', ''],
             ['sort', 0],

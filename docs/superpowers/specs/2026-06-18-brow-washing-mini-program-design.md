@@ -29,11 +29,11 @@
 
 ---
 
-## 三、新增数据库表（6 张）
+## 三、新增数据库表（7 张）
 
 ### 3.1 `eb_product_info` — 产品内容
 
-单条记录，后台一个编辑表单管理。
+支持多条产品记录，后台 CRUD 列表管理。通过 `is_home` 字段标记首页展示的产品。
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
@@ -45,28 +45,42 @@
 | specs | text | 参数规格 JSON（键值对数组） |
 | video_url | varchar(500) | 产品视频链接（可选） |
 | status | tinyint(1) | 1=启用，0=停用 |
+| is_home | tinyint(1) | 1=首页显示，0=不显示 |
 | add_time | int(11) | 创建时间戳 |
 | update_time | int(11) | 更新时间戳 |
 
-### 3.2 `eb_case` — 案例
+### 3.2 `eb_teaching_category` — 教学分类（案例/课程共用）
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| id | int(11) | 主键，自增 |
+| name | varchar(100) | 分类名称 |
+| type | tinyint(1) | 1=案例分类，2=课程分类 |
+| sort | int(11) | 排序，越大越靠前 |
+| status | tinyint(1) | 1=启用，0=禁用 |
+| add_time | int(11) | 创建时间戳 |
+
+### 3.3 `eb_case` — 案例
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
 | id | int(11) | 主键，自增 |
 | title | varchar(255) | 案例标题 |
 | type | tinyint(1) | 1=图片，2=视频 |
+| category_id | int(11) | 分类 ID，关联 eb_teaching_category |
 | cover | varchar(500) | 封面图 URL |
 | media_url | varchar(500) | 图片或视频完整 URL |
 | sort | int(11) | 排序数值，越大越靠前 |
 | status | tinyint(1) | 1=显示，0=隐藏 |
 | add_time | int(11) | 创建时间戳 |
 
-### 3.3 `eb_course` — 教学课程
+### 3.4 `eb_course` — 教学课程
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
 | id | int(11) | 主键，自增 |
 | title | varchar(255) | 课程标题 |
+| category_id | int(11) | 分类 ID，关联 eb_teaching_category |
 | cover | varchar(500) | 封面图 URL |
 | `desc` | text | 课程简介 |
 | video_url | varchar(500) | 课程视频 URL |
@@ -76,7 +90,7 @@
 | status | tinyint(1) | 1=上架，0=下架 |
 | add_time | int(11) | 创建时间戳 |
 
-### 3.4 `eb_course_order` — 课程订单（试听支付）
+### 3.5 `eb_course_order` — 课程订单（试听支付）
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
@@ -92,7 +106,7 @@
 
 > 支付流程完全复用 CRMEB 现有微信支付服务 (`crmeb/services/pay/`)，仅新增支付场景标识 `product_type = 'course_trial'`。
 
-### 3.5 `eb_offline_class` — 线下课程排期
+### 3.6 `eb_offline_class` — 线下课程排期
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
@@ -109,7 +123,7 @@
 | status | tinyint(1) | 1=启用，0=停用 |
 | add_time | int(11) | 创建时间戳 |
 
-### 3.6 `eb_offline_booking` — 线下预约记录
+### 3.7 `eb_offline_booking` — 线下预约记录
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
@@ -221,31 +235,28 @@ ALTER TABLE `eb_user` ADD COLUMN `is_teaching_member` tinyint(1) NOT NULL DEFAUL
 ### 6.1 产品管理
 
 - **菜单**: `洗眉机 > 产品管理`
-- **页面**: 单表单编辑页（非列表），进入即加载第一条记录
-- **字段**: 
-  - 轮播图 — 多图上传组件（sortable 拖拽排序）
-  - 产品标题 — 文本输入
-  - 产品描述 — 文本域
-  - 图文详情 — uEditor 富文本编辑器（CRMEB 已集成）
-  - 参数规格 — 动态键值对（可增删行，每行 key + value）
-  - 视频链接 — 文本输入
-  - 启用状态 — 开关
-- **操作**: 保存（自动判断新增还是更新）
+- **页面**: CRUD 列表页，支持多个产品
+- **列表列**: 轮播图缩略图 | 产品标题 | 首页显示 | 状态 | 操作
+- **表单**: 轮播图 → 标题 → 描述 → 图文详情 → 参数规格 → 视频链接 → 首页显示开关 → 状态开关
+- **操作**: 添加、编辑、删除。通过 `is_home` 开关标记首页展示的产品
 
 ### 6.2 案例管理
 
 - **菜单**: `洗眉机 > 案例管理`
 - **页面**: 标准 CRUD 列表页
-- **列表列**: 封面缩略图 | 标题 | 类型标签 | 排序 | 状态开关 | 操作
-- **表单**: 上传封面 → 选择类型 → 上传图片/视频 → 标题 → 排序数字 → 状态
-- **排序**: 支持列表内拖拽排序或手动输入排序值
+- **筛选**: 类型筛选（图片/视频）+ 分类筛选
+- **列表列**: 封面缩略图 | 标题 | 分类 | 类型标签 | 排序 | 状态开关 | 操作
+- **表单**: 上传封面 → 选择分类 → 选择类型 → 上传图片/视频 → 标题 → 排序数字 → 状态
+- **分类管理**: 列表页顶部「管理分类」按钮，弹窗内可增删案例分类
 
 ### 6.3 课程管理
 
 - **菜单**: `洗眉机 > 课程管理`
 - **页面**: 标准 CRUD 列表页
-- **列表列**: 封面缩略图 | 标题 | 试听价格 | 会员免费标签 | 状态 | 操作
-- **表单**: 封面 → 标题 → 简介 → 视频 → 试听价 → 会员免费开关 → 排序 → 状态
+- **筛选**: 分类筛选
+- **列表列**: 封面缩略图 | 标题 | 分类 | 试听价格 | 会员免费标签 | 状态 | 操作
+- **表单**: 封面 → 选择分类 → 标题 → 简介 → 视频 → 试听价 → 会员免费开关 → 排序 → 状态
+- **分类管理**: 列表页顶部「管理分类」按钮，弹窗内可增删课程分类
 
 ### 6.4 会员管理
 
@@ -278,8 +289,9 @@ ALTER TABLE `eb_user` ADD COLUMN `is_teaching_member` tinyint(1) NOT NULL DEFAUL
 ```
 crmeb/app/
 ├── model/
-│   ├── product/ProductInfo.php          # 产品
-│   ├── teaching/Case.php                # 案例
+│   ├── product/ProductInfo.php          # 产品（多条）
+│   ├── teaching/TeachingCategory.php    # 教学分类
+│   ├── teaching/TeachingCase.php        # 案例
 │   ├── teaching/Course.php              # 课程
 │   ├── teaching/CourseOrder.php         # 课程订单
 │   ├── teaching/OfflineClass.php        # 线下排期
@@ -287,6 +299,7 @@ crmeb/app/
 ├── dao/
 │   ├── product/ProductInfoDao.php
 │   └── teaching/
+│       ├── TeachingCategoryDao.php
 │       ├── CaseDao.php
 │       ├── CourseDao.php
 │       ├── CourseOrderDao.php
@@ -295,6 +308,7 @@ crmeb/app/
 ├── services/
 │   ├── product/ProductInfoServices.php
 │   └── teaching/
+│       ├── TeachingCategoryServices.php
 │       ├── CaseServices.php
 │       ├── CourseServices.php
 │       ├── CourseOrderServices.php
@@ -302,6 +316,7 @@ crmeb/app/
 │       └── OfflineBookingServices.php
 ├── api/controller/v2/                   # 小程序 API
 │   ├── ProductController.php
+│   ├── CategoryController.php
 │   ├── CaseController.php
 │   ├── CourseController.php
 │   └── OfflineClassController.php
@@ -310,6 +325,7 @@ crmeb/app/
 │   └── OfflineClassValidator.php
 ├── adminapi/controller/v1/teaching/     # 后台管理 API
 │   ├── ProductInfoController.php
+│   ├── CategoryController.php
 │   ├── CaseController.php
 │   ├── CourseController.php
 │   ├── OfflineClassController.php
@@ -327,7 +343,12 @@ crmeb/app/
 
 ## 八、隐藏与去品牌化
 
-### 8.1 前端隐藏（UniApp）
+### 8.1 后台前端隐藏
+
+后台管理界面仅保留「朋友圈」和「洗眉机」两个菜单，其他所有页面均通过注释 router 导入隐藏。
+修改文件：`template/admin/src/router/routers.js`，注释掉 product、order、user、setting、agent、finance、cms、marketing、app、system、statistic、division、crud 等模块的导入和 frameIn 注册。
+
+### 8.2 前端隐藏（UniApp）
 
 | 操作 | 方法 |
 |------|------|
@@ -336,13 +357,13 @@ crmeb/app/
 | 个人中心精简 | 修改 `pages/users/` 相关页面，只保留登录、我的课程、我的预约三项 |
 | 购物车入口 | 从所有页面移除按钮/链接 |
 
-### 8.2 后端保护
+### 8.3 后端保护
 
 - 所有 CRMEB 原有 Controller / Services / Model 代码**不删除、不修改**
 - 通过前端不调用实现功能不可达
 - 新路由写在独立文件，不与旧路由冲突
 
-### 8.3 去品牌化
+### 8.4 去品牌化
 
 | 位置 | 改动内容 |
 |------|----------|
@@ -365,7 +386,7 @@ docker-compose up -d
 ```
 
 - PHP 代码通过 volume 挂载，宿主机修改即时生效
-- 数据库迁移（新增 6 张表 + 1 个字段）使用 SQL 迁移脚本，首次部署时手动执行
+- 数据库迁移（新增 7 张表 + 字段变更）使用 SQL 迁移脚本 `scripts/migration_category_product.sql`，首次部署时手动执行
 - 后续代码更新：`git pull` + 清理缓存即可
 
 ---

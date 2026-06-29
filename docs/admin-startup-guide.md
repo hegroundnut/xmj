@@ -39,6 +39,9 @@ docker exec -i crmeb_mysql mysql -uroot -p123456 crmeb < crmeb/sql/seed_teaching
 
 # 5. 导入朋友圈种子数据 (25条帖子 + 评论/点赞/收藏)
 docker exec -i crmeb_mysql mysql -uroot -p123456 crmeb < crmeb/sql/seed_moment.sql
+
+# 6. 创建分类表 + 产品/案例/课程新增字段 (category_id, is_home)
+docker exec -i crmeb_mysql mysql -uroot -p123456 crmeb < scripts/migration_category_product.sql
 ```
 
 ### 2.2 验证表创建
@@ -48,9 +51,10 @@ docker exec crmeb_mysql mysql -uroot -p123456 crmeb -e "SHOW TABLES LIKE 'eb_%';
 ```
 
 应包含以下新增表:
-- `eb_product_info` — 产品信息
-- `eb_case` — 案例
-- `eb_course` — 教学课程
+- `eb_product_info` — 产品信息（支持多条，含 is_home 字段）
+- `eb_teaching_category` — 教学分类（案例/课程共用）
+- `eb_case` — 案例（含 category_id 字段）
+- `eb_course` — 教学课程（含 category_id 字段）
 - `eb_course_order` — 课程订单
 - `eb_offline_class` — 线下排期
 - `eb_offline_booking` — 线下预约
@@ -105,24 +109,22 @@ docker exec crmeb_php sh -c "cp -r /var/www_mount/public/. /var/www_native/publi
 | H5前端 | http://localhost:8011 | — |
 
 ### 管理后台菜单结构 (登录后左侧)
+
+> 注意：后台前端已隐藏除「朋友圈」和「洗眉机」之外的所有菜单（通过 routers.js 注释导入实现）。
+
 ```
-├── 用户
-├── 应用
-│   └── 小程序
-├── 洗眉机
-│   ├── 产品管理
-│   ├── 案例管理
-│   ├── 课程管理
-│   ├── 线下排期
-│   ├── 预约记录
-│   ├── 评论管理
-│   ├── 首页配置
-│   └── 会员管理
 ├── 朋友圈
 │   ├── 帖子管理
 │   └── 评论管理
-├── 设置
-└── 维护
+└── 洗眉机
+    ├── 产品管理        ← 支持多产品CRUD + 首页显示开关
+    ├── 案例管理        ← 支持分类筛选 + 分类管理弹窗
+    ├── 课程管理        ← 支持分类筛选 + 分类管理弹窗
+    ├── 线下排期
+    ├── 预约记录
+    ├── 评论管理
+    ├── 首页配置
+    └── 会员管理
 ```
 
 ## 六、重置管理员密码
@@ -165,11 +167,12 @@ docker exec -it crmeb_php bash
 - token 过期,重新登录获取
 
 ### 菜单不显示
-- 确认 `hide_shop_menus.sql` 已执行
+- 后台前端已通过 `routers.js` 隐藏非教学/朋友圈菜单
+- 若数据库层面还需隐藏，确认 `hide_shop_menus.sql` 已执行
 - 检查 `eb_system_menus` 表中 `is_show_path=1` 的记录
 
 ### 表不存在错误
-- 确认所有 migration SQL 已执行
+- 确认所有 migration SQL 已执行（包括 `scripts/migration_category_product.sql`）
 - `docker exec crmeb_mysql mysql -uroot -p123456 crmeb -e "SHOW TABLES LIKE 'eb_%';"` 检查
 
 ### 会员管理页报错

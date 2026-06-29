@@ -24,39 +24,104 @@ class ProductInfoServices extends BaseServices
     }
 
     /**
-     * 获取产品信息（单条记录，id=1）
+     * 格式化单条产品信息
+     * @param mixed $info
+     * @return array
+     */
+    protected function formatInfo($info)
+    {
+        if (!$info) return [];
+        if (is_object($info)) $info = $info->toArray();
+        $info['banner'] = json_decode($info['banner'], true) ?? [];
+        $info['specs'] = json_decode($info['specs'], true) ?? [];
+        if (is_array($info['banner'])) {
+            foreach ($info['banner'] as $key => $url) {
+                $info['banner'][$key] = set_file_url($url);
+            }
+        }
+        return $info;
+    }
+
+    /**
+     * 获取产品信息（首页展示的那条，兼容旧逻辑）
      * @return array
      */
     public function getProductInfo()
     {
-        $info = $this->dao->get(1);
-        if ($info) {
-            $info = $info->toArray();
-            $info['banner'] = json_decode($info['banner'], true) ?? [];
-            $info['specs'] = json_decode($info['specs'], true) ?? [];
-            if (isset($info['banner']) && is_array($info['banner'])) {
-                foreach ($info['banner'] as $key => $url) {
-                    $info['banner'][$key] = set_file_url($url);
-                }
-            }
+        $info = $this->dao->getModel()
+            ->where('is_home', 1)
+            ->where('status', 1)
+            ->order('id asc')
+            ->find();
+        if (!$info) {
+            $info = $this->dao->get(1);
         }
-        return $info ?: [];
+        return $this->formatInfo($info);
     }
 
     /**
-     * 保存产品信息（存在则更新，不存在则新增）
+     * 获取全部产品列表（后台管理用）
+     * @return array
+     */
+    public function getProductList()
+    {
+        $list = $this->dao->getModel()
+            ->order('id desc')
+            ->select()
+            ->toArray();
+        foreach ($list as &$item) {
+            $item['banner'] = json_decode($item['banner'], true) ?? [];
+            $item['specs'] = json_decode($item['specs'], true) ?? [];
+            if (is_array($item['banner'])) {
+                foreach ($item['banner'] as $key => $url) {
+                    $item['banner'][$key] = set_file_url($url);
+                }
+            }
+        }
+        return $list;
+    }
+
+    /**
+     * 获取前端产品列表（仅启用的产品）
+     * @return array
+     */
+    public function getActiveProductList()
+    {
+        $list = $this->dao->getModel()
+            ->where('status', 1)
+            ->order('is_home desc, id desc')
+            ->select()
+            ->toArray();
+        foreach ($list as &$item) {
+            $item = $this->formatInfo($item);
+        }
+        return $list;
+    }
+
+    /**
+     * 保存产品信息（指定 ID 则更新，否则新增）
      * @param array $data
+     * @param int $id
      * @return mixed
      */
-    public function saveProductInfo(array $data)
+    public function saveProductInfo(array $data, int $id = 0)
     {
         $data['update_time'] = time();
-        $exists = $this->dao->get(1);
-        if ($exists) {
-            return $this->dao->update(1, $data);
+        if ($id > 0) {
+            return $this->dao->update($id, $data);
         } else {
             $data['add_time'] = time();
             return $this->dao->save($data);
         }
+    }
+
+    /**
+     * 删除产品
+     * @param int $id
+     * @return bool
+     */
+    public function deleteProduct(int $id)
+    {
+        return $this->dao->delete($id);
     }
 }

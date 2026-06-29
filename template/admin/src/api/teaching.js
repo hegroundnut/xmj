@@ -13,11 +13,20 @@ import request from '@/libs/request';
 /**
  * 产品管理
  */
+export function getProductList() {
+  return request({ url: 'teaching_product/list', method: 'get' });
+}
 export function getProductInfo() {
   return request({ url: 'teaching_product/info', method: 'get' });
 }
+export function getProductDetail(id) {
+  return request({ url: `teaching_product/detail/${id}`, method: 'get' });
+}
 export function saveProductInfo(data) {
   return request({ url: 'teaching_product/save', method: 'post', data });
+}
+export function deleteProduct(id) {
+  return request({ url: `teaching_product/delete/${id}`, method: 'delete' });
 }
 
 /**
@@ -109,4 +118,20 @@ export function getTeachingMemberList(params) {
 }
 export function setTeachingMember(uid, status) {
   return request({ url: `teaching_member/set/${uid}`, method: 'put', data: { is_teaching_member: status } });
+}
+
+/**
+ * 分类管理
+ */
+export function getCategoryList(params) {
+  return request({ url: 'teaching_category/list', method: 'get', params });
+}
+export function saveCategory(data) {
+  return request({ url: 'teaching_category/save', method: 'post', data });
+}
+export function updateCategory(id, data) {
+  return request({ url: `teaching_category/update/${id}`, method: 'put', data });
+}
+export function deleteCategory(id) {
+  return request({ url: `teaching_category/delete/${id}`, method: 'delete' });
 }

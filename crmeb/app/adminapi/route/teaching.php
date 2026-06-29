@@ -16,8 +16,11 @@ use think\facade\Route;
 
 // 产品管理
 Route::group('teaching_product', function () {
+    Route::get('list', 'v1.teaching.ProductInfoController/index')->option(['real_name' => '产品列表']);
     Route::get('info', 'v1.teaching.ProductInfoController/index')->option(['real_name' => '产品信息']);
+    Route::get('detail/:id', 'v1.teaching.ProductInfoController/detail')->option(['real_name' => '产品详情']);
     Route::post('save', 'v1.teaching.ProductInfoController/save')->option(['real_name' => '保存产品信息']);
+    Route::delete('delete/:id', 'v1.teaching.ProductInfoController/delete')->option(['real_name' => '删除产品']);
 })->middleware([
     \app\http\middleware\AllowOriginMiddleware::class,
     \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
@@ -102,6 +105,19 @@ Route::group('teaching_booking', function () {
 Route::group('teaching_member', function () {
     Route::get('list', 'v1.teaching.MemberController/index')->option(['real_name' => '教学会员列表']);
     Route::put('set/:uid', 'v1.teaching.MemberController/setMember')->option(['real_name' => '设置教学会员']);
+})->middleware([
+    \app\http\middleware\AllowOriginMiddleware::class,
+    \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
+    \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
+    \app\adminapi\middleware\AdminLogMiddleware::class
+])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
+
+// 分类管理
+Route::group('teaching_category', function () {
+    Route::get('list', 'v1.teaching.CategoryController/index')->option(['real_name' => '分类列表']);
+    Route::post('save', 'v1.teaching.CategoryController/save')->option(['real_name' => '新增分类']);
+    Route::put('update/:id', 'v1.teaching.CategoryController/update')->option(['real_name' => '编辑分类']);
+    Route::delete('delete/:id', 'v1.teaching.CategoryController/delete')->option(['real_name' => '删除分类']);
 })->middleware([
     \app\http\middleware\AllowOriginMiddleware::class,
     \app\adminapi\middleware\AdminAuthTokenMiddleware::class,

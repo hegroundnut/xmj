@@ -9,34 +9,34 @@
 // +----------------------------------------------------------------------
 
 import index from './modules/index';
-import product from './modules/product';
-import order from './modules/order';
-import user from './modules/user';
+// import product from './modules/product';
+// import order from './modules/order';
+// import user from './modules/user';
 // import echarts from './modules/echarts'
-import setting from './modules/setting';
-import agent from './modules/agent';
-import finance from './modules/finance';
-import cms from './modules/cms';
-import marketing from './modules/marketing';
-import app from './modules/app';
-import system from './modules/system';
+// import setting from './modules/setting';
+// import agent from './modules/agent';
+// import finance from './modules/finance';
+// import cms from './modules/cms';
+// import marketing from './modules/marketing';
+// import app from './modules/app';
+// import system from './modules/system';
 import LayoutMain from '@/layout';
-import statistic from './modules/statistic';
+// import statistic from './modules/statistic';
 import frameOut from './modules/frameOut';
-import division from './modules/division';
+// import division from './modules/division';
 import teaching from './modules/teaching';
 import moment from './modules/moment';
 import settings from '@/setting';
-import crud from './modules/crud';
+// import crud from './modules/crud';
 
-const modulesFiles = require.context('./modules/crud', true, /\.js$/);
+// const modulesFiles = require.context('./modules/crud', true, /\.js$/);
 
 const routers = [];
-// 将扫描到的路由信息加入路由数组中
-modulesFiles.keys().forEach((modulePath) => {
-  const value = modulesFiles(modulePath);
-  routers.push(value.default);
-});
+// 将扫描到的路由信息加入路由数组中（已隐藏）
+// modulesFiles.keys().forEach((modulePath) => {
+//   const value = modulesFiles(modulePath);
+//   routers.push(value.default);
+// });
 
 let routePre = settings.routePre;
 /**
@@ -160,22 +160,22 @@ const frameIn = [
     component: () => import('@/components/uploadVideo/index'),
   },
   index,
-  agent,
-  cms,
-  product,
-  marketing,
-  order,
-  user,
-  finance,
-  setting,
-  system,
-  app,
-  statistic,
-  division,
-  teaching,
+  // agent,
+  // cms,
+  // product,
+  // marketing,
+  // order,
+  // user,
+  // finance,
+  // setting,
+  // system,
+  // app,
+  // statistic,
+  // division,
   moment,
-  ...routers,
-  crud,
+  teaching,
+  // ...routers,
+  // crud,
 ];
 
 /**

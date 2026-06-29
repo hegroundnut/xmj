@@ -19,9 +19,16 @@ Route::group('home', function () {
     Route::get('config', 'v2.HomeConfigController/get_config')->option(['real_name' => '首页配置']);
 });
 
+// 分类 — 无需登录
+Route::group('category', function () {
+    Route::get('case', 'v2.CategoryController/case_categories')->option(['real_name' => '案例分类列表']);
+    Route::get('course', 'v2.CategoryController/course_categories')->option(['real_name' => '课程分类列表']);
+});
+
 // 产品 — 无需登录
 Route::group('product', function () {
     Route::get('info', 'v2.ProductController/get_info')->option(['real_name' => '产品信息']);
+    Route::get('list', 'v2.ProductController/get_list')->option(['real_name' => '产品列表']);
 });
 
 // 案例 — 无需登录
