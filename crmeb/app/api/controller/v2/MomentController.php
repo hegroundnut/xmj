@@ -63,7 +63,7 @@ class MomentController
             return app('json')->fail('内容不能为空');
         }
         $this->services->create($this->uid(), $data);
-        return app('json')->success([], '发布成功');
+        return app('json')->success('发布成功');
     }
 
     /**
@@ -72,7 +72,7 @@ class MomentController
     public function delete_moment($id)
     {
         $this->services->deleteMoment((int) $id, $this->uid());
-        return app('json')->success([], '删除成功');
+        return app('json')->success('删除成功');
     }
 
     /**
@@ -116,7 +116,7 @@ class MomentController
             return app('json')->fail('评论内容不能为空');
         }
         $this->services->addComment($this->uid(), $data);
-        return app('json')->success([], '评论成功');
+        return app('json')->success('评论成功');
     }
 
     /**
@@ -125,7 +125,7 @@ class MomentController
     public function delete_comment($id)
     {
         $this->services->deleteComment((int) $id, $this->uid());
-        return app('json')->success([], '删除成功');
+        return app('json')->success('删除成功');
     }
 
     /**

@@ -56,7 +56,7 @@ class CategoryController extends AuthController
         }
         $data['add_time'] = time();
         $this->services->save($data);
-        return app('json')->success([], '添加成功');
+        return app('json')->success('添加成功');
     }
 
     /**
@@ -75,7 +75,7 @@ class CategoryController extends AuthController
             return app('json')->fail('分类名称不能为空');
         }
         $this->services->update((int)$id, $data);
-        return app('json')->success([], '修改成功');
+        return app('json')->success('修改成功');
     }
 
     /**
@@ -86,6 +86,6 @@ class CategoryController extends AuthController
     public function delete($id)
     {
         $this->services->delete((int)$id);
-        return app('json')->success([], '删除成功');
+        return app('json')->success('删除成功');
     }
 }

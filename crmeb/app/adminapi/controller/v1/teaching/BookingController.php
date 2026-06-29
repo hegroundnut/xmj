@@ -46,6 +46,6 @@ class BookingController extends AuthController
     public function cancel($id)
     {
         $this->services->update((int)$id, ['status' => 1]);
-        return app('json')->success([], '已取消');
+        return app('json')->success('已取消');
     }
 }
