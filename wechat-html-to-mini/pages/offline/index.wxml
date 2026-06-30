@@ -1,0 +1,131 @@
+<view class="offline-page">
+  <navbar title="线下课详情" back="{{true}}"/>
+
+  <loading wx:if="{{loading}}" show="{{loading}}"/>
+  <view wx:elif="{{error}}" class="error-box" bindtap="loadData">加载失败，点击重试</view>
+  <empty wx:elif="{{!classData}}" text="课程不存在"/>
+
+  <block wx:else>
+    <view class="content-area">
+      <!-- Hero -->
+      <view class="event-hero">
+        <view class="event-date-badge" wx:if="{{classData.class_date}}">
+          <text class="month">{{classData.month_short || ''}}</text>
+          <text class="day">{{classData.day || ''}}</text>
+        </view>
+        <text class="event-status">{{classData.status_label || '报名中'}}</text>
+        <view class="event-info">
+          <text class="event-title">{{classData.title}}</text>
+          <text class="event-sub">{{classData.location_city || ''}} · {{classData.duration || ''}}</text>
+        </view>
+      </view>
+
+      <!-- Detail info -->
+      <view class="detail-section">
+        <text class="section-label">课程信息</text>
+        <view class="detail-card">
+          <view class="detail-row">
+            <text class="d-icon">📅</text>
+            <view class="d-content">
+              <text class="d-label">培训时间</text>
+              <text class="d-value">{{classData.class_date || ''}} {{classData.start_time || ''}}-{{classData.end_time || ''}}</text>
+            </view>
+          </view>
+          <view class="detail-row">
+            <text class="d-icon">📍</text>
+            <view class="d-content">
+              <text class="d-label">培训地点</text>
+              <text class="d-value">{{classData.address || '待定'}}</text>
+            </view>
+          </view>
+          <view class="detail-row" wx:if="{{classData.capacity}}">
+            <text class="d-icon">👥</text>
+            <view class="d-content">
+              <text class="d-label">招生人数</text>
+              <text class="d-value">限{{classData.capacity}}人{{classData.teaching_style ? '（' + classData.teaching_style + '）' : ''}}</text>
+            </view>
+          </view>
+          <view class="detail-row" wx:if="{{classData.requirements}}">
+            <text class="d-icon">✅</text>
+            <view class="d-content">
+              <text class="d-label">报名要求</text>
+              <text class="d-value">{{classData.requirements}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- Learning outcomes -->
+      <view class="detail-section" wx:if="{{classData.outcomes && classData.outcomes.length}}">
+        <text class="section-label">学习收获</text>
+        <view class="outcome-item" wx:for="{{classData.outcomes}}" wx:key="*this">
+          <text class="outcome-dot">·</text>
+          <text class="outcome-text">{{item}}</text>
+        </view>
+      </view>
+
+      <!-- Schedule -->
+      <view class="detail-section" wx:if="{{classData.schedule && classData.schedule.length}}">
+        <text class="section-label">课程安排</text>
+        <view class="detail-card">
+          <view class="schedule-item" wx:for="{{classData.schedule}}" wx:key="time">
+            <text class="schedule-time">{{item.time}}</text>
+            <text class="schedule-content">{{item.content}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- Teacher -->
+      <view class="detail-section" wx:if="{{classData.teacher}}">
+        <text class="section-label">授课导师</text>
+        <view class="teacher-card">
+          <image src="{{classData.teacher.avatar || '/static/images/def_avatar.png'}}" class="teacher-avatar"/>
+          <view class="teacher-info">
+            <text class="teacher-name">{{classData.teacher.name || '导师'}}</text>
+            <text class="teacher-title">{{classData.teacher.title || ''}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- Price -->
+      <view class="price-section" wx:if="{{classData.price}}">
+        <view class="price-info">
+          <text class="price-current">¥{{classData.price}}</text>
+          <text class="price-original" wx:if="{{classData.original_price}}">¥{{classData.original_price}}</text>
+        </view>
+        <text class="price-seats" wx:if="{{classData.remaining_seats !== undefined}}">剩余 {{classData.remaining_seats}} 个名额</text>
+      </view>
+
+      <view class="divider"/>
+
+      <!-- Booking form -->
+      <view class="detail-section">
+        <text class="section-label">预约报名</text>
+        <view class="detail-card">
+          <view class="form-row">
+            <text class="form-label">姓名</text>
+            <input class="form-input" placeholder="请输入您的姓名" value="{{bookingName}}" bindinput="onNameInput"/>
+          </view>
+          <view class="form-row">
+            <text class="form-label">手机号</text>
+            <input class="form-input" type="number" placeholder="请输入手机号" value="{{bookingPhone}}" bindinput="onPhoneInput" maxlength="11"/>
+          </view>
+        </view>
+      </view>
+
+      <!-- QR code -->
+      <view class="detail-section" wx:if="{{classData.qr_code}}">
+        <text class="section-label">店主微信</text>
+        <image src="{{classData.qr_code}}" mode="aspectFit" class="qr-img" bindtap="onPreviewQR" wx:if="{{classData.qr_code}}"/>
+        <text class="qr-tip">预约成功后请添加店主微信确认</text>
+      </view>
+    </view>
+
+    <!-- Bottom bar -->
+    <view class="bottom-bar">
+      <button class="enroll-btn" bindtap="onSubmitBooking" disabled="{{bookingSubmitting}}">
+        {{bookingSubmitting ? '提交中...' : '立即预约'}}
+      </button>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,48 @@
+.member-page { background: #fff; min-height: 100vh; padding-bottom: 160rpx; }
+
+.hero-section { padding: 48rpx 30rpx 40rpx; text-align: center; }
+.hero-brand { font-size: 20rpx; letter-spacing: 10rpx; color: rgba(0,0,0,0.25); display: block; margin-bottom: 16rpx; }
+.hero-title { font-size: 48rpx; font-weight: 300; color: #1A1A1A; letter-spacing: 6rpx; display: block; margin-bottom: 10rpx; }
+.hero-sub { font-size: 24rpx; color: rgba(0,0,0,0.35); display: block; }
+
+.plans-section { padding: 0 30rpx; margin-bottom: 40rpx; }
+.plans-grid { display: flex; gap: 20rpx; }
+.plan-card { flex: 1; padding: 36rpx 24rpx; border: 1px solid rgba(0,0,0,0.06); border-radius: 16rpx; text-align: center; position: relative; background: #fff; }
+.plan-card.active { border-color: #1A1A1A; background: #FAFAF8; }
+.plan-badge { position: absolute; top: -1px; left: 50%; transform: translateX(-50%); background: #1A1A1A; color: #fff; font-size: 18rpx; padding: 6rpx 24rpx; border-radius: 0 0 12rpx 12rpx; letter-spacing: 2rpx; }
+.plan-name { font-size: 24rpx; color: rgba(0,0,0,0.4); display: block; margin-bottom: 16rpx; margin-top: 16rpx; }
+.plan-price { font-size: 48rpx; font-weight: 300; color: #1A1A1A; display: block; }
+.currency { font-size: 26rpx; }
+.plan-unit { font-size: 20rpx; color: rgba(0,0,0,0.3); display: block; margin-bottom: 14rpx; }
+.plan-orig { font-size: 22rpx; color: rgba(0,0,0,0.2); text-decoration: line-through; display: block; margin-bottom: 10rpx; }
+.plan-save { font-size: 20rpx; color: #1A1A1A; background: #F0EFED; padding: 6rpx 20rpx; border-radius: 20rpx; display: inline-block; }
+
+.benefits-section { padding: 0 30rpx; margin-bottom: 40rpx; }
+.section-label { font-size: 22rpx; letter-spacing: 6rpx; color: rgba(0,0,0,0.3); display: block; margin-bottom: 24rpx; }
+.benefit-item { display: flex; align-items: flex-start; gap: 20rpx; padding: 20rpx 0; border-bottom: 1px solid rgba(0,0,0,0.04); }
+.benefit-item:last-child { border-bottom: none; }
+.benefit-check { width: 40rpx; height: 40rpx; border-radius: 50%; background: #FAFAF8; border: 1px solid rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 22rpx; color: #1A1A1A; margin-top: 2rpx; }
+.benefit-content { flex: 1; }
+.benefit-text { font-size: 26rpx; color: #1A1A1A; font-weight: 500; display: block; }
+.benefit-desc { font-size: 22rpx; color: rgba(0,0,0,0.3); display: block; margin-top: 4rpx; }
+
+.payment-section { padding: 0 30rpx; margin-bottom: 32rpx; }
+.payment-option { display: flex; align-items: center; gap: 24rpx; padding: 28rpx; border: 1px solid rgba(0,0,0,0.06); border-radius: 12rpx; }
+.payment-option.active { border-color: #1A1A1A; background: #FAFAF8; }
+.payment-icon { width: 56rpx; height: 56rpx; border-radius: 10rpx; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.payment-icon.wechat { background: #07C160; }
+.pay-icon-text { font-size: 28rpx; color: #fff; font-weight: 600; }
+.payment-name { flex: 1; font-size: 26rpx; color: #1A1A1A; }
+.payment-radio { width: 36rpx; height: 36rpx; border-radius: 50%; border: 3rpx solid rgba(0,0,0,0.15); }
+.payment-radio.active { border-color: #1A1A1A; background: #1A1A1A; }
+
+.agreement { padding: 0 30rpx; margin-bottom: 24rpx; display: flex; align-items: flex-start; gap: 14rpx; }
+.checkbox { width: 32rpx; height: 32rpx; border: 3rpx solid rgba(0,0,0,0.15); border-radius: 6rpx; flex-shrink: 0; margin-top: 2rpx; display: flex; align-items: center; justify-content: center; font-size: 20rpx; color: #fff; }
+.checkbox.checked { background: #1A1A1A; border-color: #1A1A1A; }
+.agreement-text { font-size: 22rpx; color: rgba(0,0,0,0.35); line-height: 1.5; }
+.agreement-link { color: #1A1A1A; font-weight: 500; }
+
+.bottom-bar { padding: 0 30rpx; }
+.pay-btn { width: 100%; padding: 28rpx; background: #1A1A1A; color: #fff; border: none; border-radius: 48rpx; font-size: 30rpx; letter-spacing: 4rpx; }
+.pay-note { font-size: 20rpx; color: rgba(0,0,0,0.25); display: block; text-align: center; margin-top: 14rpx; }
+.pay-note-link { color: #1A1A1A; }

@@ -1,0 +1,87 @@
+<view class="case-detail-page">
+  <navbar title="案例详情" back="{{true}}"/>
+
+  <loading wx:if="{{loading}}" show="{{loading}}"/>
+  <view wx:elif="{{error}}" class="error-box" bindtap="loadData">加载失败，点击重试</view>
+  <empty wx:elif="{{!caseData}}" text="案例不存在"/>
+
+  <block wx:else>
+    <view class="content-area">
+      <!-- Hero media -->
+      <view class="hero-media">
+        <image wx:if="{{caseData.images && caseData.images.length}}" src="{{caseData.images[0]}}" mode="aspectFill" class="hero-img" bindtap="onPreviewImage" data-url="{{caseData.images[0]}}" data-urls="{{caseData.images}}"/>
+        <video-player wx:elif="{{caseData.video_url}}" src="{{caseData.video_url}}" class="hero-video"/>
+        <view wx:else class="hero-placeholder"/>
+        <view class="hero-label" wx:if="{{caseData.type_label}}">{{caseData.type_label}}</view>
+      </view>
+
+      <!-- Before/After comparison -->
+      <view class="compare-section" wx:if="{{caseData.images && caseData.images.length > 1}}">
+        <text class="section-label">治疗过程对比</text>
+        <view class="compare-grid">
+          <view class="compare-item" wx:for="{{caseData.images}}" wx:key="index" wx:for-index="idx" bindtap="onPreviewImage" data-url="{{item}}" data-urls="{{caseData.images}}">
+            <image src="{{item}}" mode="aspectFill" class="compare-img"/>
+            <text class="compare-label">{{idx === 0 ? '治疗前' : '第' + idx + '次'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- Info section -->
+      <view class="info-section">
+        <text class="info-title">{{caseData.title}}</text>
+        <view class="info-tags" wx:if="{{caseData.tags && caseData.tags.length}}">
+          <text class="info-tag" wx:for="{{caseData.tags}}" wx:key="*this">{{item}}</text>
+        </view>
+        <text class="info-desc">{{caseData.description || caseData.content}}</text>
+
+        <view class="treatment-card" wx:if="{{caseData.treatment}}">
+          <view class="treatment-row" wx:for="{{caseData.treatment}}" wx:key="label">
+            <text class="treatment-label">{{item.label}}</text>
+            <text class="treatment-value">{{item.value}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- Teacher -->
+      <view class="teacher-section" wx:if="{{caseData.teacher}}">
+        <view class="teacher-card">
+          <image src="{{caseData.teacher.avatar || '/static/images/def_avatar.png'}}" class="teacher-avatar"/>
+          <view class="teacher-info">
+            <text class="teacher-name">{{caseData.teacher.name || '导师'}}</text>
+            <text class="teacher-title">{{caseData.teacher.title || '资深专家'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- Comments -->
+      <view class="comments-section">
+        <text class="section-label">评论 · {{comments.length}}</text>
+        <comment-list wx:if="{{comments.length}}" comments="{{comments}}" bind:reply="onReply"/>
+        <view wx:else class="comment-empty">暂无评论</view>
+      </view>
+    </view>
+
+    <!-- Bottom bar -->
+    <view class="bottom-bar">
+      <view class="action-item {{caseData.is_liked ? 'active' : ''}}" bindtap="onLike">
+        <text>{{caseData.is_liked ? '❤' : '🤍'}}</text>
+      </view>
+      <view class="action-item">
+        <text>💬</text>
+      </view>
+      <button class="consult-btn" bindtap="onConsult">咨询此案例</button>
+    </view>
+
+    <!-- Comment input -->
+    <view class="comment-input-bar" wx:if="{{isLogin}}">
+      <block wx:if="{{isMember}}">
+        <input class="comment-input" placeholder="写评论..." value="{{commentText}}" bindinput="onCommentInput" confirm-type="send" bindconfirm="onSendComment"/>
+        <text class="send-btn" bindtap="onSendComment">发送</text>
+      </block>
+      <text wx:else class="login-tip">开通会员后可评论</text>
+    </view>
+    <view class="comment-input-bar" wx:else>
+      <text class="login-tip" bindtap="onGoLogin">登录后可评论</text>
+    </view>
+  </block>
+</view>

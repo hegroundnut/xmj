@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "navbar": "/components/navbar/navbar",
+    "loading": "/components/loading/loading",
+    "empty": "/components/empty/empty"
+  },
+  "navigationStyle": "custom"
+}

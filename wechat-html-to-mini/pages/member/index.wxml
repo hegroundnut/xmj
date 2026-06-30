@@ -1,0 +1,73 @@
+<view class="member-page">
+  <navbar title="开通会员" back="{{true}}"/>
+
+  <!-- Hero -->
+  <view class="hero-section">
+    <text class="hero-brand">ALI LAOXI MEMBER</text>
+    <text class="hero-title">阿利老西会员</text>
+    <text class="hero-sub">解锁全部权益 · 持续学习成长</text>
+  </view>
+
+  <!-- Plans -->
+  <view class="plans-section">
+    <view class="plans-grid">
+      <view class="plan-card {{activePlan === index ? 'active' : ''}}"
+        wx:for="{{plans}}" wx:key="id" wx:for-index="index"
+        bindtap="onPlanSelect" data-index="{{index}}">
+        <view class="plan-badge" wx:if="{{item.badge}}">{{item.badge}}</view>
+        <text class="plan-name">{{item.name}}</text>
+        <text class="plan-price"><text class="currency">¥</text>{{item.price}}</text>
+        <text class="plan-unit">{{item.unit}}</text>
+        <text class="plan-orig">¥{{item.original}}</text>
+        <text class="plan-save">{{item.save}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Benefits -->
+  <view class="benefits-section">
+    <text class="section-label">会员权益</text>
+    <view class="benefit-item" wx:for="{{plans[activePlan].benefits}}" wx:key="text">
+      <view class="benefit-check">
+        <text>✓</text>
+      </view>
+      <view class="benefit-content">
+        <text class="benefit-text">{{item.text}}</text>
+        <text class="benefit-desc">{{item.desc}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Payment method -->
+  <view class="payment-section">
+    <text class="section-label">支付方式</text>
+    <view class="payment-option {{paymentMethod === 'wechat' ? 'active' : ''}}"
+      bindtap="onPaymentSelect" data-method="wechat">
+      <view class="payment-icon wechat">
+        <text class="pay-icon-text">微</text>
+      </view>
+      <text class="payment-name">微信支付</text>
+      <view class="payment-radio {{paymentMethod === 'wechat' ? 'active' : ''}}"/>
+    </view>
+  </view>
+
+  <!-- Agreement -->
+  <view class="agreement">
+    <view class="checkbox {{agreed ? 'checked' : ''}}" bindtap="onToggleAgree">
+      <text wx:if="{{agreed}}">✓</text>
+    </view>
+    <text class="agreement-text">
+      同意<text class="agreement-link" bindtap="onViewAgreement" data-type="member">《会员服务协议》</text>和<text class="agreement-link" bindtap="onViewAgreement" data-type="privacy">《隐私政策》</text>
+    </text>
+  </view>
+
+  <!-- Pay button -->
+  <view class="bottom-bar">
+    <button class="pay-btn" bindtap="onPay" disabled="{{paying}}">
+      ¥{{plans[activePlan].price}} · 立即开通
+    </button>
+    <text class="pay-note" wx:if="{{!isLogin}}">
+      <text class="pay-note-link" bindtap="onGoLogin">登录</text>后开通
+    </text>
+  </view>
+</view>

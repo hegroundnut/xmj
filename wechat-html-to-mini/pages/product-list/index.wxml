@@ -1,0 +1,31 @@
+<view class="product-list-page">
+  <navbar title="全部产品" back="{{true}}"/>
+
+  <!-- Category filter -->
+  <scroll-view scroll-x class="filter-bar" wx:if="{{categories.length > 1}}">
+    <text class="filter-tag {{activeCat === item ? 'active' : ''}}"
+      wx:for="{{categories}}" wx:key="*this"
+      bindtap="onCatChange" data-cat="{{item}}">{{item}}</text>
+  </scroll-view>
+
+  <loading wx:if="{{loading}}" show="{{loading}}"/>
+  <view wx:elif="{{error}}" class="error-box" bindtap="loadData">加载失败，点击重试</view>
+  <empty wx:elif="{{!filteredProducts.length}}" text="暂无产品"/>
+
+  <!-- Product grid -->
+  <view wx:else class="product-grid">
+    <view class="prod-card {{item.is_home ? 'featured' : ''}}" wx:for="{{filteredProducts}}" wx:key="id"
+      bindtap="onProductTap" data-id="{{item.id}}">
+      <view class="card-thumb">
+        <image src="{{item.image || item.thumb || '/static/images/product_default.png'}}" mode="aspectFill" class="thumb-img"/>
+        <text class="thumb-tag hot" wx:if="{{item.is_home}}">热销</text>
+        <text class="thumb-tag" wx:elif="{{item.tag}}">{{item.tag}}</text>
+      </view>
+      <view class="card-info">
+        <text class="card-name">{{item.name || item.title}}</text>
+        <text class="card-sub" wx:if="{{item.subtitle || item.desc}}">{{item.subtitle || item.desc}}</text>
+        <text class="card-price" wx:if="{{item.price}}">¥{{item.price}}</text>
+      </view>
+    </view>
+  </view>
+</view>

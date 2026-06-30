@@ -1,0 +1,103 @@
+<view class="course-detail-page">
+  <navbar title="课程详情" back="{{true}}"/>
+
+  <loading wx:if="{{loading}}" show="{{loading}}"/>
+  <view wx:elif="{{error}}" class="error-box" bindtap="loadData">加载失败，点击重试</view>
+  <empty wx:elif="{{!course}}" text="课程不存在"/>
+
+  <block wx:else>
+    <view class="content-area">
+      <!-- Hero -->
+      <view class="course-hero">
+        <video-player wx:if="{{course.playing && course.video_url}}" src="{{course.video_url}}" class="hero-video"/>
+        <block wx:else>
+          <image src="{{course.cover || '/static/images/course_default.png'}}" mode="aspectFill" class="hero-cover"/>
+          <view class="hero-overlay"/>
+          <view class="hero-play" bindtap="onPlay" wx:if="{{course.video_url}}">
+            <text class="play-icon">▶</text>
+          </view>
+        </block>
+        <view class="hero-tag" wx:if="{{course.category_name}}">{{course.category_name}}</view>
+      </view>
+
+      <!-- Info -->
+      <view class="info-section">
+        <text class="info-title">{{course.title}}</text>
+        <text class="info-sub">{{course.description || course.desc}}</text>
+        <view class="info-row">
+          <text class="info-badge" wx:if="{{course.lesson_count}}">📹 {{course.lesson_count}}课时</text>
+          <text class="info-badge" wx:if="{{course.student_count}}">👤 {{course.student_count}}人已学</text>
+          <text class="info-badge" wx:if="{{course.rating}}">⭐ {{course.rating}}分</text>
+        </view>
+
+        <view class="price-section">
+          <view class="price-row">
+            <view class="price-main">
+              <text class="price-current">¥{{course.price || '9.90'}}</text>
+              <text class="price-label">试听价</text>
+            </view>
+            <text class="member-badge" wx:if="{{course.is_free_for_member === 1}}">会员免费</text>
+            <text class="price-original" wx:if="{{course.original_price}}">¥{{course.original_price}}</text>
+          </view>
+          <text class="member-notice" wx:if="{{course.is_free_for_member === 1 && !isMember}}" bindtap="onMember">开通会员可免费观看全部课程 →</text>
+        </view>
+      </view>
+
+      <view class="divider"/>
+
+      <!-- Teacher -->
+      <view class="teacher-section" wx:if="{{course.teacher}}">
+        <view class="teacher-card">
+          <image src="{{course.teacher.avatar || '/static/images/def_avatar.png'}}" class="teacher-avatar"/>
+          <view class="teacher-info">
+            <text class="teacher-name">{{course.teacher.name || '导师'}}</text>
+            <text class="teacher-title">{{course.teacher.title || '资深讲师'}}</text>
+            <text class="teacher-stats" wx:if="{{course.teacher.course_count}}">授课 {{course.teacher.course_count}} 门 · 学员 {{course.teacher.student_count || '0'}}+</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="divider"/>
+
+      <!-- Curriculum -->
+      <view class="curriculum-section" wx:if="{{course.lessons && course.lessons.length}}">
+        <text class="section-label">课程大纲 · {{course.lessons.length}}课时</text>
+        <view class="lesson-item" wx:for="{{course.lessons}}" wx:key="id">
+          <text class="lesson-num">{{index + 1}}</text>
+          <view class="lesson-info">
+            <text class="lesson-name">{{item.title || item.name}}</text>
+            <text class="lesson-duration" wx:if="{{item.duration}}">{{item.duration}}分钟</text>
+          </view>
+          <text class="lesson-free" wx:if="{{item.is_free}}">试看</text>
+          <text class="lesson-lock" wx:else>🔒</text>
+        </view>
+      </view>
+
+      <view class="divider"/>
+
+      <!-- Reviews -->
+      <view class="review-section" wx:if="{{course.reviews && course.reviews.length}}">
+        <text class="section-label">学员评价</text>
+        <view class="review-item" wx:for="{{course.reviews}}" wx:key="id">
+          <view class="review-header">
+            <image src="{{item.avatar || '/static/images/def_avatar.png'}}" class="review-avatar"/>
+            <text class="review-name">{{item.nickname || '学员'}}</text>
+            <text class="review-stars">{{item.rating || '★★★★★'}}</text>
+          </view>
+          <text class="review-text">{{item.content}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Bottom bar -->
+    <view class="bottom-bar">
+      <view class="bottom-action" bindtap="onShare">
+        <text>📤</text>
+        <text class="action-label">分享</text>
+      </view>
+      <button class="buy-btn" bindtap="onBuy">
+        {{course.can_watch || isMember || course.is_free_for_member === 1 ? '开始学习' : '¥' + (course.price || '9.90') + ' 购买 · 会员免费'}}
+      </button>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "navbar": "/components/navbar/navbar",
+    "loading": "/components/loading/loading",
+    "empty": "/components/empty/empty",
+    "image-preview": "/components/image-preview/image-preview",
+    "video-player": "/components/video-player/video-player",
+    "comment-list": "/components/comment-list/comment-list"
+  },
+  "navigationStyle": "custom"
+}
