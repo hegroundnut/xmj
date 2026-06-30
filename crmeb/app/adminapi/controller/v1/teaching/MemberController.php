@@ -41,7 +41,7 @@ class MemberController
     {
         $where = request()->getMore([
             ['keyword', ''],
-            ['is_teaching_member', ''],
+            ['member_type', ''],
         ]);
         [$page, $limit] = $this->services->getPageValue();
         $model = User::where('is_del', 0);
@@ -52,23 +52,45 @@ class MemberController
                   ->whereOr('uid', $where['keyword']);
             });
         }
-        if ($where['is_teaching_member'] !== '') {
-            $model = $model->where('is_teaching_member', (int)$where['is_teaching_member']);
+        $now = time();
+        if ($where['member_type'] === 'super') {
+            $model = $model->where('is_teaching_member', 1);
+        } elseif ($where['member_type'] === 'regular') {
+            $model = $model->where('is_teaching_member', '<>', 1)
+                ->where('overdue_time', '>', $now);
+        } elseif ($where['member_type'] === 'none') {
+            $model = $model->where('is_teaching_member', '<>', 1)
+                ->where(function ($q) use ($now) {
+                    $q->where('overdue_time', '<=', $now)
+                      ->whereOr('overdue_time', 0);
+                });
         }
         $count = $model->count();
-        $list = $model->field('uid,nickname,avatar,phone,is_teaching_member,add_time')
+        $list = $model->field('uid,nickname,avatar,phone,is_teaching_member,overdue_time,is_money_level,is_ever_level,add_time')
             ->order('uid', 'desc')
             ->page($page, $limit)
             ->select()
             ->toArray();
         foreach ($list as &$item) {
             $item['add_time'] = $item['add_time'] ? date('Y-m-d H:i', $item['add_time']) : '';
+            if ($item['is_teaching_member'] == 1) {
+                $item['member_type'] = 'super';
+                $item['member_type_text'] = '超级会员';
+            } elseif ($item['overdue_time'] > $now) {
+                $item['member_type'] = 'regular';
+                $item['member_type_text'] = '普通会员';
+                $item['overdue_time_text'] = date('Y-m-d', $item['overdue_time']);
+            } else {
+                $item['member_type'] = 'none';
+                $item['member_type_text'] = '非会员';
+                $item['overdue_time_text'] = '';
+            }
         }
         return app('json')->success(compact('list', 'count'));
     }
 
     /**
-     * 设置/取消教学会员
+     * 设置/取消超级会员
      * @param int $uid
      * @return mixed
      */
@@ -78,6 +100,6 @@ class MemberController
             ['is_teaching_member', 0],
         ], true);
         $this->services->update((int)$uid, ['is_teaching_member' => (int)$status]);
-        return app('json')->success($status ? '已设为会员' : '已取消会员');
+        return app('json')->success($status ? '已设为超级会员' : '已取消超级会员');
     }
 }

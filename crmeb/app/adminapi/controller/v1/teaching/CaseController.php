@@ -58,6 +58,7 @@ class CaseController extends AuthController
             ['media_url', ''],
             ['sort', 0],
             ['status', 1],
+            ['is_home', 0],
         ]);
         $data['add_time'] = time();
         $this->services->save($data);
@@ -77,6 +78,7 @@ class CaseController extends AuthController
             ['media_url', ''],
             ['sort', 0],
             ['status', 1],
+            ['is_home', 0],
         ]);
         $this->services->update((int)$id, $data);
         return app('json')->success('修改成功');

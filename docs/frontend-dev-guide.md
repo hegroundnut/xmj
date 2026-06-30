@@ -56,13 +56,18 @@ TabBar 底部导航 (5个Tab):
   2. 默认 is_teaching_member = 0 (非会员)
   3. 前端通过 GET /api/v2/user/info 获取用户会员状态
 
+会员类型:
+  超级会员 — is_teaching_member == 1，管理员手动设置，永久有效
+  普通会员 — overdue_time > time()，购买会员卡获得，有到期时间
+  非会员   — 以上两者皆不满足
+
 会员判定逻辑 (后端 MomentServices::isMember):
-  is_teaching_member == 1   → 管理员手动设置的会员
-  OR overdue_time > time()  → 付费会员且未过期
-  满足其一即为"会员"
+  is_teaching_member == 1   → 超级会员
+  OR overdue_time > time()  → 普通会员
+  满足其一即为"会员"（任意会员权限相同）
 
 管理员操作:
-  后台 → 洗眉机 → 会员管理 → 点击"设为会员"
+  后台 → 洗眉机 → 会员管理 → 点击"设为超级"/"取消超级"
   调用 PUT /adminapi/teaching_member/set/{uid}  { is_teaching_member: 1 }
 
 会员可使用的功能:
@@ -72,12 +77,14 @@ TabBar 底部导航 (5个Tab):
   - 发表评论 / 回复
   - 分享计数
   - 免费观看"会员免费"课程
+  - 保存案例图片/视频到相册
 
 非会员限制:
   - 只能浏览朋友圈列表和详情
   - 可以查看课程列表(需要登录但无会员要求)
   - 不能发布/点赞/收藏/评论/分享
-  - 前端应在调用会员接口前检查 is_teaching_member 状态
+  - 不能保存案例图片/视频
+  - 前端应在调用会员接口前检查 is_member 或 is_teaching_member 状态
 ```
 
 ### 3. 朋友圈功能流程
@@ -169,7 +176,7 @@ Authori-zation: Bearer <token>   (需要登录的接口必传)
 - 所有登录相关接口 (/routine/*)
 
 ### 需要登录的接口
-- GET /api/v2/user/info — 用户信息
+- GET /api/v2/user/info — 用户信息（含 is_member, member_type 字段）
 - GET /api/v2/course/list — 课程列表（支持 category_id 筛选，返回含 category_name）
 - GET /api/v2/course/detail/:id — 课程详情
 - POST /api/v2/course/create_order — 创建订单
@@ -188,7 +195,8 @@ Authori-zation: Bearer <token>   (需要登录的接口必传)
 
 ```
 用户登录 → token存储 → 获取用户信息(user/info)
-  → is_teaching_member 控制会员功能可见性
+  → is_member 控制会员功能可见性（1=任意会员，0=非会员）
+  → member_type 区分会员类型（super/regular/none）
   → 会员功能按钮根据此状态显示/隐藏
 
 朋友圈列表:

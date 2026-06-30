@@ -33,7 +33,7 @@ class CaseServices extends BaseServices
     public function getList(array $where)
     {
         [$page, $limit] = $this->getPageValue();
-        $field = 'id,title,type,category_id,cover,media_url,sort,status,add_time';
+        $field = 'id,title,type,category_id,cover,media_url,sort,status,is_home,add_time';
         $list = $this->dao->caseList($where, $field, $page, $limit);
         /** @var CaseCommentDao $commentDao */
         $commentDao = app()->make(CaseCommentDao::class);

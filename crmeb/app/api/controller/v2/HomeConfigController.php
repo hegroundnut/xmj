@@ -43,16 +43,16 @@ class HomeConfigController
     {
         $config = $this->services->getHomeConfig();
 
-        // 如果启用了精选案例，获取最新案例
+        // 精选案例：获取 is_home=1 的案例
         if (!empty($config['featured_cases']['enabled'])) {
             $limit = $config['featured_cases']['limit'] ?? 4;
             /** @var CaseServices $caseServices */
             $caseServices = app()->make(CaseServices::class);
-            $caseData = $caseServices->getList([]);
+            $caseData = $caseServices->getList(['is_home' => 1]);
             $config['featured_cases']['data'] = array_slice($caseData['list'] ?? [], 0, $limit);
         }
 
-        // 如果启用了热门课程，获取课程列表
+        // 热门课程
         if (!empty($config['latest_courses']['enabled'])) {
             $limit = $config['latest_courses']['limit'] ?? 3;
             /** @var CourseServices $courseServices */

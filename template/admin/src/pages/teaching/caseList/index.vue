@@ -21,6 +21,11 @@
         <el-table-column label="类型" width="80">
           <template slot-scope="{row}">{{ row.type == 1 ? '图片' : '视频' }}</template>
         </el-table-column>
+        <el-table-column label="精选" width="80">
+          <template slot-scope="{row}">
+            <el-switch :value="row.is_home" :active-value="1" :inactive-value="0" @change="(v) => handleIsHome(row, v)" />
+          </template>
+        </el-table-column>
         <el-table-column prop="sort" label="排序" width="80" />
         <el-table-column label="状态" width="80">
           <template slot-scope="{row}">
@@ -86,6 +91,10 @@
         <el-form-item label="标题">
           <el-input v-model="caseForm.title" />
         </el-form-item>
+        <el-form-item label="精选">
+          <el-switch v-model="caseForm.is_home" :active-value="1" :inactive-value="0" />
+          <span style="margin-left:8px;color:#909399;font-size:12px">开启后在首页「精选案例」中展示</span>
+        </el-form-item>
         <el-form-item label="排序">
           <el-input-number v-model="caseForm.sort" :min="0" />
         </el-form-item>
@@ -142,7 +151,7 @@ export default {
       dialogVisible: false,
       dialogTitle: '添加案例',
       submitLoading: false,
-      caseForm: { title: '', type: 1, category_id: 0, cover: '', media_url: '', sort: 0, status: 1 },
+      caseForm: { title: '', type: 1, category_id: 0, cover: '', media_url: '', sort: 0, status: 1, is_home: 0 },
       editId: null,
       coverModal: false,
       mediaModal: false,
@@ -179,13 +188,13 @@ export default {
     handleAdd() {
       this.editId = null;
       this.dialogTitle = '添加案例';
-      this.caseForm = { title: '', type: 1, category_id: 0, cover: '', media_url: '', sort: 0, status: 1 };
+      this.caseForm = { title: '', type: 1, category_id: 0, cover: '', media_url: '', sort: 0, status: 1, is_home: 0 };
       this.dialogVisible = true;
     },
     handleEdit(row) {
       this.editId = row.id;
       this.dialogTitle = '编辑案例';
-      this.caseForm = { title: row.title, type: row.type, category_id: row.category_id || 0, cover: row.cover, media_url: row.media_url, sort: row.sort, status: row.status };
+      this.caseForm = { title: row.title, type: row.type, category_id: row.category_id || 0, cover: row.cover, media_url: row.media_url, sort: row.sort, status: row.status, is_home: row.is_home || 0 };
       this.dialogVisible = true;
     },
     getCoverPic(pc) {
@@ -224,6 +233,12 @@ export default {
     async handleStatus(row, val) {
       await updateCase(row.id, { ...row, status: val });
       this.$message.success('状态已更新');
+      this.loadList();
+    },
+    async handleIsHome(row, val) {
+      await updateCase(row.id, { ...row, is_home: val });
+      this.$message.success(val ? '已设为精选' : '已取消精选');
+      this.loadList();
     },
     async handleAddCategory() {
       if (!this.newCategoryName.trim()) return this.$message.warning('请输入分类名称');
