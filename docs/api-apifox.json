@@ -11,8 +11,8 @@
   "tags": [
     { "name": "登录认证", "description": "微信小程序授权登录" },
     { "name": "首页", "description": "首页配置" },
-    { "name": "产品", "description": "洗眉机产品信息（支持多产品）" },
-    { "name": "分类", "description": "案例/课程分类" },
+    { "name": "产品", "description": "洗眉机产品信息（支持多产品，含分类）" },
+    { "name": "分类", "description": "案例/课程/产品分类" },
     { "name": "案例", "description": "案例展示（含分类）" },
     { "name": "案例评论", "description": "案例评论" },
     { "name": "课程", "description": "教学课程" },
@@ -43,7 +43,7 @@
       "get": {
         "tags": ["产品"],
         "summary": "获取首页产品信息",
-        "description": "无需登录。返回 is_home=1 的产品（兼容旧逻辑，若无 is_home 则返回 id=1）",
+        "description": "无需登录。返回 is_home=1 的产品（兼容旧逻辑，若无 is_home 则返回 id=1）。返回含 category_id 和 category_name",
         "security": [],
         "responses": {
           "200": { "description": "成功" }
@@ -54,7 +54,7 @@
       "get": {
         "tags": ["产品"],
         "summary": "获取全部产品列表",
-        "description": "无需登录。返回所有启用产品，按 is_home 倒序",
+        "description": "无需登录。返回所有启用产品，按 is_home 倒序。返回含 category_id 和 category_name",
         "security": [],
         "responses": {
           "200": { "description": "成功" }
@@ -77,6 +77,17 @@
         "tags": ["分类"],
         "summary": "获取课程分类列表",
         "description": "无需登录。返回所有启用的课程分类",
+        "security": [],
+        "responses": {
+          "200": { "description": "成功，返回 [{id, name, type, sort, status, add_time}]" }
+        }
+      }
+    },
+    "/api/v2/category/product": {
+      "get": {
+        "tags": ["分类"],
+        "summary": "获取产品分类列表",
+        "description": "无需登录。返回所有启用的产品分类 (type=3)",
         "security": [],
         "responses": {
           "200": { "description": "成功，返回 [{id, name, type, sort, status, add_time}]" }
@@ -556,7 +567,8 @@
                   "specs": { "type": "array", "description": "规格参数" },
                   "video_url": { "type": "string" },
                   "status": { "type": "integer", "enum": [0, 1] },
-                  "is_home": { "type": "integer", "enum": [0, 1], "description": "1=首页显示 0=不显示" }
+                  "is_home": { "type": "integer", "enum": [0, 1], "description": "1=首页显示 0=不显示" },
+                  "category_id": { "type": "integer", "default": 0, "description": "产品分类ID" }
                 }
               }
             }
@@ -580,7 +592,7 @@
         "summary": "分类列表",
         "security": [{ "adminAuth": [] }],
         "parameters": [
-          { "name": "type", "in": "query", "schema": { "type": "integer" }, "description": "1=案例分类 2=课程分类" }
+          { "name": "type", "in": "query", "schema": { "type": "integer" }, "description": "1=案例分类 2=课程分类 3=产品分类" }
         ],
         "responses": { "200": { "description": "成功" } }
       }
@@ -598,7 +610,7 @@
                 "required": ["name", "type"],
                 "properties": {
                   "name": { "type": "string", "description": "分类名称" },
-                  "type": { "type": "integer", "enum": [1, 2], "description": "1=案例 2=课程" },
+                  "type": { "type": "integer", "enum": [1, 2, 3], "description": "1=案例 2=课程 3=产品" },
                   "sort": { "type": "integer", "default": 0 },
                   "status": { "type": "integer", "enum": [0, 1], "default": 1 }
                 }

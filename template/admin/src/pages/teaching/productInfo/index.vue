@@ -2,16 +2,20 @@
   <div class="teaching-product-info">
     <el-card>
       <div slot="header" class="clearfix">
-        <span>产品管理</span>
-        <el-button type="primary" size="small" style="float:right" @click="handleAdd">+ 添加产品</el-button>
+        <el-button type="primary" size="small" @click="handleAdd">+ 添加产品</el-button>
+        <el-select v-model="filterCategoryId" placeholder="分类筛选" clearable size="small" style="margin-left:10px;width:150px" @change="loadData">
+          <el-option v-for="cat in categoryList" :key="cat.id" :label="cat.name" :value="cat.id" />
+        </el-select>
+        <el-button type="text" size="small" style="margin-left:10px" @click="categoryDialogVisible = true">管理分类</el-button>
       </div>
-      <el-table :data="list" border stripe v-loading="loading">
+      <el-table :data="filteredList" border stripe v-loading="loading">
         <el-table-column label="轮播图" width="100">
           <template slot-scope="{row}">
             <img v-if="row.banner && row.banner.length" :src="row.banner[0]" style="width:60px;height:60px;object-fit:cover" />
           </template>
         </el-table-column>
         <el-table-column prop="title" label="产品标题" />
+        <el-table-column prop="category_name" label="分类" width="120" />
         <el-table-column label="首页显示" width="100">
           <template slot-scope="{row}">
             <el-tag :type="row.is_home ? 'success' : 'info'" size="small">{{ row.is_home ? '是' : '否' }}</el-tag>
@@ -48,6 +52,11 @@
         <el-form-item label="产品标题">
           <el-input v-model="form.title" maxlength="255" placeholder="请输入产品标题" />
         </el-form-item>
+        <el-form-item label="分类">
+          <el-select v-model="form.category_id" placeholder="选择分类" clearable style="width:100%">
+            <el-option v-for="cat in categoryList" :key="cat.id" :label="cat.name" :value="cat.id" />
+          </el-select>
+        </el-form-item>
         <el-form-item label="产品描述">
           <el-input v-model="form.desc" type="textarea" :rows="4" placeholder="请输入产品描述" />
         </el-form-item>
@@ -77,11 +86,32 @@
         <el-button type="primary" :loading="submitLoading" @click="handleSave">保存</el-button>
       </div>
     </el-dialog>
+
+    <!-- 分类管理弹窗 -->
+    <el-dialog title="产品分类管理" :visible.sync="categoryDialogVisible" width="500px" :close-on-click-modal="false">
+      <el-form :inline="true" style="margin-bottom:10px">
+        <el-form-item>
+          <el-input v-model="newCategoryName" placeholder="输入分类名称" size="small" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" size="small" @click="handleAddCategory">添加</el-button>
+        </el-form-item>
+      </el-form>
+      <el-table :data="categoryList" border size="small">
+        <el-table-column prop="name" label="分类名称" />
+        <el-table-column prop="sort" label="排序" width="80" />
+        <el-table-column label="操作" width="120">
+          <template slot-scope="{row}">
+            <el-button type="text" style="color:#f56c6c" @click="handleDeleteCategory(row.id)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getProductList, saveProductInfo, deleteProduct } from '@/api/teaching';
+import { getProductList, saveProductInfo, deleteProduct, getCategoryList, saveCategory, deleteCategory } from '@/api/teaching';
 import uploadPictures from '@/components/uploadPictures';
 import WangEditor from '@/components/wangEditor/index.vue';
 
@@ -92,6 +122,7 @@ export default {
     return {
       list: [],
       loading: false,
+      filterCategoryId: '',
       dialogVisible: false,
       dialogTitle: '添加产品',
       submitLoading: false,
@@ -108,13 +139,30 @@ export default {
         video_url: '',
         is_home: 0,
         status: 1,
+        category_id: 0,
       },
+      categoryList: [],
+      categoryDialogVisible: false,
+      newCategoryName: '',
     };
   },
+  computed: {
+    filteredList() {
+      if (!this.filterCategoryId) return this.list;
+      return this.list.filter((item) => item.category_id === this.filterCategoryId);
+    },
+  },
   created() {
+    this.loadCategoryList();
     this.loadData();
   },
   methods: {
+    async loadCategoryList() {
+      try {
+        const { data } = await getCategoryList({ type: 3 });
+        this.categoryList = data || [];
+      } catch (e) {}
+    },
     async loadData() {
       this.loading = true;
       try {
@@ -127,7 +175,7 @@ export default {
     handleAdd() {
       this.editId = 0;
       this.dialogTitle = '添加产品';
-      this.form = { banner: [], title: '', desc: '', detail: '', specs: [], video_url: '', is_home: 0, status: 1 };
+      this.form = { banner: [], title: '', desc: '', detail: '', specs: [], video_url: '', is_home: 0, status: 1, category_id: 0 };
       this.dialogVisible = true;
     },
     handleEdit(row) {
@@ -142,6 +190,7 @@ export default {
         video_url: row.video_url || '',
         is_home: row.is_home ?? 0,
         status: row.status ?? 1,
+        category_id: row.category_id || 0,
       };
       this.dialogVisible = true;
     },
@@ -166,6 +215,21 @@ export default {
         await deleteProduct(id);
         this.$message.success('删除成功');
         this.loadData();
+      } catch (e) {}
+    },
+    async handleAddCategory() {
+      if (!this.newCategoryName.trim()) return this.$message.warning('请输入分类名称');
+      await saveCategory({ name: this.newCategoryName.trim(), type: 3 });
+      this.newCategoryName = '';
+      this.$message.success('添加成功');
+      this.loadCategoryList();
+    },
+    async handleDeleteCategory(id) {
+      try {
+        await this.$confirm('确定删除该分类吗？', '提示', { type: 'warning' });
+        await deleteCategory(id);
+        this.$message.success('删除成功');
+        this.loadCategoryList();
       } catch (e) {}
     },
   },

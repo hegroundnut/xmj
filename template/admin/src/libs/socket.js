@@ -99,7 +99,7 @@ function createSocket(key) {
     wsKefuSocketUrl = res.data.chat;
     setCookies('WS_ADMIN_URL', res.data.admin);
     setCookies('WS_CHAT_URL', res.data.chat);
-  });
+  }).catch(() => {});
   return new Promise((resolve, reject) => {
     const ws = new wsSocket({
       key,
@@ -107,9 +107,7 @@ function createSocket(key) {
         resolve(ws);
         vm.$emit('socket_open', key);
       },
-      error(e) {
-        reject(e);
-      },
+      error() {},
       message(res) {
         const { type, data = {} } = JSON.parse(res.data);
         vm.$emit(type, data);

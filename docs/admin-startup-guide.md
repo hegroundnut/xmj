@@ -41,6 +41,7 @@ docker exec -i crmeb_mysql mysql -uroot -p123456 crmeb < crmeb/sql/seed_teaching
 docker exec -i crmeb_mysql mysql -uroot -p123456 crmeb < crmeb/sql/seed_moment.sql
 
 # 6. 创建分类表 + 产品/案例/课程新增字段 (category_id, is_home)
+#    分类表 type: 1=案例 2=课程 3=产品
 docker exec -i crmeb_mysql mysql -uroot -p123456 crmeb < scripts/migration_category_product.sql
 ```
 
@@ -51,8 +52,8 @@ docker exec crmeb_mysql mysql -uroot -p123456 crmeb -e "SHOW TABLES LIKE 'eb_%';
 ```
 
 应包含以下新增表:
-- `eb_product_info` — 产品信息（支持多条，含 is_home 字段）
-- `eb_teaching_category` — 教学分类（案例/课程共用）
+- `eb_product_info` — 产品信息（支持多条，含 is_home、category_id 字段）
+- `eb_teaching_category` — 教学分类（案例/课程/产品共用，type: 1=案例 2=课程 3=产品）
 - `eb_case` — 案例（含 category_id 字段）
 - `eb_course` — 教学课程（含 category_id 字段）
 - `eb_course_order` — 课程订单
@@ -110,14 +111,14 @@ docker exec crmeb_php sh -c "cp -r /var/www_mount/public/. /var/www_native/publi
 
 ### 管理后台菜单结构 (登录后左侧)
 
-> 注意：后台前端已隐藏除「朋友圈」和「洗眉机」之外的所有菜单（通过 routers.js 注释导入实现）。
+> 注意：后台前端已隐藏除「朋友圈」和「洗眉机」之外的所有菜单（通过 routers.js 注释导入 + routesList store 过滤实现）。登录后默认跳转至洗眉机产品管理页面。
 
 ```
 ├── 朋友圈
 │   ├── 帖子管理
 │   └── 评论管理
 └── 洗眉机
-    ├── 产品管理        ← 支持多产品CRUD + 首页显示开关
+    ├── 产品管理        ← 支持多产品CRUD + 首页显示开关 + 分类筛选/管理
     ├── 案例管理        ← 支持分类筛选 + 分类管理弹窗
     ├── 课程管理        ← 支持分类筛选 + 分类管理弹窗
     ├── 线下排期
