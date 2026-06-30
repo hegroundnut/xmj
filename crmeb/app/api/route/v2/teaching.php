@@ -23,6 +23,7 @@ Route::group('home', function () {
 Route::group('category', function () {
     Route::get('case', 'v2.CategoryController/case_categories')->option(['real_name' => '案例分类列表']);
     Route::get('course', 'v2.CategoryController/course_categories')->option(['real_name' => '课程分类列表']);
+    Route::get('product', 'v2.CategoryController/product_categories')->option(['real_name' => '产品分类列表']);
 });
 
 // 产品 — 无需登录

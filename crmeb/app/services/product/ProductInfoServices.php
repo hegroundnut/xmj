@@ -11,6 +11,7 @@
 namespace app\services\product;
 
 use app\dao\product\ProductInfoDao;
+use app\dao\teaching\TeachingCategoryDao;
 use app\services\BaseServices;
 
 /**
@@ -43,6 +44,27 @@ class ProductInfoServices extends BaseServices
     }
 
     /**
+     * 批量填充分类名称
+     * @param array $list
+     * @return array
+     */
+    protected function fillCategoryName(array $list)
+    {
+        $categoryIds = array_unique(array_column($list, 'category_id'));
+        $categoryIds = array_filter($categoryIds);
+        $categoryMap = [];
+        if ($categoryIds) {
+            $categoryDao = app()->make(TeachingCategoryDao::class);
+            $categories = $categoryDao->getModel()->whereIn('id', $categoryIds)->column('name', 'id');
+            $categoryMap = $categories;
+        }
+        foreach ($list as &$item) {
+            $item['category_name'] = $categoryMap[$item['category_id'] ?? 0] ?? '';
+        }
+        return $list;
+    }
+
+    /**
      * 获取产品信息（首页展示的那条，兼容旧逻辑）
      * @return array
      */
@@ -56,7 +78,12 @@ class ProductInfoServices extends BaseServices
         if (!$info) {
             $info = $this->dao->get(1);
         }
-        return $this->formatInfo($info);
+        $formatted = $this->formatInfo($info);
+        if ($formatted) {
+            $list = $this->fillCategoryName([$formatted]);
+            return $list[0];
+        }
+        return $formatted;
     }
 
     /**
@@ -78,7 +105,7 @@ class ProductInfoServices extends BaseServices
                 }
             }
         }
-        return $list;
+        return $this->fillCategoryName($list);
     }
 
     /**
@@ -95,7 +122,7 @@ class ProductInfoServices extends BaseServices
         foreach ($list as &$item) {
             $item = $this->formatInfo($item);
         }
-        return $list;
+        return $this->fillCategoryName($list);
     }
 
     /**

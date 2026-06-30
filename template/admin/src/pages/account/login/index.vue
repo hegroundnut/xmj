@@ -216,7 +216,7 @@ export default {
                 });
               }, 0);
             }
-            this.checkSocket();
+            // this.checkSocket();
           } catch (e) {}
           PrevLoading.start();
           this.$router.push({

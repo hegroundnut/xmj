@@ -46,4 +46,15 @@ class CategoryController
         $list = $this->services->getCategoryList(2, true);
         return app('json')->success($list);
     }
+
+    /**
+     * 获取产品分类列表
+     * GET /api/v2/category/product
+     * @return mixed
+     */
+    public function product_categories()
+    {
+        $list = $this->services->getCategoryList(3, true);
+        return app('json')->success($list);
+    }
 }

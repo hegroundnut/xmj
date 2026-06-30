@@ -50,7 +50,7 @@ const frameIn = [
       title: '洗眉机',
     },
     redirect: {
-      name: 'home_index',
+      name: 'teaching_productInfo',
     },
     component: LayoutMain,
     children: [
@@ -113,7 +113,7 @@ const frameIn = [
       title: '洗眉机',
     },
     redirect: {
-      name: 'home_index',
+      name: 'teaching_productInfo',
     },
     component: LayoutMain,
   },
