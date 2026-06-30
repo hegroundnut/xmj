@@ -49,6 +49,7 @@ Page({
   },
   onContentTap(e) {
     var id = e.currentTarget.dataset.id
+    console.log('onContentTap id:', id, 'type:', typeof id)
     wx.navigateTo({ url: '/pages/moment/detail?id=' + id })
   },
   onComment(e) {

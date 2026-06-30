@@ -1,0 +1,8 @@
+.course-card { background: #fff; border-radius: 12rpx; overflow: hidden; margin-bottom: 20rpx; display: flex; }
+.course-cover { width: 240rpx; height: 180rpx; flex-shrink: 0; display: block; }
+.course-info { flex: 1; padding: 20rpx; display: flex; flex-direction: column; justify-content: space-between; }
+.course-title { font-size: 30rpx; font-weight: 500; }
+.course-desc { font-size: 24rpx; color: #999; margin-top: 8rpx; }
+.course-footer { display: flex; align-items: center; }
+.course-price { color: #e93323; font-size: 28rpx; font-weight: 500; }
+.price-pay { color: #ff6b00; }

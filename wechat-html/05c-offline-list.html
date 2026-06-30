@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>线下课 - 阿利老西</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{margin:0;padding:40px 0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#F0EFED;font-family:"PingFang SC",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;}
+.phone-frame{width:375px;height:812px;border-radius:44px;overflow:hidden;background:#fff;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.08);}
+.phone-screen{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;position:relative;}
+.phone-screen::-webkit-scrollbar{display:none;}
+.status-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 28px 0;height:44px;}
+.status-time{font-size:15px;font-weight:500;color:#1A1A1A;}
+.page-header{padding:8px 24px 16px;background:linear-gradient(180deg, #E8DDD3 0%, #EDE4DA 40%, #F3ECE5 70%, #fff 100%);}
+.page-title{font-size:26px;font-weight:300;color:#1A1A1A;letter-spacing:3px;}
+.content-area{padding-bottom:100px;}
+
+.offline-list{padding:0 20px;display:flex;flex-direction:column;gap:12px;}
+.offline-card{background:#FAFAF8;border:1px solid rgba(0,0,0,0.04);border-radius:8px;padding:16px;display:flex;gap:14px;align-items:flex-start;}
+.date-badge{flex-shrink:0;width:52px;height:52px;border-radius:8px;background:#1A1A1A;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;}
+.date-badge .month{font-size:9px;font-weight:400;letter-spacing:1.5px;opacity:0.7;text-transform:uppercase;}
+.date-badge .day{font-size:18px;font-weight:300;line-height:1;}
+.card-body{flex:1;display:flex;flex-direction:column;gap:6px;min-width:0;}
+.card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.card-title{font-size:14px;font-weight:400;color:#1A1A1A;letter-spacing:0.5px;line-height:1.4;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.status-badge{flex-shrink:0;font-size:10px;font-weight:400;padding:3px 10px;border-radius:12px;letter-spacing:0.5px;}
+.status-badge.open{background:rgba(26,26,26,0.06);color:#1A1A1A;}
+.status-badge.full{background:rgba(0,0,0,0.03);color:rgba(0,0,0,0.25);}
+.card-location{font-size:11px;color:rgba(0,0,0,0.3);font-weight:300;letter-spacing:0.3px;}
+.card-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:2px;}
+.card-time{font-size:11px;color:rgba(0,0,0,0.3);font-weight:300;letter-spacing:0.3px;}
+.card-spots{font-size:11px;font-weight:400;color:#1A1A1A;letter-spacing:0.3px;}
+.card-spots.muted{color:rgba(0,0,0,0.25);font-weight:300;}
+
+.tab-bar{position:absolute;bottom:0;left:0;right:0;height:83px;padding-bottom:28px;display:flex;align-items:center;justify-content:space-around;background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,0.04);}
+.tab-item{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;}
+.tab-icon{width:22px;height:22px;background-size:contain;background-repeat:no-repeat;background-position:center;}
+.tab-item.active span{color:#1A1A1A;font-size:10px;font-weight:400;letter-spacing:0.5px;}
+.tab-item:not(.active) span{color:rgba(0,0,0,0.25);font-size:10px;font-weight:400;letter-spacing:0.5px;}
+.tab-item.active .tab-icon{opacity:0.8;}
+.tab-item:not(.active) .tab-icon{opacity:0.2;filter:grayscale(1);}
+.icon-home{background-image:url("../uploads/image_1782813901351_114p3r6.png");}
+.icon-cases{background-image:url("../uploads/image_1782813901352_trz9vsr.png");}
+.icon-moments{background-image:url("../uploads/image_1782813901352_i5twl8j.png");}
+.icon-class{background-image:url("../uploads/image_1782813901352_mdf49kf.png");}
+.icon-me{background-image:url("../uploads/image_1782710209961_sv3yqm4.png");}
+.tabs{display:flex;padding:0 20px;border-bottom:1px solid rgba(0,0,0,0.06);}
+.tab{flex:1;text-align:center;padding:10px 0;cursor:pointer;position:relative;display:flex;flex-direction:column;align-items:center;gap:1px;}
+.tab .en{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:lowercase;color:rgba(0,0,0,0.22);}
+.tab .cn{font-size:13px;font-weight:400;color:rgba(0,0,0,0.35);letter-spacing:0.5px;}
+.tab.active .en{color:#1A1A1A;}
+.tab.active .cn{color:#1A1A1A;font-weight:500;}
+.tab.active::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:20px;height:1.5px;background:#1A1A1A;}
+</style>
+</head>
+<body>
+<div class="phone-frame"><div class="phone-screen">
+<div class="status-bar"><span class="status-time">9:41</span><div></div></div>
+<div class="content-area">
+<div class="page-header">
+<div style="position:relative;height:40px;overflow:hidden;margin-bottom:2px;">
+<span style="position:absolute;font-size:28px;font-weight:700;color:rgba(255,255,255,0.35);letter-spacing:3px;transform:rotate(-5deg);top:2px;left:-6px;">OFFLINE</span>
+<span style="position:absolute;font-size:20px;font-weight:300;color:rgba(255,255,255,0.3);letter-spacing:2px;transform:rotate(6deg);top:14px;left:90px;">ALI LAOXI</span>
+<span style="position:absolute;font-size:24px;font-weight:700;color:rgba(255,255,255,0.25);letter-spacing:2px;transform:rotate(-3deg);top:6px;left:190px;">CLASS</span>
+</div>
+<div class="page-title">线下课</div>
+</div>
+<div class="tabs"><div class="tab" onclick="window.location.href='05-teaching.html'"><span class="en">online</span><span class="cn">线上课程</span></div><div class="tab active"><span class="en">offline</span><span class="cn">线下培训</span></div></div>
+
+<div class="offline-list">
+
+<div class="offline-card">
+<div class="date-badge"><span class="month">JUL</span><span class="day">15</span></div>
+<div class="card-body">
+<div class="card-top"><span class="card-title">洗眉实操高阶研修班</span><span class="status-badge open">报名中</span></div>
+<div class="card-location">合肥 · 包河区绿地中心</div>
+<div class="card-bottom"><span class="card-time">9:00-17:00 · 2天</span><span class="card-spots">剩余 4 名额</span></div>
+</div>
+</div>
+
+<div class="offline-card">
+<div class="date-badge"><span class="month">JUL</span><span class="day">22</span></div>
+<div class="card-body">
+<div class="card-top"><span class="card-title">眉形设计美学精修课</span><span class="status-badge open">报名中</span></div>
+<div class="card-location">上海 · 静安区美学中心</div>
+<div class="card-bottom"><span class="card-time">9:30-17:30 · 3天</span><span class="card-spots">剩余 8 名额</span></div>
+</div>
+</div>
+
+<div class="offline-card">
+<div class="date-badge"><span class="month">AUG</span><span class="day">05</span></div>
+<div class="card-body">
+<div class="card-top"><span class="card-title">色素应用与皮肤管理</span><span class="status-badge full">已满</span></div>
+<div class="card-location">广州 · 天河区实训基地</div>
+<div class="card-bottom"><span class="card-time">9:00-16:30 · 2天</span><span class="card-spots muted">已满员</span></div>
+</div>
+</div>
+
+<div class="offline-card">
+<div class="date-badge"><span class="month">AUG</span><span class="day">19</span></div>
+<div class="card-body">
+<div class="card-top"><span class="card-title">零基础洗眉入门实操班</span><span class="status-badge open">报名中</span></div>
+<div class="card-location">北京 · 朝阳区培训中心</div>
+<div class="card-bottom"><span class="card-time">9:00-17:00 · 3天</span><span class="card-spots">剩余 12 名额</span></div>
+</div>
+</div>
+
+<div class="offline-card">
+<div class="date-badge"><span class="month">SEP</span><span class="day">02</span></div>
+<div class="card-body">
+<div class="card-top"><span class="card-title">纹绣修复技术专题课</span><span class="status-badge open">报名中</span></div>
+<div class="card-location">成都 · 锦江区美学工坊</div>
+<div class="card-bottom"><span class="card-time">10:00-17:00 · 2天</span><span class="card-spots">剩余 6 名额</span></div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="tab-bar">
+<div class="tab-item"><div class="tab-icon icon-home"></div><span>首页</span></div>
+<div class="tab-item"><div class="tab-icon icon-cases"></div><span>案例</span></div>
+<div class="tab-item"><div class="tab-icon icon-moments"></div><span>朋友圈</span></div>
+<div class="tab-item active"><div class="tab-icon icon-class"></div><span>教学</span></div>
+<div class="tab-item"><div class="tab-icon icon-me"></div><span>我的</span></div>
+</div>
+</div></div>
+</body>
+</html>

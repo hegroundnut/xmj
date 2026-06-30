@@ -1,31 +1,70 @@
-<view class="product-list-page">
-  <navbar title="全部产品" back="{{true}}"/>
+<view class="page">
+  <!-- States -->
+  <view class="state-box" wx:if="{{loading}}"><text class="state-text">加载中...</text></view>
+  <view class="state-box" wx:elif="{{error}}" bindtap="loadData"><text class="state-text">加载失败，点击重试</text></view>
 
-  <!-- Category filter -->
-  <scroll-view scroll-x class="filter-bar" wx:if="{{categories.length > 1}}">
-    <text class="filter-tag {{activeCat === item ? 'active' : ''}}"
-      wx:for="{{categories}}" wx:key="*this"
-      bindtap="onCatChange" data-cat="{{item}}">{{item}}</text>
-  </scroll-view>
-
-  <loading wx:if="{{loading}}" show="{{loading}}"/>
-  <view wx:elif="{{error}}" class="error-box" bindtap="loadData">加载失败，点击重试</view>
-  <empty wx:elif="{{!filteredProducts.length}}" text="暂无产品"/>
-
-  <!-- Product grid -->
-  <view wx:else class="product-grid">
-    <view class="prod-card {{item.is_home ? 'featured' : ''}}" wx:for="{{filteredProducts}}" wx:key="id"
-      bindtap="onProductTap" data-id="{{item.id}}">
-      <view class="card-thumb">
-        <image src="{{item.image || item.thumb || '/static/images/product_default.png'}}" mode="aspectFill" class="thumb-img"/>
-        <text class="thumb-tag hot" wx:if="{{item.is_home}}">热销</text>
-        <text class="thumb-tag" wx:elif="{{item.tag}}">{{item.tag}}</text>
+  <block wx:if="{{!loading && !error}}">
+    <!-- Top nav -->
+    <view class="top-nav" style="padding-top: {{statusBarHeight + 10}}px;">
+      <view class="nav-back" bindtap="onBack">
+        <text class="nav-back-icon">‹</text>
       </view>
-      <view class="card-info">
-        <text class="card-name">{{item.name || item.title}}</text>
-        <text class="card-sub" wx:if="{{item.subtitle || item.desc}}">{{item.subtitle || item.desc}}</text>
-        <text class="card-price" wx:if="{{item.price}}">¥{{item.price}}</text>
+      <text class="nav-title">全部产品</text>
+      <view class="nav-placeholder"/>
+    </view>
+
+    <!-- Page header with watermark -->
+    <view class="page-header">
+      <view class="wm-wrap">
+        <text class="wm wm-ali">ALI LAOXI</text>
+        <text class="wm wm-studio">STUDIO</text>
+        <text class="wm wm-brow">bROW</text>
+      </view>
+      <text class="page-title">全部产品</text>
+    </view>
+
+    <!-- Filter tabs -->
+    <scroll-view scroll-x class="filter-bar" wx:if="{{categories.length > 1}}">
+      <text class="filter-tag {{activeCat === item ? 'active' : ''}}"
+        wx:for="{{categories}}" wx:key="*this"
+        bindtap="onCatChange" data-cat="{{item}}">{{item}}</text>
+    </scroll-view>
+
+    <!-- Product grid -->
+    <view class="product-grid">
+      <!-- Featured product - full width -->
+      <view class="featured" wx:if="{{featured}}" bindtap="onFeaturedTap">
+        <view class="feat-thumb">
+          <image src="{{featured.image || featured.thumb || '/static/images/product_default.png'}}" mode="aspectFill" class="feat-img"/>
+        </view>
+        <view class="feat-info">
+          <text class="feat-badge">精选推荐</text>
+          <text class="feat-name">{{featured.name || featured.title}}</text>
+          <text class="feat-sub">{{featured.subtitle || featured.desc || ''}}</text>
+          <text class="feat-arrow">查看详情 →</text>
+        </view>
+      </view>
+
+      <!-- Regular product cards -->
+      <view class="prod-card {{!featured && index === 0 ? 'featured-fallback' : ''}}" wx:for="{{filteredProducts}}" wx:key="id"
+        bindtap="onProductTap" data-id="{{item.id}}">
+        <view class="card-thumb">
+          <image src="{{item.image || item.thumb || '/static/images/product_default.png'}}" mode="aspectFill" class="thumb-img"/>
+          <text class="thumb-tag hot" wx:if="{{item.is_hot || item.tag === '热销'}}">热销</text>
+          <text class="thumb-tag" wx:elif="{{item.tag}}">{{item.tag}}</text>
+        </view>
+        <view class="card-info">
+          <text class="card-name">{{item.name || item.title}}</text>
+          <text class="card-sub">{{item.subtitle || item.desc || ''}}</text>
+          <text class="card-price">¥{{item.price}}</text>
+        </view>
+      </view>
+
+      <!-- Empty state -->
+      <view class="empty-state" wx:if="{{filteredProducts.length === 0}}">
+        <text class="empty-title">暂无产品</text>
+        <text class="empty-sub">更多产品即将上线</text>
       </view>
     </view>
-  </view>
+  </block>
 </view>

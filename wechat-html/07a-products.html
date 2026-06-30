@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全部产品 - 阿利老西</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{margin:0;padding:40px 0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#F0EFED;font-family:"PingFang SC",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;}
+.phone-frame{width:375px;height:812px;border-radius:44px;overflow:hidden;background:#F8F7F5;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.08),0 1px 3px rgba(0,0,0,0.04);}
+.phone-screen{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;position:relative;}
+.phone-screen::-webkit-scrollbar{display:none;}
+
+/* Top nav */
+.top-nav{display:flex;align-items:center;padding:48px 20px 12px;position:sticky;top:0;z-index:10;background:rgba(248,247,245,0.95);backdrop-filter:blur(16px);}
+.top-nav .back{width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;flex-shrink:0;}
+.top-nav .back svg{width:18px;height:18px;color:rgba(0,0,0,0.5);stroke-width:1.5;}
+.top-nav .nav-title{flex:1;text-align:center;font-size:14px;font-weight:300;color:#1A1A1A;letter-spacing:2px;margin-right:34px;}
+
+/* Page header */
+.page-header{padding:8px 24px 16px;background:linear-gradient(180deg, #E8DDD3 0%, #EDE4DA 40%, #F3ECE5 70%, #F8F7F5 100%);}
+.page-title{font-size:26px;font-weight:300;color:#1A1A1A;letter-spacing:3px;animation:titleFadeIn 0.8s ease-out 0.6s both;}
+.wm-wrap{position:relative;height:50px;overflow:hidden;margin-bottom:4px;}
+.wm{position:absolute;opacity:0;will-change:transform,opacity;}
+.wm-ali{font-size:28px;font-weight:700;color:rgba(255,255,255,0.35);letter-spacing:3px;top:2px;left:-5px;text-shadow:0 0 10px rgba(255,255,255,0.08);--init-r:-8deg;transform:rotate(-8deg);animation:wmFadeIn 0.7s ease-out 0.1s forwards, wmOrbit 16s linear 0.8s infinite;}
+.wm-studio{font-size:20px;font-weight:700;color:rgba(255,255,255,0.25);letter-spacing:2px;top:18px;left:90px;text-shadow:0 0 8px rgba(255,255,255,0.06);--init-r:5deg;transform:rotate(5deg);animation:wmFadeIn 0.7s ease-out 0.3s forwards, wmOrbit 16s linear 1s infinite;}
+.wm-brow{font-size:32px;font-weight:300;color:rgba(255,255,255,0.3);letter-spacing:4px;top:8px;left:180px;text-shadow:0 0 10px rgba(255,255,255,0.08);--init-r:-3deg;transform:rotate(-3deg);animation:wmFadeIn 0.7s ease-out 0.5s forwards, wmOrbit 16s linear 1.2s infinite;}
+@keyframes wmFadeIn{
+  from{opacity:0;transform:translateY(12px) rotate(0deg);}
+  to{opacity:1;transform:translateY(0) rotate(var(--init-r, 0deg));}
+}
+@keyframes titleFadeIn{
+  from{opacity:0;transform:translateY(8px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@keyframes wmOrbit{
+  0%{transform:rotate(-5deg) translate(0,0);}
+  12.5%{transform:rotate(-2deg) translate(5px,-6px);}
+  25%{transform:rotate(0deg) translate(9px,-3px);}
+  37.5%{transform:rotate(2deg) translate(7px,3px);}
+  50%{transform:rotate(5deg) translate(0,7px);}
+  62.5%{transform:rotate(3deg) translate(-7px,4px);}
+  75%{transform:rotate(0deg) translate(-9px,0);}
+  87.5%{transform:rotate(-2deg) translate(-5px,-5px);}
+  100%{transform:rotate(-5deg) translate(0,0);}
+}
+
+/* Filter tabs */
+.filter-bar{display:flex;gap:8px;padding:0 20px 16px;overflow-x:auto;}
+.filter-bar::-webkit-scrollbar{display:none;}
+.filter-tag{flex-shrink:0;padding:7px 16px;border-radius:20px;border:1px solid rgba(0,0,0,0.06);background:transparent;font-size:11px;color:rgba(0,0,0,0.35);cursor:pointer;font-family:inherit;letter-spacing:0.5px;transition:all 0.2s;font-weight:300;}
+.filter-tag.active{background:#1A1A1A;color:#fff;border-color:#1A1A1A;font-weight:400;}
+
+/* Product grid */
+.product-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px 110px;}
+.prod-card{border-radius:12px;overflow:hidden;background:#fff;cursor:pointer;text-decoration:none;display:block;border:1px solid rgba(0,0,0,0.03);transition:transform 0.2s;}
+.prod-card:active{transform:scale(0.97);}
+.prod-card .thumb{width:100%;height:150px;overflow:hidden;background:#EDEBE8;position:relative;}
+.prod-card .thumb img{width:100%;height:100%;object-fit:cover;}
+.prod-card .thumb .tag{position:absolute;top:8px;left:8px;background:rgba(0,0,0,0.6);color:#fff;font-size:8px;font-weight:500;padding:3px 8px;border-radius:10px;letter-spacing:0.5px;backdrop-filter:blur(4px);}
+.prod-card .thumb .tag.hot{background:rgba(200,90,58,0.8);}
+.prod-card .thumb .placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+.prod-card .thumb .placeholder svg{width:32px;height:32px;color:rgba(0,0,0,0.08);stroke-width:1;}
+.prod-card .info{padding:12px;}
+.prod-card .pname{font-size:12px;font-weight:400;color:#1A1A1A;letter-spacing:0.5px;margin-bottom:3px;}
+.prod-card .psub{font-size:10px;color:rgba(0,0,0,0.25);font-weight:300;margin-bottom:6px;}
+.prod-card .pprice{font-size:15px;color:#1A1A1A;font-weight:600;letter-spacing:0.3px;margin-top:4px;}
+
+/* Featured product - full width card */
+.featured{grid-column:1/-1;border-radius:12px;overflow:hidden;background:#fff;cursor:pointer;text-decoration:none;display:flex;border:1px solid rgba(0,0,0,0.03);transition:transform 0.2s;}
+.featured:active{transform:scale(0.98);}
+.featured .thumb{width:150px;height:130px;overflow:hidden;background:#1A1A1A;flex-shrink:0;}
+.featured .thumb img{width:100%;height:100%;object-fit:cover;opacity:0.92;}
+.featured .info{flex:1;padding:16px;display:flex;flex-direction:column;justify-content:center;}
+.featured .badge{display:inline-flex;padding:3px 10px;background:#F0EFED;border-radius:10px;font-size:8px;color:rgba(0,0,0,0.4);letter-spacing:1px;margin-bottom:8px;font-weight:400;align-self:flex-start;}
+.featured .pname{font-size:14px;font-weight:300;color:#1A1A1A;letter-spacing:2px;margin-bottom:4px;}
+.featured .psub{font-size:10px;color:rgba(0,0,0,0.3);font-weight:300;margin-bottom:8px;line-height:1.5;}
+.featured .arrow{font-size:11px;color:rgba(0,0,0,0.25);letter-spacing:1px;}
+
+/* Tab bar */
+.tab-bar{position:absolute;bottom:0;left:0;right:0;height:83px;padding-bottom:28px;display:flex;align-items:center;justify-content:space-around;background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,0.04);}
+.tab-item{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;text-decoration:none;color:inherit;}
+.tab-item span{text-decoration:none;}
+.tab-icon{width:22px;height:22px;background-size:contain;background-repeat:no-repeat;background-position:center;}
+.tab-item.active span{color:#1A1A1A;font-size:10px;font-weight:400;letter-spacing:0.5px;}
+.tab-item:not(.active) span{color:rgba(0,0,0,0.25);font-size:10px;font-weight:400;letter-spacing:0.5px;}
+.tab-item.active .tab-icon{opacity:0.8;}
+.tab-item:not(.active) .tab-icon{opacity:0.2;filter:grayscale(1);}
+.icon-home{background-image:url("../uploads/image_1782813901351_114p3r6.png");}
+.icon-cases{background-image:url("../uploads/image_1782813901352_trz9vsr.png");}
+.icon-moments{background-image:url("../uploads/image_1782813901352_i5twl8j.png");}
+.icon-class{background-image:url("../uploads/image_1782813901352_mdf49kf.png");}
+.icon-me{background-image:url("../uploads/image_1782710209961_sv3yqm4.png");}
+</style>
+</head>
+<body>
+<div class="phone-frame"><div class="phone-screen">
+
+<div class="top-nav">
+<button class="back" onclick="history.back()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="15 18 9 12 15 6"/></svg></button>
+<div class="nav-title">全部产品</div>
+</div>
+
+<div class="page-header">
+<div class="wm-wrap">
+<span class="wm wm-ali">ALI LAOXI</span>
+<span class="wm wm-studio">STUDIO</span>
+<span class="wm wm-brow">bROW</span>
+</div>
+<div class="page-title">全部产品</div>
+</div>
+
+<div class="filter-bar" id="catBar">
+<button class="filter-tag active" data-cat="全部" onclick="switchFilter(this)">全部</button>
+<button class="filter-tag" data-cat="无创洗眉机" onclick="switchFilter(this)">无创洗眉机</button>
+<button class="filter-tag" data-cat="二氧化碳点阵" onclick="switchFilter(this)">二氧化碳点阵</button>
+<button class="filter-tag" data-cat="超皮秒" onclick="switchFilter(this)">超皮秒</button>
+<button class="filter-tag" data-cat="脱毛仪" onclick="switchFilter(this)">脱毛仪</button>
+<button class="filter-tag" data-cat="其他产品" onclick="switchFilter(this)">其他产品</button>
+</div>
+
+<div class="product-grid" id="productGrid">
+
+<a class="prod-card" data-cat="无创洗眉机" href="07-product-detail.html">
+<div class="thumb" style="background:#fff;"><img src="../uploads/image_1782818527552_h3rmcpr.png" alt="SEE洗眉 mini"><div class="tag hot">热销</div></div>
+<div class="info"><div class="pname">SEE洗眉 mini</div><div class="psub">便携版 · 500W · 20万+发</div><div class="pprice">¥6,999</div></div>
+</a>
+<a class="prod-card" data-cat="无创洗眉机" href="07b-product-ultra.html">
+<div class="thumb" style="background:#fff;"><img src="../uploads/image_1782818527553_4x16tgr.png" alt="SEE洗眉 Ultra"><div class="tag">专业</div></div>
+<div class="info"><div class="pname">SEE洗眉 Ultra</div><div class="psub">专业版 · 800W · 50万+发</div><div class="pprice">¥8,299</div></div>
+</a>
+
+<div class="empty-state" id="emptyState" style="display:none;grid-column:1/-1;text-align:center;padding:60px 20px;">
+<div style="font-size:14px;color:rgba(0,0,0,0.25);font-weight:300;letter-spacing:1px;margin-bottom:6px;">暂无产品</div>
+<div style="font-size:11px;color:rgba(0,0,0,0.15);font-weight:300;">更多产品即将上线</div>
+</div>
+
+</div>
+
+<div class="tab-bar">
+<a class="tab-item" href="02-home.html"><div class="tab-icon icon-home"></div><span>首页</span></a>
+<a class="tab-item" href="03-cases.html"><div class="tab-icon icon-cases"></div><span>案例</span></a>
+<a class="tab-item" href="04-moments.html"><div class="tab-icon icon-moments"></div><span>朋友圈</span></a>
+<a class="tab-item" href="05-teaching.html"><div class="tab-icon icon-class"></div><span>教学</span></a>
+<a class="tab-item" href="06-profile.html"><div class="tab-icon icon-me"></div><span>我的</span></a>
+</div>
+
+</div></div>
+
+<script>
+function switchFilter(el){
+  document.querySelectorAll('#catBar .filter-tag').forEach(function(t){t.classList.remove('active');});
+  el.classList.add('active');
+  var cat=el.getAttribute('data-cat');
+  var cards=document.querySelectorAll('.prod-card');
+  var empty=document.getElementById('emptyState');
+  var visible=0;
+  cards.forEach(function(c){
+    if(cat==='全部'||c.getAttribute('data-cat')===cat){
+      c.style.display='';visible++;
+    }else{
+      c.style.display='none';
+    }
+  });
+  empty.style.display=visible===0?'':'none';
+}
+// Scroll parallax for watermark letters
+(function(){
+  var screen=document.querySelector('.phone-screen');
+  if(!screen)return;
+  var ali=document.querySelector('.wm-ali');
+  var studio=document.querySelector('.wm-studio');
+  var brow=document.querySelector('.wm-brow');
+  if(!ali||!studio||!brow)return;
+  screen.addEventListener('scroll',function(){
+    var y=screen.scrollTop;
+    var factor=y*0.15;
+    ali.style.marginTop=(factor*0.8)+'px';
+    studio.style.marginTop=(factor*1.2)+'px';
+    brow.style.marginTop=(factor*0.5)+'px';
+  },{passive:true});
+})();
+</script>
+</body>
+</html>

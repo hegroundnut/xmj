@@ -1,73 +1,86 @@
-<view class="member-page">
-  <navbar title="开通会员" back="{{true}}"/>
-
-  <!-- Hero -->
-  <view class="hero-section">
-    <text class="hero-brand">ALI LAOXI MEMBER</text>
-    <text class="hero-title">阿利老西会员</text>
-    <text class="hero-sub">解锁全部权益 · 持续学习成长</text>
+<view class="page">
+  <!-- Nav bar -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight + 10}}px;">
+    <view class="nav-close" bindtap="onClose">
+      <text class="nav-close-icon">✕</text>
+    </view>
+    <text class="nav-title">开通会员</text>
+    <view class="nav-placeholder"/>
   </view>
 
-  <!-- Plans -->
-  <view class="plans-section">
-    <view class="plans-grid">
-      <view class="plan-card {{activePlan === index ? 'active' : ''}}"
-        wx:for="{{plans}}" wx:key="id" wx:for-index="index"
-        bindtap="onPlanSelect" data-index="{{index}}">
-        <view class="plan-badge" wx:if="{{item.badge}}">{{item.badge}}</view>
-        <text class="plan-name">{{item.name}}</text>
-        <text class="plan-price"><text class="currency">¥</text>{{item.price}}</text>
-        <text class="plan-unit">{{item.unit}}</text>
-        <text class="plan-orig">¥{{item.original}}</text>
-        <text class="plan-save">{{item.save}}</text>
+  <scroll-view scroll-y class="content-area">
+    <!-- Hero -->
+    <view class="hero-section">
+      <text class="hero-brand">ALI LAOXI MEMBER</text>
+      <text class="hero-title">阿利老西会员</text>
+      <text class="hero-sub">解锁全部权益 · 持续学习成长</text>
+    </view>
+
+    <!-- Plans -->
+    <view class="plans-section">
+      <view class="plans-grid">
+        <view class="plan-card {{activePlan === index ? 'active' : ''}}"
+          wx:for="{{plans}}" wx:key="id" wx:for-index="index"
+          bindtap="onPlanSelect" data-index="{{index}}">
+          <view class="plan-badge" wx:if="{{item.badge}}">{{item.badge}}</view>
+          <text class="plan-name">{{item.name}}</text>
+          <view class="plan-price">
+            <text class="currency">¥</text>{{item.price}}
+          </view>
+          <text class="plan-unit">{{item.unit}}</text>
+          <text class="plan-orig">¥{{item.original}}</text>
+          <text class="plan-save" wx:if="{{item.save}}">{{item.save}}</text>
+        </view>
       </view>
     </view>
-  </view>
 
-  <!-- Benefits -->
-  <view class="benefits-section">
-    <text class="section-label">会员权益</text>
-    <view class="benefit-item" wx:for="{{plans[activePlan].benefits}}" wx:key="text">
-      <view class="benefit-check">
-        <text>✓</text>
+    <!-- Benefits -->
+    <view class="benefits-section">
+      <text class="benefits-title">会员权益</text>
+      <view class="benefit-item">
+        <view class="benefit-check"><text class="check-icon">✓</text></view>
+        <view>
+          <text class="benefit-text">全部课程免费学</text>
+          <text class="benefit-desc">128+精品课程，持续更新</text>
+        </view>
       </view>
-      <view class="benefit-content">
-        <text class="benefit-text">{{item.text}}</text>
-        <text class="benefit-desc">{{item.desc}}</text>
+      <view class="benefit-item">
+        <view class="benefit-check"><text class="check-icon">✓</text></view>
+        <view>
+          <text class="benefit-text">线下课程专属折扣</text>
+          <text class="benefit-desc">会员享8折优惠</text>
+        </view>
+      </view>
+      <view class="benefit-item">
+        <view class="benefit-check"><text class="check-icon">✓</text></view>
+        <view>
+          <text class="benefit-text">朋友圈发布权限</text>
+          <text class="benefit-desc">与同行交流分享经验</text>
+        </view>
+      </view>
+      <view class="benefit-item">
+        <view class="benefit-check"><text class="check-icon">✓</text></view>
+        <view>
+          <text class="benefit-text">专属社群与答疑</text>
+          <text class="benefit-desc">导师在线答疑，同行交流</text>
+        </view>
+      </view>
+      <view class="benefit-item">
+        <view class="benefit-check"><text class="check-icon">✓</text></view>
+        <view>
+          <text class="benefit-text">产品购买优惠</text>
+          <text class="benefit-desc">设备耗材会员专属价</text>
+        </view>
       </view>
     </view>
-  </view>
 
-  <!-- Payment method -->
-  <view class="payment-section">
-    <text class="section-label">支付方式</text>
-    <view class="payment-option {{paymentMethod === 'wechat' ? 'active' : ''}}"
-      bindtap="onPaymentSelect" data-method="wechat">
-      <view class="payment-icon wechat">
-        <text class="pay-icon-text">微</text>
-      </view>
-      <text class="payment-name">微信支付</text>
-      <view class="payment-radio {{paymentMethod === 'wechat' ? 'active' : ''}}"/>
-    </view>
-  </view>
+  </scroll-view>
 
-  <!-- Agreement -->
-  <view class="agreement">
-    <view class="checkbox {{agreed ? 'checked' : ''}}" bindtap="onToggleAgree">
-      <text wx:if="{{agreed}}">✓</text>
-    </view>
-    <text class="agreement-text">
-      同意<text class="agreement-link" bindtap="onViewAgreement" data-type="member">《会员服务协议》</text>和<text class="agreement-link" bindtap="onViewAgreement" data-type="privacy">《隐私政策》</text>
-    </text>
-  </view>
-
-  <!-- Pay button -->
+  <!-- Bottom bar -->
   <view class="bottom-bar">
     <button class="pay-btn" bindtap="onPay" disabled="{{paying}}">
-      ¥{{plans[activePlan].price}} · 立即开通
+      {{paying ? '支付中...' : '立即开通 · ¥' + plans[activePlan].price + '/' + plans[activePlan].name}}
     </button>
-    <text class="pay-note" wx:if="{{!isLogin}}">
-      <text class="pay-note-link" bindtap="onGoLogin">登录</text>后开通
-    </text>
+    <text class="pay-note">到期自动续费，可随时取消</text>
   </view>
 </view>

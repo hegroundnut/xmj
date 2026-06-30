@@ -1,48 +1,75 @@
-.member-page { background: #fff; min-height: 100vh; padding-bottom: 160rpx; }
+/* ===== Page ===== */
+.page { background: #fff; min-height: 100vh; position: relative; }
 
-.hero-section { padding: 48rpx 30rpx 40rpx; text-align: center; }
-.hero-brand { font-size: 20rpx; letter-spacing: 10rpx; color: rgba(0,0,0,0.25); display: block; margin-bottom: 16rpx; }
-.hero-title { font-size: 48rpx; font-weight: 300; color: #1A1A1A; letter-spacing: 6rpx; display: block; margin-bottom: 10rpx; }
-.hero-sub { font-size: 24rpx; color: rgba(0,0,0,0.35); display: block; }
+/* ===== Nav bar ===== */
+.nav-bar { display: flex; align-items: center; justify-content: space-between; padding: 0 40rpx 28rpx; }
+.nav-close { width: 64rpx; height: 64rpx; display: flex; align-items: center; justify-content: center; }
+.nav-close-icon { font-size: 40rpx; color: #1A1A1A; font-weight: 300; line-height: 1; }
+.nav-title { font-size: 30rpx; font-weight: 400; color: #1A1A1A; letter-spacing: 4rpx; }
+.nav-placeholder { width: 64rpx; }
 
-.plans-section { padding: 0 30rpx; margin-bottom: 40rpx; }
+/* ===== Content area ===== */
+.content-area { padding-bottom: 180rpx; }
+
+/* ===== Hero ===== */
+.hero-section { padding: 40rpx 40rpx 56rpx; text-align: center; }
+.hero-brand { font-size: 20rpx; letter-spacing: 10rpx; color: rgba(0,0,0,0.25); text-transform: uppercase; margin-bottom: 24rpx; font-weight: 300; display: block; }
+.hero-title { font-size: 48rpx; font-weight: 300; color: #1A1A1A; letter-spacing: 6rpx; margin-bottom: 12rpx; display: block; }
+.hero-sub { font-size: 24rpx; color: rgba(0,0,0,0.35); font-weight: 300; letter-spacing: 2rpx; display: block; }
+
+/* ===== Plans ===== */
+.plans-section { padding: 0 40rpx; margin-bottom: 48rpx; }
 .plans-grid { display: flex; gap: 20rpx; }
-.plan-card { flex: 1; padding: 36rpx 24rpx; border: 1px solid rgba(0,0,0,0.06); border-radius: 16rpx; text-align: center; position: relative; background: #fff; }
+.plan-card { flex: 1; padding: 40rpx 28rpx; border: 2rpx solid rgba(0,0,0,0.06); border-radius: 20rpx; text-align: center; position: relative; background: #fff; transition: all 0.2s; }
 .plan-card.active { border-color: #1A1A1A; background: #FAFAF8; }
-.plan-badge { position: absolute; top: -1px; left: 50%; transform: translateX(-50%); background: #1A1A1A; color: #fff; font-size: 18rpx; padding: 6rpx 24rpx; border-radius: 0 0 12rpx 12rpx; letter-spacing: 2rpx; }
-.plan-name { font-size: 24rpx; color: rgba(0,0,0,0.4); display: block; margin-bottom: 16rpx; margin-top: 16rpx; }
-.plan-price { font-size: 48rpx; font-weight: 300; color: #1A1A1A; display: block; }
-.currency { font-size: 26rpx; }
-.plan-unit { font-size: 20rpx; color: rgba(0,0,0,0.3); display: block; margin-bottom: 14rpx; }
-.plan-orig { font-size: 22rpx; color: rgba(0,0,0,0.2); text-decoration: line-through; display: block; margin-bottom: 10rpx; }
-.plan-save { font-size: 20rpx; color: #1A1A1A; background: #F0EFED; padding: 6rpx 20rpx; border-radius: 20rpx; display: inline-block; }
+.plan-badge { position: absolute; top: -2rpx; left: 50%; transform: translateX(-50%); background: #1A1A1A; color: #fff; font-size: 18rpx; padding: 6rpx 24rpx; border-radius: 0 0 12rpx 12rpx; letter-spacing: 2rpx; }
+.plan-name { font-size: 24rpx; color: rgba(0,0,0,0.4); font-weight: 300; margin-bottom: 20rpx; letter-spacing: 2rpx; margin-top: 16rpx; display: block; }
+.plan-price { font-size: 48rpx; font-weight: 300; color: #1A1A1A; letter-spacing: 2rpx; margin-bottom: 4rpx; }
+.currency { font-size: 26rpx; font-weight: 400; }
+.plan-unit { font-size: 20rpx; color: rgba(0,0,0,0.3); font-weight: 300; margin-bottom: 20rpx; display: block; }
+.plan-orig { font-size: 22rpx; color: rgba(0,0,0,0.2); text-decoration: line-through; font-weight: 300; margin-bottom: 12rpx; display: block; }
+.plan-save { font-size: 20rpx; color: #1A1A1A; background: #F0EFED; padding: 6rpx 20rpx; border-radius: 20rpx; display: inline-block; letter-spacing: 1rpx; }
 
-.benefits-section { padding: 0 30rpx; margin-bottom: 40rpx; }
-.section-label { font-size: 22rpx; letter-spacing: 6rpx; color: rgba(0,0,0,0.3); display: block; margin-bottom: 24rpx; }
-.benefit-item { display: flex; align-items: flex-start; gap: 20rpx; padding: 20rpx 0; border-bottom: 1px solid rgba(0,0,0,0.04); }
+/* ===== Benefits ===== */
+.benefits-section { padding: 0 40rpx; margin-bottom: 48rpx; }
+.benefits-title { font-size: 22rpx; letter-spacing: 6rpx; color: rgba(0,0,0,0.3); text-transform: uppercase; margin-bottom: 28rpx; font-weight: 400; display: block; }
+.benefit-item { display: flex; align-items: flex-start; gap: 24rpx; padding: 24rpx 0; border-bottom: 2rpx solid rgba(0,0,0,0.04); }
 .benefit-item:last-child { border-bottom: none; }
-.benefit-check { width: 40rpx; height: 40rpx; border-radius: 50%; background: #FAFAF8; border: 1px solid rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 22rpx; color: #1A1A1A; margin-top: 2rpx; }
-.benefit-content { flex: 1; }
-.benefit-text { font-size: 26rpx; color: #1A1A1A; font-weight: 500; display: block; }
-.benefit-desc { font-size: 22rpx; color: rgba(0,0,0,0.3); display: block; margin-top: 4rpx; }
+.benefit-check { width: 40rpx; height: 40rpx; border-radius: 50%; background: #FAFAF8; border: 2rpx solid rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.check-icon { font-size: 24rpx; color: #1A1A1A; font-weight: 600; }
+.benefit-text { font-size: 26rpx; color: #1A1A1A; font-weight: 400; letter-spacing: 1rpx; display: block; }
+.benefit-desc { font-size: 22rpx; color: rgba(0,0,0,0.3); font-weight: 300; display: block; }
 
-.payment-section { padding: 0 30rpx; margin-bottom: 32rpx; }
-.payment-option { display: flex; align-items: center; gap: 24rpx; padding: 28rpx; border: 1px solid rgba(0,0,0,0.06); border-radius: 12rpx; }
+/* ===== Payment ===== */
+.payment-section { padding: 0 40rpx; margin-bottom: 40rpx; }
+.payment-title { font-size: 22rpx; letter-spacing: 6rpx; color: rgba(0,0,0,0.3); text-transform: uppercase; margin-bottom: 28rpx; font-weight: 400; display: block; }
+.payment-options { display: flex; flex-direction: column; gap: 16rpx; }
+.payment-option { display: flex; align-items: center; gap: 28rpx; padding: 28rpx 32rpx; border: 2rpx solid rgba(0,0,0,0.06); border-radius: 16rpx; }
 .payment-option.active { border-color: #1A1A1A; background: #FAFAF8; }
-.payment-icon { width: 56rpx; height: 56rpx; border-radius: 10rpx; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.payment-icon { width: 56rpx; height: 56rpx; border-radius: 12rpx; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .payment-icon.wechat { background: #07C160; }
+.payment-icon.alipay { background: #1677FF; }
 .pay-icon-text { font-size: 28rpx; color: #fff; font-weight: 600; }
-.payment-name { flex: 1; font-size: 26rpx; color: #1A1A1A; }
-.payment-radio { width: 36rpx; height: 36rpx; border-radius: 50%; border: 3rpx solid rgba(0,0,0,0.15); }
-.payment-radio.active { border-color: #1A1A1A; background: #1A1A1A; }
+.payment-name { flex: 1; font-size: 26rpx; color: #1A1A1A; font-weight: 400; letter-spacing: 1rpx; }
+.payment-radio { width: 36rpx; height: 36rpx; border-radius: 50%; border: 3rpx solid rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; }
+.payment-radio.active { border-color: #1A1A1A; position: relative; }
+.payment-radio.active::after { content: ''; width: 20rpx; height: 20rpx; border-radius: 50%; background: #1A1A1A; }
+/* WeChat doesn't support ::after on view well, use inner element instead */
 
-.agreement { padding: 0 30rpx; margin-bottom: 24rpx; display: flex; align-items: flex-start; gap: 14rpx; }
-.checkbox { width: 32rpx; height: 32rpx; border: 3rpx solid rgba(0,0,0,0.15); border-radius: 6rpx; flex-shrink: 0; margin-top: 2rpx; display: flex; align-items: center; justify-content: center; font-size: 20rpx; color: #fff; }
+/* ===== Agreement ===== */
+.agreement { padding: 0 40rpx; margin-bottom: 32rpx; display: flex; align-items: flex-start; gap: 16rpx; }
+.checkbox { width: 32rpx; height: 32rpx; border: 3rpx solid rgba(0,0,0,0.15); border-radius: 6rpx; flex-shrink: 0; margin-top: 2rpx; display: flex; align-items: center; justify-content: center; }
 .checkbox.checked { background: #1A1A1A; border-color: #1A1A1A; }
-.agreement-text { font-size: 22rpx; color: rgba(0,0,0,0.35); line-height: 1.5; }
-.agreement-link { color: #1A1A1A; font-weight: 500; }
+.check-mark { font-size: 20rpx; color: #fff; font-weight: 600; }
+.agreement-text { font-size: 22rpx; color: rgba(0,0,0,0.35); line-height: 1.5; font-weight: 300; }
+.agreement-link { color: #1A1A1A; font-weight: 400; }
 
-.bottom-bar { padding: 0 30rpx; }
-.pay-btn { width: 100%; padding: 28rpx; background: #1A1A1A; color: #fff; border: none; border-radius: 48rpx; font-size: 30rpx; letter-spacing: 4rpx; }
-.pay-note { font-size: 20rpx; color: rgba(0,0,0,0.25); display: block; text-align: center; margin-top: 14rpx; }
-.pay-note-link { color: #1A1A1A; }
+/* ===== Bottom bar ===== */
+.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 180rpx; padding: 0 40rpx 56rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16rpx; background: rgba(255,255,255,0.95); border-top: 2rpx solid rgba(0,0,0,0.04); z-index: 100; }
+/* WeChat doesn't support backdrop-filter; omitted */
+.pay-btn { width: 100%; padding: 28rpx; background: #1A1A1A; color: #fff; border: none; border-radius: 48rpx; font-size: 30rpx; font-weight: 400; letter-spacing: 4rpx; line-height: 1.2; }
+.pay-note { font-size: 20rpx; color: rgba(0,0,0,0.25); font-weight: 300; display: block; }
+
+/* State */
+.state-box { display: flex; align-items: center; justify-content: center; height: 60vh; }
+.state-text { font-size: 28rpx; color: rgba(0,0,0,0.3); font-weight: 300; }

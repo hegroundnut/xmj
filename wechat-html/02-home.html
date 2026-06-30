@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>首页 - 阿利老西</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{margin:0;padding:40px 0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#F0EFED;font-family:"PingFang SC",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;}
+.phone-frame{width:375px;height:812px;border-radius:44px;overflow:hidden;background:#F8F7F5;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.08),0 1px 3px rgba(0,0,0,0.04);}
+.phone-screen{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;position:relative;}
+.phone-screen::-webkit-scrollbar{display:none;}
+.status-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 28px 0;height:44px;position:relative;z-index:5;}
+.status-time{font-size:15px;font-weight:500;color:#fff;mix-blend-mode:difference;}
+.status-icons{display:flex;gap:5px;align-items:center;}
+.status-icons svg{width:16px;height:16px;color:#fff;mix-blend-mode:difference;}
+.hero{margin:0;position:relative;height:280px;overflow:hidden;}
+.hero-scroll{display:flex;overflow-x:scroll;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;height:100%;}
+.hero-scroll::-webkit-scrollbar{display:none;}
+.hero-slide{flex-shrink:0;width:100%;height:100%;scroll-snap-align:center;position:relative;}
+.hero-slide img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.35) 100%);}
+.hero-text{position:absolute;bottom:32px;left:24px;right:24px;z-index:2;}
+.hero-brand{font-size:9px;font-weight:600;letter-spacing:5px;color:rgba(255,255,255,0.5);text-transform:lowercase;margin-bottom:8px;}
+.hero-title{font-size:32px;font-weight:300;color:#fff;letter-spacing:8px;margin-bottom:6px;text-shadow:0 2px 16px rgba(0,0,0,0.2);text-indent:8px;font-family:"PingFang SC",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;}
+.hero-sub{font-size:11px;color:rgba(255,255,255,0.55);letter-spacing:3px;font-weight:300;}
+.hero-sub .en-label{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:lowercase;margin-left:4px;opacity:0.7;}
+.hero-dots{position:absolute;bottom:16px;right:24px;display:flex;gap:6px;z-index:3;}
+.hero-dots .dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.3);}
+.hero-dots .dot.active{background:#fff;width:16px;border-radius:3px;}
+.products-row{display:flex;align-items:center;gap:12px;padding:18px 20px;background:#fff;border-bottom:1px solid rgba(0,0,0,0.04);}
+.prod-card{flex:1;position:relative;border-radius:10px;overflow:hidden;background:#F5F4F2;cursor:pointer;text-decoration:none;display:block;transition:transform 0.2s;}
+.prod-card:active{transform:scale(0.97);}
+.prod-thumb{width:100%;height:110px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#EDEBE8;}
+.prod-thumb img{width:100%;height:100%;object-fit:cover;}
+.prod-info{padding:8px 10px;background:#fff;}
+.prod-name{font-size:11px;font-weight:500;color:#1A1A1A;letter-spacing:0.5px;margin-bottom:2px;}
+.prod-sub{font-size:9px;color:rgba(0,0,0,0.3);font-weight:300;letter-spacing:0.3px;}
+.more-btn{flex-shrink:0;width:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;text-decoration:none;}
+.more-btn .icon{width:36px;height:36px;border-radius:50%;border:1px solid rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.more-btn .icon svg{width:14px;height:14px;color:rgba(0,0,0,0.35);stroke-width:1.5;}
+.more-btn .label{font-size:8px;color:rgba(0,0,0,0.3);letter-spacing:0.5px;text-align:center;line-height:1.3;}
+.more-btn:active .icon{background:rgba(0,0,0,0.04);}
+.section{padding:22px 20px;margin-bottom:0;background:#fff;}
+.section+.section{border-top:8px solid #F8F7F5;}
+.section-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;}
+.section-title-group{display:flex;flex-direction:column;}
+.section-title{font-size:18px;font-weight:300;color:#1A1A1A;letter-spacing:3px;}
+.section-title-en{font-size:9px;letter-spacing:3px;color:rgba(0,0,0,0.2);text-transform:lowercase;font-weight:600;margin-top:3px;}
+.section-more{font-size:11px;color:rgba(0,0,0,0.3);cursor:pointer;letter-spacing:1px;}
+.cases-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:4px;}
+.cases-scroll::-webkit-scrollbar{display:none;}
+.case-card{flex-shrink:0;width:155px;border-radius:8px;overflow:hidden;background:#F5F4F2;position:relative;}
+.case-img{height:125px;position:relative;overflow:hidden;}
+.case-img svg{width:100%;height:100%;}
+.case-tag{position:absolute;top:8px;left:8px;background:#1A1A1A;color:#fff;font-size:9px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:1px;}
+.case-tag.new{background:#C85A3A;}
+.case-info{padding:12px;}
+.case-info .name{font-size:12px;font-weight:500;color:#1A1A1A;margin-bottom:3px;letter-spacing:0.5px;}
+.case-info .meta{font-size:10px;color:rgba(0,0,0,0.3);font-weight:300;}
+.course-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid rgba(0,0,0,0.04);}
+.course-item:last-child{border-bottom:none;}
+.course-thumb{width:110px;height:72px;border-radius:6px;flex-shrink:0;overflow:hidden;position:relative;}
+.course-thumb svg{width:100%;height:100%;}
+.course-badge{position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.7);color:#fff;font-size:8px;padding:2px 7px;border-radius:10px;letter-spacing:0.5px;font-weight:500;}
+.course-info{flex:1;display:flex;flex-direction:column;justify-content:center;gap:5px;}
+.course-name{font-size:13px;font-weight:500;color:#1A1A1A;line-height:1.4;letter-spacing:0.5px;}
+.course-teacher{font-size:10px;color:rgba(0,0,0,0.3);font-weight:300;}
+.course-price-row{display:flex;align-items:center;gap:8px;}
+.course-price{font-size:14px;font-weight:600;color:#1A1A1A;}
+.course-price .orig{font-size:10px;color:rgba(0,0,0,0.25);font-weight:300;text-decoration:line-through;}
+.course-add{padding:6px 16px;border-radius:16px;background:#1A1A1A;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:auto;font-size:11px;color:#fff;font-weight:500;letter-spacing:1px;}
+.contact-card{background:#F5F4F2;border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:12px;}
+.contact-row{display:flex;align-items:center;gap:12px;}
+.contact-icon svg{width:16px;height:16px;color:rgba(0,0,0,0.3);stroke-width:1.2;}
+.contact-text{font-size:12px;color:#1A1A1A;letter-spacing:0.5px;}
+.contact-label{font-size:9px;color:rgba(0,0,0,0.25);font-weight:300;}
+.tab-bar{position:absolute;bottom:0;left:0;right:0;height:83px;padding-bottom:28px;display:flex;align-items:center;justify-content:space-around;background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,0.04);}
+.tab-item{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;}
+.tab-icon{width:22px;height:22px;background-size:contain;background-repeat:no-repeat;background-position:center;}
+.tab-item.active span{color:#1A1A1A;font-size:10px;font-weight:400;letter-spacing:0.5px;}
+.tab-item:not(.active) span{color:rgba(0,0,0,0.25);font-size:10px;font-weight:400;letter-spacing:0.5px;}
+.tab-item.active .tab-icon{opacity:0.8;}
+.tab-item:not(.active) .tab-icon{opacity:0.2;filter:grayscale(1);}
+.icon-home{background-image:url("../uploads/image_1782813901351_114p3r6.png");}
+.icon-cases{background-image:url("../uploads/image_1782813901352_trz9vsr.png");}
+.icon-moments{background-image:url("../uploads/image_1782813901352_i5twl8j.png");}
+.icon-class{background-image:url("../uploads/image_1782813901352_mdf49kf.png");}
+.icon-me{background-image:url("../uploads/image_1782710209961_sv3yqm4.png");}
+.content-area{padding-bottom:100px;}
+</style>
+</head>
+<body>
+<div class="phone-frame"><div class="phone-screen">
+<div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h20V2z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="6" width="18" height="12" rx="2"/><line x1="23" y1="13" x2="23" y2="11"/></svg></div></div>
+<div class="content-area">
+
+<div class="hero">
+<div class="hero-scroll" id="heroScroll">
+<div class="hero-slide"><img src="../uploads/image_1782818527552_e237ihk.jpg" alt=""><div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(90,80,70,0.15),rgba(60,55,50,0.55));"></div></div>
+<div class="hero-slide"><img src="../uploads/image_1782818527552_h3rmcpr.png" alt=""><div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(90,80,70,0.15),rgba(60,55,50,0.55));"></div></div>
+<div class="hero-slide"><img src="../uploads/image_1782818527553_4x16tgr.png" alt=""><div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(90,80,70,0.15),rgba(60,55,50,0.55));"></div></div>
+</div>
+<div class="hero-text">
+<div class="hero-brand">ALI LAOXI</div>
+<div class="hero-title">阿利老西</div>
+<div class="hero-sub">专业洗眉设备 · 第5代新品 <span class="en-label">NEW</span></div>
+</div>
+<div class="hero-dots" id="heroDots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+</div>
+
+<div class="products-row">
+<a class="prod-card" href="07-product-detail.html">
+<div class="prod-thumb"><img src="../uploads/image_1782818527552_h3rmcpr.png" alt="SEE洗眉 mini"></div>
+<div class="prod-info"><div class="prod-name">SEE洗眉 mini</div><div class="prod-sub">便携版 · 精准控能</div></div>
+</a>
+<a class="prod-card" href="07b-product-ultra.html">
+<div class="prod-thumb"><img src="../uploads/image_1782818527553_4x16tgr.png" alt="SEE洗眉 Ultra"></div>
+<div class="prod-info"><div class="prod-name">SEE洗眉 Ultra</div><div class="prod-sub">专业版 · 800W大功率</div></div>
+</a>
+<a class="more-btn" href="07a-products.html">
+<div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+<div class="label">更多<br>产品</div>
+</a>
+</div>
+
+<div class="section">
+<div class="section-header"><div class="section-title-group"><div class="section-title">精选案例</div><div class="section-title-en">SELECTED CASES</div></div><div class="section-more">查看全部 ›</div></div>
+<div class="cases-scroll">
+<div class="case-card"><div class="case-img"><svg viewBox="0 0 155 125" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="c1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#C8BFB4"/><stop offset="100%" stop-color="#A89E93"/></linearGradient></defs><rect width="155" height="125" fill="url(#c1)"/><circle cx="78" cy="50" r="22" fill="rgba(255,255,255,0.08)"/><rect x="30" y="85" width="95" height="0.5" fill="rgba(255,255,255,0.1)"/></svg><div class="case-tag">对比</div></div><div class="case-info"><div class="name">纹眉失败修复</div><div class="meta">李女士 · 3次治疗</div></div></div>
+<div class="case-card"><div class="case-img"><svg viewBox="0 0 155 125" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="c2" x1="0" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#B8AFA4"/><stop offset="100%" stop-color="#9A9188"/></linearGradient></defs><rect width="155" height="125" fill="url(#c2)"/><ellipse cx="78" cy="60" rx="35" ry="22" fill="rgba(255,255,255,0.06)"/></svg><div class="case-tag new">New</div></div><div class="case-info"><div class="name">老式纹眉淡化</div><div class="meta">张女士 · 2次治疗</div></div></div>
+<div class="case-card"><div class="case-img"><svg viewBox="0 0 155 125" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="c3" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#D0C7BC"/><stop offset="100%" stop-color="#B0A79C"/></linearGradient></defs><rect width="155" height="125" fill="url(#c3)"/><rect x="35" y="25" width="85" height="75" rx="4" fill="rgba(255,255,255,0.05)"/></svg><div class="case-tag">对比</div></div><div class="case-info"><div class="name">眉形重塑设计</div><div class="meta">王先生 · 4次治疗</div></div></div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-header"><div class="section-title-group"><div class="section-title">热门课程</div><div class="section-title-en">HOT COURSES</div></div><div class="section-more">查看全部 ›</div></div>
+<div>
+<div class="course-item"><div class="course-thumb"><svg viewBox="0 0 110 72" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="t1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#D4CDC4"/><stop offset="100%" stop-color="#BEB7AE"/></linearGradient></defs><rect width="110" height="72" fill="url(#t1)"/><circle cx="55" cy="36" r="14" fill="rgba(0,0,0,0.04)"/><polygon points="51,29 63,36 51,43" fill="rgba(0,0,0,0.06)"/></svg><div class="course-badge">入门</div></div><div class="course-info"><div class="course-name">零基础洗眉入门全阶</div><div class="course-teacher">王美学老师 · 12课时</div><div class="course-price-row"><div class="course-price">¥9.9 <span class="orig">¥99</span></div><div class="course-add">购买</div></div></div></div>
+<div class="course-item"><div class="course-thumb"><svg viewBox="0 0 110 72" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="t2" x1="0" y1="0" x2="0.8" y2="1"><stop offset="0%" stop-color="#C8C1B8"/><stop offset="100%" stop-color="#B0A9A0"/></linearGradient></defs><rect width="110" height="72" fill="url(#t2)"/><rect x="20" y="15" width="70" height="42" rx="3" fill="rgba(0,0,0,0.04)"/></svg><div class="course-badge">进阶</div></div><div class="course-info"><div class="course-name">高级眉形设计精讲</div><div class="course-teacher">张医生 · 8课时</div><div class="course-price-row"><div class="course-price">¥9.9 <span class="orig">¥129</span></div><div class="course-add">购买</div></div></div></div>
+<div class="course-item"><div class="course-thumb"><svg viewBox="0 0 110 72" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="t3" x1="0.3" y1="0" x2="0.7" y2="1"><stop offset="0%" stop-color="#BEB7AE"/><stop offset="100%" stop-color="#A6A098"/></linearGradient></defs><rect width="110" height="72" fill="url(#t3)"/><circle cx="55" cy="36" r="18" fill="rgba(0,0,0,0.03)"/><circle cx="55" cy="36" r="8" fill="rgba(0,0,0,0.04)"/></svg><div class="course-badge">New</div></div><div class="course-info"><div class="course-name">色素学与应用实战</div><div class="course-teacher">李教授 · 6课时</div><div class="course-price-row"><div class="course-price">¥9.9 <span class="orig">¥89</span></div><div class="course-add">购买</div></div></div></div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-header"><div class="section-title-group"><div class="section-title">联系我们</div><div class="section-title-en">CONTACT US</div></div></div>
+<div class="contact-card">
+<div class="contact-row"><div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><div class="contact-text">400-888-9999</div><div class="contact-label">客服热线</div></div></div>
+<div class="contact-row"><div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><div><div class="contact-text">微信号: alilaoxi_official</div><div class="contact-label">微信客服</div></div></div>
+<div class="contact-row"><div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="contact-text">周一至周六 10:00-19:30</div><div class="contact-label">营业时间</div></div></div>
+</div>
+</div>
+
+</div>
+
+<div class="tab-bar">
+<div class="tab-item active"><div class="tab-icon icon-home"></div><span>首页</span></div>
+<div class="tab-item"><div class="tab-icon icon-cases"></div><span>案例</span></div>
+<div class="tab-item"><div class="tab-icon icon-moments"></div><span>朋友圈</span></div>
+<div class="tab-item"><div class="tab-icon icon-class"></div><span>教学</span></div>
+<div class="tab-item"><div class="tab-icon icon-me"></div><span>我的</span></div>
+</div>
+</div></div>
+<script>
+(function(){
+  var s=document.getElementById('heroScroll'),d=document.getElementById('heroDots');
+  if(!s||!d)return;
+  s.addEventListener('scroll',function(){
+    var w=s.scrollWidth/3,idx=Math.round(s.scrollLeft/w);
+    var dots=d.querySelectorAll('.dot');
+    dots.forEach(function(el,i){el.classList.toggle('active',i===idx);if(i===idx){el.style.width='16px';el.style.borderRadius='3px';}else{el.style.width='5px';el.style.borderRadius='50%';}});
+  });
+})();
+</script>
+</body>
+</html>

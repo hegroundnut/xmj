@@ -1,0 +1,29 @@
+<view class="page">
+  <!-- Nav bar -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight + 10}}px;">
+    <view class="nav-back" bindtap="onBack">
+      <text class="nav-back-icon">‹</text>
+    </view>
+    <text class="nav-title">我的评论</text>
+    <view class="nav-right"/>
+  </view>
+
+  <!-- States -->
+  <view class="state-box" wx:if="{{loading}}">
+    <text class="state-text">加载中...</text>
+  </view>
+  <view class="empty-hint" wx:elif="{{!loading && list.length === 0}}">
+    <text>暂无评论记录</text>
+  </view>
+
+  <!-- Comment list -->
+  <view class="comment-list" wx:else>
+    <view class="comment-item" wx:for="{{list}}" wx:key="id">
+      <text class="comment-content">{{item.content}}</text>
+      <view class="comment-meta">
+        <text class="comment-target">{{item.target_type === 'moment' ? '帖子评论' : '案例评论'}}</text>
+        <text class="comment-time">{{item.add_time || item.create_time}}</text>
+      </view>
+    </view>
+  </view>
+</view>

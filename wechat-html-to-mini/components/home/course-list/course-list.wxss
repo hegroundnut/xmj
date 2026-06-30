@@ -1,0 +1,4 @@
+.section-block { background: #fff; margin: 12rpx 20rpx; border-radius: 12rpx; padding: 24rpx; }
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20rpx; }
+.section-title { font-size: 32rpx; font-weight: 500; }
+.section-more { font-size: 26rpx; color: #999; }

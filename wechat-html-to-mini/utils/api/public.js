@@ -24,12 +24,16 @@ function getUserAgreement(type) {
   return api.get('get_agreement/' + type, {}, { noAuth: true })
 }
 
+function getProductCategories() {
+  return api.get('category/product', {}, { noAuth: true })
+}
+
 function getProductList(params) {
   return api.get('product/list', params || {}, { noAuth: true })
 }
 
 function getProductDetail(id) {
-  return api.get('product/detail/' + id, {}, { noAuth: true })
+  return api.get('product/info', {}, { noAuth: true })
 }
 
-module.exports = { authType, authLogin, routineBindingPhone, phoneLogin, silenceAuth, getUserAgreement, getProductList, getProductDetail }
+module.exports = { authType, authLogin, routineBindingPhone, phoneLogin, silenceAuth, getUserAgreement, getProductCategories, getProductList, getProductDetail }

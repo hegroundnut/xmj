@@ -1,0 +1,8 @@
+<template name="home-nav-icons">
+  <view class="nav-icons" wx:if="{{data.items && data.items.length}}">
+    <view class="nav-icon-item" wx:for="{{data.items}}" wx:key="index" bindtap="onNavTap" data-link="{{item.link}}">
+      <image src="{{item.icon}}" mode="aspectFit" class="nav-icon-img"/>
+      <text class="nav-icon-text">{{item.text}}</text>
+    </view>
+  </view>
+</template>

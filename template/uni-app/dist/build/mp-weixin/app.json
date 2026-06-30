@@ -1,11 +1,18 @@
 {
   "pages": [
-    "pages/teaching/home/index",
-    "pages/guide/index",
-    "pages/teaching/product/index",
-    "pages/teaching/case/index",
-    "pages/teaching/course/index",
-    "pages/teaching/offline/index"
+    "pages/home/index",
+    "pages/case/index",
+    "pages/moment/index",
+    "pages/moment/detail",
+    "pages/moment/publish",
+    "pages/teaching/index",
+    "pages/my/index",
+    "pages/my/favorites",
+    "pages/my/courses",
+    "pages/my/bookings",
+    "pages/my/comments",
+    "pages/my/posts",
+    "pages/guide/index"
   ],
   "subPackages": [
     {
@@ -33,33 +40,39 @@
     "backgroundColor": "#ffffff",
     "list": [
       {
-        "pagePath": "pages/teaching/home/index",
+        "pagePath": "pages/home/index",
         "iconPath": "static/images/1-001.png",
         "selectedIconPath": "static/images/1-002.png",
         "text": "首页"
       },
       {
-        "pagePath": "pages/teaching/case/index",
+        "pagePath": "pages/case/index",
         "iconPath": "static/images/2-001.png",
         "selectedIconPath": "static/images/2-002.png",
         "text": "案例"
       },
       {
-        "pagePath": "pages/teaching/course/index",
+        "pagePath": "pages/moment/index",
         "iconPath": "static/images/3-001.png",
         "selectedIconPath": "static/images/3-002.png",
+        "text": "朋友圈"
+      },
+      {
+        "pagePath": "pages/teaching/index",
+        "iconPath": "static/images/4-001.png",
+        "selectedIconPath": "static/images/4-002.png",
         "text": "教学"
       },
       {
-        "pagePath": "pages/teaching/offline/index",
-        "iconPath": "static/images/4-001.png",
-        "selectedIconPath": "static/images/4-002.png",
-        "text": "线下课"
+        "pagePath": "pages/my/index",
+        "iconPath": "static/images/5-001.png",
+        "selectedIconPath": "static/images/5-002.png",
+        "text": "我的"
       }
     ]
   },
   "preloadRule": {
-    "pages/teaching/home/index": {
+    "pages/home/index": {
       "network": "all",
       "packages": [
         "users"

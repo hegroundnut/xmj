@@ -1,0 +1,6 @@
+<view class="image-grid" wx:if="{{images && images.length}}">
+  <image wx:for="{{images}}" wx:key="index"
+    src="{{item}}" mode="aspectFill"
+    class="grid-image grid-image-{{column}}"
+    bindtap="onPreview" data-index="{{index}}" />
+</view>

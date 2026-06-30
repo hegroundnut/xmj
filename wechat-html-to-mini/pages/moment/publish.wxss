@@ -1,0 +1,53 @@
+/* ===== Page ===== */
+.page { background: #fff; min-height: 100vh; position: relative; padding-bottom: 120rpx; }
+
+/* ===== Nav bar ===== */
+.nav-bar { display: flex; align-items: center; justify-content: space-between; padding-left: 40rpx; padding-right: 40rpx; padding-bottom: 28rpx; }
+.nav-cancel { font-size: 28rpx; color: rgba(0,0,0,0.4); font-weight: 300; letter-spacing: 1rpx; }
+.nav-title { font-size: 30rpx; font-weight: 400; color: #1A1A1A; letter-spacing: 4rpx; }
+.nav-publish { padding: 14rpx 40rpx; background: #1A1A1A; border-radius: 40rpx; }
+.nav-publish text { font-size: 24rpx; color: #fff; font-weight: 400; letter-spacing: 2rpx; }
+
+/* ===== Editor ===== */
+.editor-section { padding: 48rpx 40rpx; }
+.text-area { width: 100%; min-height: 320rpx; font-size: 30rpx; color: #1A1A1A; line-height: 1.8; font-weight: 300; }
+.char-count { text-align: right; font-size: 22rpx; color: rgba(0,0,0,0.2); margin-top: 16rpx; font-weight: 300; display: block; }
+
+.divider { height: 2rpx; background: rgba(0,0,0,0.04); margin: 0 40rpx; }
+
+/* ===== Media section ===== */
+.media-section { padding: 40rpx; }
+.media-title { font-size: 22rpx; letter-spacing: 6rpx; color: rgba(0,0,0,0.3); text-transform: uppercase; margin-bottom: 28rpx; font-weight: 400; display: block; }
+.media-grid { display: flex; flex-wrap: wrap; gap: 12rpx; }
+.media-item { width: 200rpx; height: 200rpx; border-radius: 16rpx; background: #F0EFED; position: relative; }
+.media-item:nth-child(2) { background: #EBE9E6; }
+.media-item:nth-child(3) { background: #E8E6E3; }
+.media-img { width: 100%; height: 100%; border-radius: 16rpx; }
+.media-video-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 48rpx; color: rgba(0,0,0,0.15); }
+.media-remove { position: absolute; top: 12rpx; right: 12rpx; width: 40rpx; height: 40rpx; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; }
+.media-remove text { font-size: 22rpx; color: #fff; }
+.media-add { width: 200rpx; height: 200rpx; border-radius: 16rpx; border: 2rpx dashed rgba(0,0,0,0.12); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12rpx; }
+.add-icon { font-size: 48rpx; color: rgba(0,0,0,0.2); line-height: 1; }
+.add-text { font-size: 20rpx; color: rgba(0,0,0,0.25); font-weight: 300; }
+
+/* ===== Options ===== */
+.options-section { padding: 0 40rpx 40rpx; }
+.option-item { display: flex; align-items: center; padding: 32rpx 0; border-bottom: 2rpx solid rgba(0,0,0,0.04); }
+.option-item:last-child { border-bottom: none; }
+.option-icon { width: 40rpx; font-size: 30rpx; margin-right: 28rpx; text-align: center; }
+.option-text { flex: 1; font-size: 26rpx; color: #1A1A1A; letter-spacing: 1rpx; }
+.option-value { font-size: 24rpx; color: rgba(0,0,0,0.3); font-weight: 300; margin-right: 12rpx; }
+.option-arrow { font-size: 28rpx; color: rgba(0,0,0,0.15); }
+
+/* ===== Member notice ===== */
+.member-notice { margin: 0 40rpx 40rpx; padding: 32rpx; background: #FAFAF8; border: 2rpx solid rgba(0,0,0,0.04); border-radius: 16rpx; display: flex; align-items: flex-start; gap: 24rpx; }
+.notice-icon { font-size: 36rpx; color: rgba(0,0,0,0.25); flex-shrink: 0; }
+.notice-text { flex: 1; display: flex; flex-direction: column; gap: 8rpx; }
+.notice-text text { font-size: 24rpx; color: rgba(0,0,0,0.4); line-height: 1.5; font-weight: 300; }
+.notice-strong { color: #1A1A1A; font-weight: 400; }
+
+/* ===== Toolbar ===== */
+.toolbar { position: fixed; bottom: 0; left: 0; right: 0; padding: 12rpx 32rpx; display: flex; align-items: center; gap: 8rpx; background: rgba(255,255,255,0.95); border-top: 2rpx solid rgba(0,0,0,0.04); z-index: 100; }
+.tool-btn { width: 80rpx; height: 80rpx; display: flex; align-items: center; justify-content: center; border-radius: 8rpx; }
+.tool-btn text { font-size: 36rpx; }
+.tool-divider { width: 2rpx; height: 40rpx; background: rgba(0,0,0,0.06); margin: 0 8rpx; }

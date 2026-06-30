@@ -111,6 +111,7 @@ class MomentServices extends BaseServices
         if (!$moment || $moment['status'] == 0) {
             throw new ApiException('帖子不存在或已删除');
         }
+        $moment = $moment->toArray();
         if (isset($moment['images']) && is_string($moment['images'])) {
             $images = json_decode($moment['images'], true);
             $moment['images'] = is_array($images) ? array_map('set_file_url', $images) : [];

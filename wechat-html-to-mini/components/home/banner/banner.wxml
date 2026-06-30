@@ -1,0 +1,8 @@
+<template name="home-banner">
+  <swiper class="banner-swiper" indicator-dots="{{data.items.length > 1}}" autoplay interval="4000" circular>
+    <swiper-item wx:for="{{data.items}}" wx:key="index">
+      <image src="{{item.image}}" mode="aspectFill" class="banner-img"
+        bindtap="onBannerTap" data-link="{{item.link}}"/>
+    </swiper-item>
+  </swiper>
+</template>

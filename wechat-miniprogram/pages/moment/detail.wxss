@@ -16,4 +16,5 @@
 .comment-input { flex: 1; height: 64rpx; background: #f5f5f5; border-radius: 32rpx; padding: 0 24rpx; font-size: 26rpx; }
 .send-btn { width: 88rpx; text-align: center; font-size: 28rpx; color: #e93323; }
 .login-tip { flex: 1; text-align: center; font-size: 28rpx; color: #576b95; }
+.comment-empty { text-align: center; padding: 32rpx 0; color: #999; font-size: 26rpx; }
 .error-box { text-align: center; padding: 100rpx; color: #999; }

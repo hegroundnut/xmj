@@ -1,0 +1,35 @@
+<view class="splash-page">
+  <!-- Background with blur -->
+  <image src="{{bgImage}}" mode="aspectFill" class="bg-img"/>
+
+  <!-- Dark overlay -->
+  <view class="overlay"/>
+
+  <!-- Status bar -->
+  <view class="status-bar" style="padding-top: {{statusBarHeight + 6}}px;">
+    <text class="status-time">{{currentTime}}</text>
+    <view class="status-icons">
+      <text class="status-icon">◉</text>
+      <text class="status-icon">◉</text>
+      <text class="status-icon">◉</text>
+    </view>
+  </view>
+
+  <!-- Brand center -->
+  <view class="brand">
+    <text class="brand-en fade-up">ALI LAOXI</text>
+    <text class="brand-cn fade-up-d1">阿利老西</text>
+    <view class="divider fade-up-d2"/>
+    <text class="tagline fade-up-d3">专业洗眉 · 匠心教学</text>
+  </view>
+
+  <!-- Bottom line -->
+  <view class="bottom-line fade-in">
+    <text>PROFESSIONAL BROW STUDIO</text>
+  </view>
+
+  <!-- Enter button -->
+  <view class="enter-btn fade-in" bindtap="onEnter">
+    <text>进入应用</text>
+  </view>
+</view>

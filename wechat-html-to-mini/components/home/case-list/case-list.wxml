@@ -1,0 +1,14 @@
+<template name="home-case-list">
+  <view class="section-block" wx:if="{{data.cases && data.cases.length}}">
+    <view class="section-header">
+      <text class="section-title">{{data.title || '精选案例'}}</text>
+      <text class="section-more" bindtap="onGoCase">查看更多 ></text>
+    </view>
+    <scroll-view scroll-x class="case-scroll">
+      <view class="case-scroll-item" wx:for="{{data.cases}}" wx:key="id" bindtap="onCaseTap" data-id="{{item.id}}">
+        <image src="{{item.cover}}" mode="aspectFill" class="case-scroll-img"/>
+        <text class="case-scroll-title text-ellipsis">{{item.title}}</text>
+      </view>
+    </scroll-view>
+  </view>
+</template>

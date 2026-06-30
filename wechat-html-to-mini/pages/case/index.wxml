@@ -1,0 +1,83 @@
+<view class="page">
+  <!-- States -->
+  <view class="state-box" wx:if="{{loading}}"><text class="state-text">加载中...</text></view>
+  <view class="state-box" wx:elif="{{error}}" bindtap="loadData"><text class="state-text">加载失败，点击重试</text></view>
+
+  <block wx:if="{{!loading && !error}}">
+    <!-- Page header with watermark -->
+    <view class="page-header">
+      <view class="wm-wrap">
+        <text class="wm wm-ali">ALI LAOXI</text>
+        <text class="wm wm-studio">STUDIO</text>
+        <text class="wm wm-brow">bROW</text>
+      </view>
+      <text class="page-title">案例展示</text>
+    </view>
+
+    <!-- Type tabs -->
+    <view class="tabs">
+      <view class="tab-pill {{activeType === 'all' ? 'active' : ''}}" bindtap="onTypeChange" data-type="all">
+        <text class="en">all</text>
+        <text class="cn">全部</text>
+      </view>
+      <view class="tab-pill {{activeType === 'photo' ? 'active' : ''}}" bindtap="onTypeChange" data-type="photo">
+        <text class="en">photo</text>
+        <text class="cn">图片</text>
+      </view>
+      <view class="tab-pill {{activeType === 'video' ? 'active' : ''}}" bindtap="onTypeChange" data-type="video">
+        <text class="en">video</text>
+        <text class="cn">视频</text>
+      </view>
+    </view>
+
+    <!-- Category filter -->
+    <scroll-view scroll-x class="cat-bar">
+      <view class="cat-inner">
+        <text class="cat-tag {{activeCat === item ? 'active' : ''}}"
+          wx:for="{{categories}}" wx:key="*this"
+          bindtap="onCatChange" data-cat="{{item}}">{{item}}</text>
+      </view>
+    </scroll-view>
+
+    <!-- Carousel -->
+    <view class="carousel-wrap" wx:if="{{list.length}}">
+      <swiper class="carousel" bindchange="onCarouselChange" current="{{currentSlide}}"
+        previous-margin="60rpx" next-margin="60rpx">
+        <swiper-item wx:for="{{list}}" wx:key="id">
+          <view class="slide" bindtap="onCaseTap" data-id="{{item.id}}">
+            <view class="slide-media" style="background:{{item.bg || '#F0EFED'}};">
+              <image src="{{item.thumb || item.image || ''}}" mode="aspectFill" class="slide-thumb" wx:if="{{!item.is_video && (item.thumb || item.image)}}"/>
+              <view class="badge-video" wx:if="{{item.is_video}}">
+                <text class="play-icon">▶</text>
+              </view>
+              <text class="badge-duration" wx:if="{{item.is_video && item.duration}}">{{item.duration}}</text>
+              <text class="badge-compare" wx:if="{{!item.is_video}}">{{item.category_name || '对比'}}</text>
+            </view>
+            <view class="slide-info">
+              <text class="slide-name">{{item.name || item.title}}</text>
+              <text class="slide-meta">{{item.meta || item.desc || ''}}</text>
+            </view>
+            <view class="slide-actions">
+              <view class="action-btn {{liked[item.id] ? 'fav-active' : ''}}" catchtap="onToggleFav" data-id="{{item.id}}">
+                <text class="action-icon">{{liked[item.id] ? '♥' : '♡'}}</text>
+                <text>{{liked[item.id] ? '已收藏' : '收藏'}}</text>
+              </view>
+              <view class="action-btn save-btn" catchtap="onSaveAlbum" data-id="{{item.id}}">
+                <text class="action-icon">↓</text>
+                <text>保存至相册</text>
+              </view>
+            </view>
+          </view>
+        </swiper-item>
+      </swiper>
+      <view class="carousel-nav" wx:if="{{list.length > 1}}">
+        <view class="dots">
+          <view class="dot {{currentSlide === index ? 'active' : ''}}" wx:for="{{list.length > 7 ? 7 : list.length}}" wx:key="*this"/>
+        </view>
+        <text class="counter">{{currentSlide + 1}} / {{list.length}}</text>
+      </view>
+    </view>
+
+    <view class="empty-case" wx:if="{{!list.length}}"><text>暂无案例</text></view>
+  </block>
+</view>

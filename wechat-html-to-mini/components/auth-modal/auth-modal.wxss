@@ -1,0 +1,11 @@
+.auth-mask { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center; }
+.auth-dialog { width: 560rpx; background: #fff; border-radius: 16rpx; overflow: hidden; }
+.auth-header { display: flex; justify-content: space-between; align-items: center; padding: 32rpx; }
+.auth-title { font-size: 32rpx; font-weight: 500; }
+.auth-close { font-size: 40rpx; color: #999; }
+.auth-body { padding: 0 32rpx 32rpx; }
+.auth-desc { font-size: 28rpx; color: #666; line-height: 1.6; }
+.auth-footer { display: flex; border-top: 1rpx solid #f0f0f0; }
+.auth-btn { flex: 1; height: 88rpx; line-height: 88rpx; text-align: center; font-size: 30rpx; border: none; border-radius: 0; }
+.auth-cancel { background: #fff; color: #999; }
+.auth-confirm { background: #e93323; color: #fff; }

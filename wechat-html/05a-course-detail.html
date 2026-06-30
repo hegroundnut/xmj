@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>课程详情 - 阿利老西</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{margin:0;padding:40px 0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#F0EFED;font-family:"PingFang SC",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;}
+.phone-frame{width:375px;height:812px;border-radius:44px;overflow:hidden;background:#fff;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.08),0 1px 3px rgba(0,0,0,0.04);}
+.phone-screen{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;position:relative;}
+.phone-screen::-webkit-scrollbar{display:none;}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:50px 20px 14px;position:absolute;top:0;left:0;right:0;z-index:10;}
+.nav-back{width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;background:rgba(255,255,255,0.9);}
+.nav-back svg{width:20px;height:20px;color:#1A1A1A;stroke-width:1.5;}
+.nav-share{width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;background:rgba(255,255,255,0.9);}
+.nav-share svg{width:18px;height:18px;color:#1A1A1A;stroke-width:1.5;}
+.course-hero{width:100%;height:220px;background:#F0EFED;position:relative;}
+.hero-overlay{position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(transparent,rgba(255,255,255,0.8));}
+.hero-tag{position:absolute;top:16px;left:16px;background:#1A1A1A;color:#fff;font-size:10px;padding:4px 14px;border-radius:12px;letter-spacing:1px;}
+.hero-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.9);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.hero-play svg{width:20px;height:20px;color:#1A1A1A;margin-left:2px;}
+.info-section{padding:20px;}
+.info-title{font-size:20px;font-weight:300;color:#1A1A1A;letter-spacing:2px;line-height:1.4;margin-bottom:10px;}
+.info-sub{font-size:12px;color:rgba(0,0,0,0.35);line-height:1.6;font-weight:300;margin-bottom:16px;}
+.info-row{display:flex;gap:20px;margin-bottom:16px;}
+.info-badge{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(0,0,0,0.4);font-weight:300;}
+.info-badge svg{width:14px;height:14px;color:rgba(0,0,0,0.3);stroke-width:1.2;}
+.price-section{display:flex;flex-direction:column;gap:0;margin-bottom:20px;}
+.price-current{font-size:26px;font-weight:300;color:#1A1A1A;letter-spacing:1px;}
+.price-original{font-size:14px;color:rgba(0,0,0,0.25);text-decoration:line-through;font-weight:300;}
+.price-discount{font-size:10px;color:#fff;background:#1A1A1A;padding:3px 10px;border-radius:10px;letter-spacing:0.5px;}
+.price-label{font-size:11px;color:rgba(0,0,0,0.35);font-weight:300;margin-top:2px;}
+.member-badge{font-size:10px;color:#fff;background:#1A1A1A;padding:4px 12px;border-radius:12px;letter-spacing:0.5px;white-space:nowrap;}
+.member-notice{display:inline-block;border:1px solid rgba(0,0,0,0.08);border-radius:20px;padding:6px 14px;font-size:11px;color:rgba(0,0,0,0.4);font-weight:300;margin-top:10px;}
+.divider{height:1px;background:rgba(0,0,0,0.04);margin:0 20px;}
+.teacher-section{padding:20px;}
+.teacher-card{display:flex;align-items:center;gap:14px;}
+.teacher-avatar{width:48px;height:48px;border-radius:50%;background:#F0EFED;flex-shrink:0;}
+.teacher-info{flex:1;}
+.teacher-name{font-size:14px;font-weight:400;color:#1A1A1A;letter-spacing:0.5px;}
+.teacher-title{font-size:11px;color:rgba(0,0,0,0.3);font-weight:300;margin-top:2px;}
+.teacher-stats{font-size:11px;color:rgba(0,0,0,0.25);font-weight:300;margin-top:4px;}
+.curriculum-section{padding:20px;}
+.curriculum-title{font-size:11px;letter-spacing:3px;color:rgba(0,0,0,0.3);text-transform:uppercase;margin-bottom:16px;font-weight:400;}
+.lesson-item{display:flex;align-items:center;padding:13px 0;border-bottom:1px solid rgba(0,0,0,0.04);gap:14px;}
+.lesson-item:last-child{border-bottom:none;}
+.lesson-num{width:24px;height:24px;border-radius:50%;background:#FAFAF8;border:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;font-size:11px;color:rgba(0,0,0,0.35);flex-shrink:0;font-weight:300;}
+.lesson-info{flex:1;}
+.lesson-name{font-size:13px;font-weight:400;color:#1A1A1A;letter-spacing:0.5px;}
+.lesson-duration{font-size:11px;color:rgba(0,0,0,0.25);font-weight:300;margin-top:2px;}
+.lesson-lock{font-size:10px;color:rgba(0,0,0,0.25);display:flex;align-items:center;gap:3px;}
+.lesson-lock svg{width:12px;height:12px;color:rgba(0,0,0,0.2);stroke-width:1.5;}
+.lesson-free{font-size:10px;color:#1A1A1A;background:#FAFAF8;border:1px solid rgba(0,0,0,0.06);padding:2px 10px;border-radius:10px;letter-spacing:0.5px;}
+.review-section{padding:20px;}
+.review-title{font-size:11px;letter-spacing:3px;color:rgba(0,0,0,0.3);text-transform:uppercase;margin-bottom:16px;font-weight:400;}
+.review-item{padding:14px;background:#FAFAF8;border:1px solid rgba(0,0,0,0.04);border-radius:8px;margin-bottom:10px;}
+.review-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.review-avatar{width:28px;height:28px;border-radius:50%;background:#EBE9E6;}
+.review-name{font-size:12px;font-weight:400;color:#1A1A1A;}
+.review-stars{font-size:10px;color:rgba(0,0,0,0.3);letter-spacing:2px;}
+.review-text{font-size:12px;color:rgba(0,0,0,0.45);line-height:1.6;font-weight:300;}
+.bottom-bar{position:absolute;bottom:0;left:0;right:0;height:80px;padding:0 20px 28px;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,0.04);}
+.bottom-action{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;width:50px;}
+.bottom-action svg{width:20px;height:20px;color:rgba(0,0,0,0.35);stroke-width:1.2;}
+.bottom-action span{font-size:10px;color:rgba(0,0,0,0.3);font-weight:300;}
+.buy-btn{flex:1;padding:14px;background:#1A1A1A;color:#fff;border:none;border-radius:24px;font-size:14px;font-weight:400;cursor:pointer;font-family:inherit;letter-spacing:1px;}
+.content-area{padding-bottom:90px;}
+</style>
+</head>
+<body>
+<div class="phone-frame"><div class="phone-screen">
+<div class="course-hero">
+<div class="hero-tag">入门必修</div>
+<div class="hero-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+<div class="hero-overlay"></div>
+</div>
+<div class="nav-bar">
+<div class="nav-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="15 18 9 12 15 6"/></svg></div>
+<div class="nav-share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
+</div>
+<div class="content-area">
+<div class="info-section">
+<div class="info-title">零基础洗眉入门全阶课程</div>
+<div class="info-sub">从设备认知到实操上手，系统掌握洗眉核心技术，适合零基础美业从业者</div>
+<div class="info-row">
+<span class="info-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>12课时</span>
+<span class="info-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>1286人已学</span>
+<span class="info-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>4.9分</span>
+</div>
+<div class="price-section">
+<div style="display:flex;align-items:center;gap:10px;">
+<div style="display:flex;flex-direction:column;align-items:flex-start;">
+<span class="price-current">¥9.9</span>
+<span class="price-label">试听价</span>
+</div>
+<span class="member-badge">会员免费</span>
+<span class="price-original">¥99</span>
+</div>
+<div class="member-notice">开通会员可免费观看全部课程</div>
+</div>
+</div>
+<div class="divider"></div>
+<div class="teacher-section">
+<div class="teacher-card">
+<div class="teacher-avatar"></div>
+<div class="teacher-info"><div class="teacher-name">王美学老师</div><div class="teacher-title">资深洗眉专家 · 高级讲师</div><div class="teacher-stats">授课 36 门 · 学员 5000+</div></div>
+</div>
+</div>
+<div class="divider"></div>
+<div class="curriculum-section">
+<div class="curriculum-title">课程大纲 · 12课时</div>
+<div class="lesson-item"><div class="lesson-num">1</div><div class="lesson-info"><div class="lesson-name">洗眉行业概述与发展趋势</div><div class="lesson-duration">18分钟</div></div><span class="lesson-free">试看</span></div>
+<div class="lesson-item"><div class="lesson-num">2</div><div class="lesson-info"><div class="lesson-name">设备认知与基础操作</div><div class="lesson-duration">25分钟</div></div><span class="lesson-free">试看</span></div>
+<div class="lesson-item"><div class="lesson-num">3</div><div class="lesson-info"><div class="lesson-name">皮肤结构与色素代谢原理</div><div class="lesson-duration">22分钟</div></div><div class="lesson-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+<div class="lesson-item"><div class="lesson-num">4</div><div class="lesson-info"><div class="lesson-name">术前评估与方案设计</div><div class="lesson-duration">30分钟</div></div><div class="lesson-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+<div class="lesson-item"><div class="lesson-num">5</div><div class="lesson-info"><div class="lesson-name">参数调节与能量控制</div><div class="lesson-duration">28分钟</div></div><div class="lesson-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+<div class="lesson-item"><div class="lesson-num">6</div><div class="lesson-info"><div class="lesson-name">实操演示：基础清洗技术</div><div class="lesson-duration">35分钟</div></div><div class="lesson-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div></div>
+</div>
+<div class="divider"></div>
+<div class="review-section">
+<div class="review-title">学员评价</div>
+<div class="review-item"><div class="review-header"><div class="review-avatar"></div><div class="review-name">李学员</div><div class="review-stars">★★★★★</div></div><div class="review-text">零基础入门非常友好，王老师讲得很细致，实操演示很清楚。学完直接上手操作了。</div></div>
+<div class="review-item"><div class="review-header"><div class="review-avatar" style="background:#E8E6E3;"></div><div class="review-name">张美容师</div><div class="review-stars">★★★★★</div></div><div class="review-text">课程内容系统全面，特别是参数调节那节课非常实用。推荐同行朋友都在学。</div></div>
+</div>
+</div>
+<div class="bottom-bar">
+<div class="bottom-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><span>收藏</span></div>
+<div class="bottom-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg><span>分享</span></div>
+<button class="buy-btn">¥9.9 试听 · 会员免费</button>
+</div>
+</div></div>
+</body>
+</html>

@@ -1,32 +1,39 @@
-<view class="product-detail-page">
-  <navbar title="产品详情" back="{{true}}" transparent="{{true}}"/>
+<view class="page">
+  <!-- States -->
+  <view class="state-box" wx:if="{{loading}}"><text class="state-text">加载中...</text></view>
+  <view class="state-box" wx:elif="{{error && !product}}"><text class="state-text">加载失败，点击重试</text></view>
+  <view class="state-box" wx:elif="{{!product}}"><text class="state-text">产品不存在</text></view>
 
-  <loading wx:if="{{loading}}" show="{{loading}}"/>
-  <view wx:elif="{{error}}" class="error-box" bindtap="loadData">加载失败，点击重试</view>
-  <empty wx:elif="{{!product}}" text="产品不存在"/>
+  <block wx:if="{{product}}">
+    <!-- Top nav (transparent over hero) -->
+    <view class="top-nav" style="padding-top: {{statusBarHeight + 10}}px;">
+      <view class="nav-back" bindtap="onBack">
+        <text class="nav-back-icon">‹</text>
+      </view>
+      <text class="nav-title">产品详情</text>
+      <view class="nav-placeholder"/>
+    </view>
 
-  <block wx:else>
-    <!-- Hero swiper -->
+    <!-- Product hero swiper -->
     <view class="product-hero">
-      <swiper wx:if="{{product.images && product.images.length}}" bindchange="onSwiperChange" indicator-dots="{{false}}" class="hero-swiper">
-        <swiper-item wx:for="{{product.images}}" wx:key="*this">
+      <swiper bindchange="onSwiperChange" indicator-dots="{{false}}" class="hero-swiper" circular="{{false}}" current="{{currentSlide}}">
+        <swiper-item wx:for="{{product.images || []}}" wx:key="*this">
           <image src="{{item}}" mode="aspectFill" class="hero-slide-img" bindtap="onPreviewImage"/>
         </swiper-item>
       </swiper>
-      <view wx:else class="hero-placeholder"/>
       <view class="badge-row" wx:if="{{product.tags && product.tags.length}}">
-        <text class="badge {{item.hot ? 'hot' : ''}}" wx:for="{{product.tags}}" wx:key="*this">{{item}}</text>
+        <text class="badge {{index === 0 ? 'hot' : ''}}" wx:for="{{product.tags}}" wx:key="*this">{{item}}</text>
       </view>
       <text class="img-counter" wx:if="{{product.images && product.images.length}}">{{currentSlide + 1}} / {{product.images.length}}</text>
     </view>
 
-    <!-- Detail panel -->
+    <!-- Detail panel (slides up over hero) -->
     <view class="detail-panel">
       <view class="panel-handle"/>
 
       <!-- Product header -->
       <view class="prod-header">
-        <text class="brand" wx:if="{{product.brand}}">{{product.brand}}</text>
+        <text class="brand">{{product.brand || 'ALI LAOXI'}}</text>
         <text class="pname">{{product.name || product.title}}</text>
         <text class="en-name" wx:if="{{product.en_name}}">{{product.en_name}}</text>
         <text class="pdesc">{{product.description || product.desc}}</text>
@@ -40,25 +47,63 @@
         </view>
       </view>
 
+      <!-- Price section -->
+      <view class="price-section">
+        <view class="price-row">
+          <text class="price">¥{{product.price || '6,999'}}</text>
+          <text class="unit">{{product.price_unit || '包邮'}}</text>
+        </view>
+        <text class="price-note">{{product.price_note || '免费送货上门 · 1年质保 · 终身免费陪跑 · 一对一教学'}}</text>
+      </view>
+
+      <!-- Action bar -->
+      <view class="action-bar">
+        <button class="btn-primary" bindtap="onOpenQR">💬 联系客服</button>
+      </view>
+
       <view class="divider"/>
 
       <!-- Specs table -->
       <view class="spec-section" wx:if="{{product.spec_table && product.spec_table.length}}">
-        <text class="sec-title">技术规格</text>
+        <text class="sec-title">参数规格</text>
         <text class="sec-label">SPECIFICATIONS</text>
         <view class="spec-table">
           <view class="spec-row" wx:for="{{product.spec_table}}" wx:key="label">
-            <text class="spec-label">{{item.label}}</text>
-            <text class="spec-value">{{item.value}}</text>
+            <text class="spec-label-col">{{item.label}}</text>
+            <text class="spec-value-col">{{item.value}}</text>
           </view>
         </view>
       </view>
 
       <view class="divider"/>
 
+      <!-- Case gallery -->
+      <view class="case-gallery" wx:if="{{product.cases && product.cases.length}}">
+        <view class="case-gallery-header">
+          <view>
+            <text class="sec-title">真实案例</text>
+            <text class="sec-label case-sec-label">CASES</text>
+          </view>
+          <text class="case-gallery-more" bindtap="onMoreCases">查看全部 ›</text>
+        </view>
+        <scroll-view scroll-x class="case-scroll">
+          <view class="case-photo" wx:for="{{product.cases}}" wx:key="name" bindtap="onCaseTap" data-id="{{item.id}}">
+            <view class="photo" style="background:{{item.bg || 'linear-gradient(135deg, #C8BFB4, #A89E93)'}};">
+              <text class="case-label">{{item.tag || 'Before / After'}}</text>
+            </view>
+            <view class="case-meta">
+              <text class="case-name">{{item.name}}</text>
+              <text class="case-info">{{item.info}}</text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <view class="divider" wx:if="{{product.cases && product.cases.length}}"/>
+
       <!-- Features grid -->
-      <view class="feat-section" wx:if="{{product.features && product.features.length}}">
-        <text class="sec-title">核心优势</text>
+      <view class="feat-grid-section" wx:if="{{product.features && product.features.length}}">
+        <text class="sec-title">产品特色</text>
         <text class="sec-label">FEATURES</text>
         <view class="feat-grid">
           <view class="feat-card" wx:for="{{product.features}}" wx:key="name">
@@ -69,43 +114,64 @@
         </view>
       </view>
 
-      <view class="divider"/>
+      <view class="divider" wx:if="{{product.features && product.features.length}}"/>
 
-      <!-- Feature list -->
-      <view class="feat-list-section" wx:if="{{product.highlights && product.highlights.length}}">
-        <text class="sec-title">产品亮点</text>
+      <!-- Highlights list -->
+      <view class="highlights-section" wx:if="{{product.highlights && product.highlights.length}}">
+        <text class="sec-title">服务亮点</text>
         <text class="sec-label">HIGHLIGHTS</text>
         <view class="feat-list">
           <view class="feat-item" wx:for="{{product.highlights}}" wx:key="*this">
-            <text class="feat-dot">·</text>
+            <view class="feat-dot"/>
             <text class="feat-text">{{item}}</text>
           </view>
         </view>
       </view>
 
-      <view class="divider"/>
+      <view class="divider" wx:if="{{product.highlights && product.highlights.length}}"/>
 
-      <!-- Price -->
-      <view class="price-section" wx:if="{{product.price}}">
-        <view class="price-row">
-          <text class="price-val">¥{{product.price}}</text>
-          <text class="price-orig" wx:if="{{product.original_price}}">¥{{product.original_price}}</text>
-        </view>
-        <text class="price-note" wx:if="{{product.price_note}}">{{product.price_note}}</text>
+      <!-- Related products -->
+      <view class="related-section" wx:if="{{product.related && product.related.length}}">
+        <text class="sec-title">相关产品</text>
+        <text class="sec-label">RELATED</text>
+        <scroll-view scroll-x class="related-scroll">
+          <view class="related-card" wx:for="{{product.related}}" wx:key="id" bindtap="onRelatedTap" data-id="{{item.id}}">
+            <image src="{{item.thumb || ''}}" mode="aspectFill" class="related-img" wx:if="{{item.thumb}}"/>
+            <view class="related-placeholder" wx:else>
+              <text class="related-placeholder-icon" wx:if="{{!item.id}}">+</text>
+            </view>
+            <view class="rinfo">
+              <text class="rname">{{item.name}}</text>
+              <text class="rsub">{{item.sub}}</text>
+            </view>
+          </view>
+        </scroll-view>
       </view>
+
+      <view style="height: 120rpx;"/>
     </view>
 
-    <!-- Bottom bar -->
-    <view class="bottom-bar">
-      <view class="bar-action">
-        <text>💬</text>
-        <text class="bar-action-label">客服</text>
+    <!-- Lightbox -->
+    <view class="lightbox {{showLightbox ? 'show' : ''}}" wx:if="{{showLightbox}}">
+      <view class="lightbox-close" bindtap="onCloseLightbox">
+        <text class="lightbox-close-icon">✕</text>
       </view>
-      <view class="bar-action">
-        <text>🛒</text>
-        <text class="bar-action-label">收藏</text>
+      <swiper bindchange="onLightboxChange" class="lightbox-swiper" current="{{lightboxIndex}}" indicator-dots="{{false}}">
+        <swiper-item wx:for="{{product.images || []}}" wx:key="*this">
+          <image src="{{item}}" mode="aspectFit" class="lightbox-img"/>
+        </swiper-item>
+      </swiper>
+      <text class="lightbox-counter">{{lightboxIndex + 1}} / {{product.images.length}}</text>
+    </view>
+
+    <!-- QR Modal overlay -->
+    <view class="modal-overlay {{showQR ? 'show' : ''}}" catchtap="onCloseQR" wx:if="{{showQR}}">
+      <view class="modal-box">
+        <text class="modal-title">添加客服微信</text>
+        <text class="modal-sub">扫码添加阿利老西进行下单咨询</text>
+        <image src="{{product.qr_code || '/static/images/qr_placeholder.png'}}" mode="aspectFit" class="modal-qr"/>
+        <button class="modal-close-btn" bindtap="onCloseQRBtn">关闭</button>
       </view>
-      <button class="consult-btn" bindtap="onConsult">咨询 · 购买</button>
     </view>
   </block>
 </view>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例详情 - 图片 - 阿利老西</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{margin:0;padding:40px 0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#F0EFED;font-family:"PingFang SC",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;}
+.phone-frame{width:375px;height:812px;border-radius:44px;overflow:hidden;background:#fff;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.08),0 1px 3px rgba(0,0,0,0.04);}
+.phone-screen{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;position:relative;}
+.phone-screen::-webkit-scrollbar{display:none;}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:50px 20px 14px;position:relative;z-index:10;}
+.nav-back{width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;background:rgba(255,255,255,0.9);}
+.nav-back svg{width:20px;height:20px;color:#1A1A1A;stroke-width:1.5;}
+.nav-title{font-size:15px;font-weight:400;color:#1A1A1A;letter-spacing:2px;}
+.nav-share{width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;background:rgba(255,255,255,0.9);}
+.nav-share svg{width:18px;height:18px;color:#1A1A1A;stroke-width:1.5;}
+.hero-image{width:100%;height:300px;background:#F0EFED;position:relative;}
+.hero-label{position:absolute;bottom:16px;left:16px;background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);padding:5px 14px;border-radius:12px;font-size:10px;color:#1A1A1A;letter-spacing:2px;font-weight:400;}
+.compare-section{padding:24px 20px;}
+.compare-title{font-size:11px;letter-spacing:3px;color:rgba(0,0,0,0.3);text-transform:uppercase;margin-bottom:16px;font-weight:400;}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.compare-item{border-radius:8px;overflow:hidden;position:relative;}
+.compare-item .ph{width:100%;height:140px;background:#F0EFED;}
+.compare-item:nth-child(2) .ph{background:#EBE9E6;}
+.compare-item:nth-child(3) .ph{background:#E8E6E3;}
+.compare-item:nth-child(4) .ph{background:#F2F0ED;}
+.compare-label{position:absolute;top:8px;left:8px;background:rgba(255,255,255,0.9);padding:3px 10px;border-radius:10px;font-size:9px;color:#1A1A1A;letter-spacing:1px;}
+.info-section{padding:0 20px 20px;}
+.info-title{font-size:18px;font-weight:300;color:#1A1A1A;letter-spacing:2px;margin-bottom:12px;}
+.info-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.info-tag{padding:4px 14px;background:#FAFAF8;border:1px solid rgba(0,0,0,0.06);border-radius:12px;font-size:11px;color:rgba(0,0,0,0.4);font-weight:300;letter-spacing:0.5px;}
+.info-desc{font-size:13px;color:rgba(0,0,0,0.5);line-height:1.8;font-weight:300;margin-bottom:20px;}
+.treatment-card{background:#FAFAF8;border:1px solid rgba(0,0,0,0.04);border-radius:8px;padding:16px;margin-bottom:20px;}
+.treatment-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.04);}
+.treatment-row:last-child{border-bottom:none;}
+.treatment-label{font-size:12px;color:rgba(0,0,0,0.35);font-weight:300;}
+.treatment-value{font-size:12px;color:#1A1A1A;font-weight:400;}
+.teacher-section{padding:0 20px 24px;}
+.teacher-card{display:flex;align-items:center;gap:14px;padding:16px;background:#FAFAF8;border:1px solid rgba(0,0,0,0.04);border-radius:8px;}
+.teacher-avatar{width:44px;height:44px;border-radius:50%;background:#EBE9E6;flex-shrink:0;}
+.teacher-info{flex:1;}
+.teacher-name{font-size:13px;font-weight:400;color:#1A1A1A;letter-spacing:0.5px;}
+.teacher-title{font-size:11px;color:rgba(0,0,0,0.3);font-weight:300;margin-top:2px;}
+.teacher-follow{padding:6px 16px;border:1px solid #1A1A1A;border-radius:20px;font-size:11px;color:#1A1A1A;background:transparent;cursor:pointer;font-family:inherit;letter-spacing:1px;}
+.bottom-bar{position:absolute;bottom:0;left:0;right:0;height:70px;padding:0 20px 28px;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,0.04);}
+.action-icon{width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.action-icon svg{width:20px;height:20px;color:rgba(0,0,0,0.4);stroke-width:1.2;}
+.action-icon.liked svg{color:#1A1A1A;fill:#1A1A1A;}
+.action-count{font-size:10px;color:rgba(0,0,0,0.3);margin-top:-2px;}
+.consult-btn{flex:1;padding:12px;background:#1A1A1A;color:#fff;border:none;border-radius:24px;font-size:13px;font-weight:400;cursor:pointer;font-family:inherit;letter-spacing:2px;}
+.content-area{padding-bottom:80px;}
+</style>
+</head>
+<body>
+<div class="phone-frame"><div class="phone-screen">
+<div class="nav-bar">
+<div class="nav-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="15 18 9 12 15 6"/></svg></div>
+<div class="nav-title">案例详情</div>
+<div class="nav-share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
+</div>
+<div class="content-area">
+<div class="hero-image">
+<div class="hero-label">BEFORE / AFTER</div>
+</div>
+<div class="compare-section">
+<div class="compare-title">治疗过程对比</div>
+<div class="compare-grid">
+<div class="compare-item"><div class="ph"></div><div class="compare-label">治疗前</div></div>
+<div class="compare-item"><div class="ph"></div><div class="compare-label">第1次</div></div>
+<div class="compare-item"><div class="ph"></div><div class="compare-label">第2次</div></div>
+<div class="compare-item"><div class="ph"></div><div class="compare-label">完成后</div></div>
+</div>
+</div>
+<div class="info-section">
+<div class="info-title">纹眉失败修复案例</div>
+<div class="info-tags">
+<span class="info-tag">老式纹眉</span>
+<span class="info-tag">色素沉着</span>
+<span class="info-tag">3次治疗</span>
+</div>
+<div class="info-desc">客户于3年前做过老式纹眉，出现色素沉着变蓝的情况。经过3次精细化洗眉治疗，配合术后修复方案，色素完全代谢，眉部皮肤恢复自然状态。</div>
+<div class="treatment-card">
+<div class="treatment-row"><span class="treatment-label">治疗方式</span><span class="treatment-value">激光色素分解</span></div>
+<div class="treatment-row"><span class="treatment-label">治疗次数</span><span class="treatment-value">3次（间隔45天）</span></div>
+<div class="treatment-row"><span class="treatment-label">单次时长</span><span class="treatment-value">约20分钟</span></div>
+<div class="treatment-row"><span class="treatment-label">恢复周期</span><span class="treatment-value">7-10天</span></div>
+<div class="treatment-row"><span class="treatment-label">使用设备</span><span class="treatment-value">ALI-X5 Pro</span></div>
+</div>
+</div>
+<div class="teacher-section">
+<div class="teacher-card">
+<div class="teacher-avatar"></div>
+<div class="teacher-info"><div class="teacher-name">王美学老师</div><div class="teacher-title">资深洗眉专家 · 10年经验</div></div>
+<button class="teacher-follow">关注</button>
+</div>
+</div>
+<div class="comments-section" style="padding:0 20px 24px;">
+<div style="font-size:11px;letter-spacing:3px;color:rgba(0,0,0,0.3);margin-bottom:16px;font-weight:400;">📝 cOMMENTS · 8</div>
+<div style="display:flex;gap:12px;margin-bottom:18px;">
+<div style="width:32px;height:32px;border-radius:50%;background:#EBE9E6;flex-shrink:0;"></div>
+<div style="flex:1;"><div style="font-size:12px;font-weight:400;color:#1A1A1A;margin-bottom:3px;">李美容师</div><div style="font-size:13px;color:rgba(0,0,0,0.5);line-height:1.6;font-weight:300;">效果真的很好！色素完全代谢了，皮肤恢复得很自然。</div><div style="display:flex;gap:16px;margin-top:6px;"><span style="font-size:11px;color:rgba(0,0,0,0.25);font-weight:300;">2天前</span><span style="font-size:11px;color:rgba(0,0,0,0.25);font-weight:300;cursor:pointer;">回复</span><span style="font-size:11px;color:rgba(0,0,0,0.25);font-weight:300;">♡ 5</span></div></div>
+</div>
+<div style="display:flex;gap:12px;margin-bottom:18px;">
+<div style="width:32px;height:32px;border-radius:50%;background:#E8E6E3;flex-shrink:0;"></div>
+<div style="flex:1;"><div style="font-size:12px;font-weight:400;color:#1A1A1A;margin-bottom:3px;">张学员</div><div style="font-size:13px;color:rgba(0,0,0,0.5);line-height:1.6;font-weight:300;">请问这个案例用的是什么设备参数？能分享一下吗</div><div style="display:flex;gap:16px;margin-top:6px;"><span style="font-size:11px;color:rgba(0,0,0,0.25);font-weight:300;">1天前</span><span style="font-size:11px;color:rgba(0,0,0,0.25);font-weight:300;cursor:pointer;">回复</span><span style="font-size:11px;color:rgba(0,0,0,0.25);font-weight:300;">♡ 3</span></div></div>
+</div>
+<div style="display:flex;gap:12px;margin-bottom:18px;">
+<div style="width:32px;height:32px;border-radius:50%;background:#F2F0ED;flex-shrink:0;"></div>
+<div style="flex:1;"><div style="font-size:12px;font-weight:400;color:#1A1A1A;margin-bottom:3px;">王女士</div><div style="font-size:13px;color:rgba(0,0,0,0.5);line-height:1.6;font-weight:300;">这是我的案例！感谢王老师的专业治疗，非常满意！</div><div style="display:flex;gap:16px;margin-top:6px;"><span style="font-size:11px;color:rgba(0,0,0,0.25);font-weight:300;">3小时前</span><span style="font-size:11px;color:rgba(0,0,0,0.25);font-weight:300;cursor:pointer;">回复</span><span style="font-size:11px;color:rgba(0,0,0,0.25);font-weight:300;">♡ 1</span></div></div>
+</div>
+<div style="text-align:center;padding:12px 0;font-size:12px;color:rgba(0,0,0,0.3);cursor:pointer;font-weight:300;">查看更多评论 ›</div>
+</div>
+</div>
+<div class="bottom-bar">
+<div class="action-icon liked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+<div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
+<div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+<button class="consult-btn">咨询此案例</button>
+</div>
+</div></div>
+</body>
+</html>

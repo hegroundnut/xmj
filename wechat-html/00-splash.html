@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>阿利老西</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{margin:0;padding:40px 0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#E8E4DF;font-family:"PingFang SC",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;}
+.phone-frame{width:375px;height:812px;border-radius:44px;overflow:hidden;position:relative;box-shadow:0 24px 80px rgba(0,0,0,0.12),0 2px 6px rgba(0,0,0,0.06);}
+
+/* Background: blurred image */
+.bg-img{position:absolute;inset:-20px;z-index:1;}
+.bg-img img{width:calc(100% + 40px);height:calc(100% + 40px);object-fit:cover;object-position:center;filter:blur(25px);}
+
+/* Subtle dark overlay for text readability */
+.overlay{position:absolute;inset:0;z-index:2;background:rgba(0,0,0,0.08);}
+
+/* Subtle grain overlay */
+.grain{position:absolute;inset:0;z-index:3;opacity:0.5;pointer-events:none;mix-blend-mode:overlay;}
+.grain svg{width:100%;height:100%;}
+
+.status-bar{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:14px 28px 0;height:44px;}
+.status-time{font-size:15px;font-weight:400;color:rgba(255,255,255,0.5);}
+.status-icons{display:flex;gap:5px;align-items:center;}
+.status-icons svg{width:16px;height:16px;color:rgba(255,255,255,0.5);}
+
+.brand{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 32px;}
+
+.brand-en{font-size:10px;letter-spacing:8px;color:rgba(255,255,255,0.55);text-transform:uppercase;font-weight:300;margin-bottom:18px;text-indent:8px;}
+
+.brand-cn{font-family:"PingFang SC",sans-serif;font-size:32px;font-weight:200;color:#fff;letter-spacing:14px;text-indent:14px;line-height:1.3;margin-bottom:12px;text-shadow:0 1px 8px rgba(0,0,0,0.08);}
+
+.divider{width:28px;height:1px;background:rgba(255,255,255,0.35);margin-bottom:16px;}
+
+.tagline{font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:4px;font-weight:300;line-height:2;}
+
+.bottom-line{position:absolute;bottom:48px;left:50%;transform:translateX(-50%);z-index:5;}
+.bottom-line span{font-size:8px;letter-spacing:5px;color:rgba(255,255,255,0.22);text-transform:uppercase;font-weight:300;}
+
+.fade-up{animation:fadeUp 1.4s cubic-bezier(0.16,1,0.3,1) both;}
+.fade-up-d1{animation:fadeUp 1.4s cubic-bezier(0.16,1,0.3,1) 0.2s both;}
+.fade-up-d2{animation:fadeUp 1.4s cubic-bezier(0.16,1,0.3,1) 0.4s both;}
+.fade-up-d3{animation:fadeUp 1.4s cubic-bezier(0.16,1,0.3,1) 0.6s both;}
+.fade-in{animation:fadeIn 1.8s ease-out 0.1s both;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+</style>
+</head>
+<body>
+<div class="phone-frame">
+
+<div class="bg-img">
+<img src="../uploads/image_1782728586612_qf1pq8c.png" alt="">
+</div>
+
+<div class="overlay"></div>
+
+<div class="grain">
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#noise)" opacity="0.12"/></svg>
+</div>
+
+<div class="status-bar fade-in">
+<span class="status-time">9:41</span>
+<div class="status-icons">
+<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h20V2z"/></svg>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="6" width="18" height="12" rx="2"/><line x1="23" y1="13" x2="23" y2="11"/></svg>
+</div>
+</div>
+
+<div class="brand">
+<div class="brand-en fade-up">ALI LAOXI</div>
+<div class="brand-cn fade-up-d1">阿利老西</div>
+<div class="divider fade-up-d2"></div>
+<div class="tagline fade-up-d3">专业洗眉 · 匠心教学</div>
+</div>
+
+<div class="bottom-line fade-in"><span>PROFESSIONAL BROW STUDIO</span></div>
+
+</div>
+</body>
+</html>

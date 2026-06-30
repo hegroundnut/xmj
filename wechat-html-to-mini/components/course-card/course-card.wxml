@@ -1,0 +1,11 @@
+<view class="course-card" bindtap="onTap">
+  <image src="{{item.cover}}" mode="aspectFill" class="course-cover"/>
+  <view class="course-info">
+    <text class="course-title text-ellipsis">{{item.title}}</text>
+    <text class="course-desc text-ellipsis" wx:if="{{item.desc}}">{{item.desc}}</text>
+    <view class="course-footer">
+      <text class="course-price" wx:if="{{item.is_free_for_member === 1}}">会员免费</text>
+      <text class="course-price price-pay" wx:else>¥{{item.price || '9.90'}} 试听</text>
+    </view>
+  </view>
+</view>

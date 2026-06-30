@@ -5,6 +5,7 @@ Page({
   onLoad(options) {
     var app = getApp()
     this.setData({ isLogin: app.globalData.isLogin, isMember: app.globalData.isMember })
+    console.log('detail onLoad options.id:', options.id, 'type:', typeof options.id)
     if (options.id) this.loadData(options.id)
   },
   onShow() {
@@ -13,12 +14,20 @@ Page({
   },
   loadData(id) {
     var self = this
+    console.log('loadData called with id:', id, 'type:', typeof id)
     self.setData({ loading: true, error: false })
     momentApi.getMomentDetail(id).then(function(res) {
-      var moment = res.data || null
+      console.log('getMomentDetail success, res:', JSON.stringify(res))
+      var moment = res.data
+      if (!moment && res.msg && typeof res.msg === 'string' && res.msg.charAt(0) === '{') {
+        moment = JSON.parse(res.msg)
+      }
+      moment = moment || null
+      console.log('moment data:', JSON.stringify(moment))
       if (moment && !moment.comments) moment.comments = []
       self.setData({ moment: moment, loading: false })
-    }).catch(function() {
+    }).catch(function(err) {
+      console.log('getMomentDetail error:', JSON.stringify(err))
       self.setData({ loading: false, error: true })
     })
   },

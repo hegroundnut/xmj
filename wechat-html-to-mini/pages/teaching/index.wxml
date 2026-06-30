@@ -1,0 +1,92 @@
+<view class="page">
+  <!-- States -->
+  <view class="state-box" wx:if="{{loading}}"><text class="state-text">加载中...</text></view>
+  <view class="state-box" wx:elif="{{error}}" bindtap="loadData"><text class="state-text">加载失败，点击重试</text></view>
+
+  <block wx:if="{{!loading && !error}}">
+    <!-- Page header with watermark -->
+    <view class="page-header">
+      <view class="wm-wrap">
+        <text class="wm wm-class">CLASS</text>
+        <text class="wm wm-ali">ALI LAOXI</text>
+        <text class="wm wm-study">STUDY</text>
+      </view>
+      <text class="page-title">教学中心</text>
+    </view>
+
+    <!-- Member card -->
+    <view class="member-card">
+      <text class="member-watermark">ALI LAOXI</text>
+      <text class="member-deco" style="top:16px;right:20px;">BROW STUDIO</text>
+      <text class="member-deco" style="bottom:16px;left:24px;">EST. 2020</text>
+      <text class="member-deco" style="bottom:16px;right:20px;">HEFEI</text>
+      <view class="member-content">
+        <text class="member-label">ALI LAOXI MEMBER</text>
+        <text class="member-title">开通会员 · 全部课程免费学</text>
+        <text class="member-desc">解锁128+精品课程，持续更新</text>
+        <view class="member-btn" bindtap="onOpenMember">立即开通</view>
+      </view>
+    </view>
+
+    <!-- Tabs -->
+    <view class="tabs">
+      <view class="tab {{activeTab === 'course' ? 'active' : ''}}" bindtap="onTabChange" data-tab="course">
+        <text class="en">online</text>
+        <text class="cn">线上课程</text>
+      </view>
+      <view class="tab {{activeTab === 'offline' ? 'active' : ''}}" bindtap="onOfflineTap">
+        <text class="en">offline</text>
+        <text class="cn">线下培训</text>
+      </view>
+    </view>
+
+    <!-- Category filter -->
+    <scroll-view scroll-x class="cat-bar">
+      <view class="cat-inner">
+        <text class="cat-tag {{activeCat === item ? 'active' : ''}}"
+          wx:for="{{categories}}" wx:key="*this"
+          bindtap="onCatChange" data-cat="{{item}}">{{item}}</text>
+      </view>
+    </scroll-view>
+
+    <!-- Course list -->
+    <view class="course-list">
+      <view class="course-card" wx:for="{{filteredCourses}}" wx:key="id"
+        bindtap="onCourseTap" data-id="{{item.id}}">
+        <view class="course-thumb" style="background:{{item.bg || '#F0EFED'}};">
+          <image src="{{item.thumb || item.image || ''}}" mode="aspectFill" class="course-thumb-img" wx:if="{{item.thumb || item.image}}"/>
+          <text class="course-tag">{{item.category_name || '入门'}}</text>
+        </view>
+        <view class="course-info">
+          <text class="course-name">{{item.name || item.title}}</text>
+          <text class="course-desc">{{item.desc || item.description || ''}}</text>
+          <view class="course-bottom">
+            <view class="course-price">{{item.price || '¥9.9'}} <text class="orig">¥{{item.original || '99'}}</text></view>
+            <view class="course-bottom-right">
+              <text class="course-meta">{{item.students || item.enroll_count || 0}}人已学</text>
+              <view class="course-buy" catchtap="onBuyCourse" data-id="{{item.id}}">购买</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="empty-courses" wx:if="{{!filteredCourses.length}}">
+        <text>暂无课程</text>
+      </view>
+    </view>
+  </block>
+
+  <!-- QR Modal -->
+  <view class="modal-overlay {{showQR ? 'show' : ''}}" catchtap="onCloseQR" wx:if="{{showQR}}">
+    <view class="modal-card">
+      <view class="modal-close" bindtap="onCloseQR">✕</view>
+      <text class="modal-label">ALI LAOXI MEMBER</text>
+      <text class="modal-title">扫码添加阿利老西</text>
+      <view class="modal-qr">
+        <image src="/static/images/qr_placeholder.png" mode="aspectFit" class="modal-qr-img"/>
+      </view>
+      <text class="modal-desc">打开微信扫描二维码，添加<text class="modal-strong">阿利老西</text>\n即可咨询会员详情并下单</text>
+      <text class="modal-hint">长按识别二维码 · 添加微信好友</text>
+    </view>
+  </view>
+</view>

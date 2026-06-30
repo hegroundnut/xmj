@@ -1,0 +1,141 @@
+<view class="page">
+  <!-- States -->
+  <view class="state-box" wx:if="{{loading}}"><text class="state-text">加载中...</text></view>
+  <view class="state-box" wx:elif="{{error}}" bindtap="loadData"><text class="state-text">加载失败，点击重试</text></view>
+
+  <block wx:if="{{!loading && !error}}">
+    <!-- Hero swiper -->
+    <view class="hero">
+      <swiper bindchange="onSwiperChange" indicator-dots="{{false}}" class="hero-swiper" circular="{{true}}" wx:if="{{banners.length}}">
+        <swiper-item wx:for="{{banners}}" wx:key="*this">
+          <image src="{{item.image || ''}}" mode="aspectFill" class="hero-img" wx:if="{{item.image}}"/>
+          <view class="hero-overlay" style="background:{{item.bg || 'linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.35) 100%)'}}"/>
+        </swiper-item>
+      </swiper>
+      <!-- Hero text overlay -->
+      <view class="hero-text" wx:if="{{banners.length}}">
+        <text class="hero-brand">ALI LAOXI</text>
+        <text class="hero-title">阿利老西</text>
+        <text class="hero-sub">专业洗眉设备 · 第5代新品 <text class="en-label">NEW</text></text>
+      </view>
+      <!-- Hero dots -->
+      <view class="hero-dots" wx:if="{{banners.length > 1}}">
+        <view class="dot {{currentSlide === index ? 'active' : ''}}" wx:for="{{banners}}" wx:key="*this"/>
+      </view>
+      <!-- Hero placeholder when no banners -->
+      <view class="hero-placeholder" wx:if="{{!banners.length}}">
+        <view class="hero-overlay"/>
+        <view class="hero-text">
+          <text class="hero-brand">ALI LAOXI</text>
+          <text class="hero-title">阿利老西</text>
+          <text class="hero-sub">专业洗眉设备 · 第5代新品 <text class="en-label">NEW</text></text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Products row -->
+    <view class="products-row" wx:if="{{products.length}}">
+      <view class="prod-card" wx:for="{{products}}" wx:key="id" bindtap="onProductTap" data-id="{{item.id}}">
+        <view class="prod-thumb">
+          <image src="{{item.image || item.thumb || ''}}" mode="aspectFill" class="prod-thumb-img"/>
+        </view>
+        <view class="prod-info">
+          <text class="prod-name">{{item.name || item.title}}</text>
+          <text class="prod-sub">{{item.subtitle || item.desc || ''}}</text>
+        </view>
+      </view>
+      <view class="more-btn" bindtap="onMoreProducts">
+        <view class="more-icon"><text class="more-arrow">→</text></view>
+        <text class="more-label">更多\n产品</text>
+      </view>
+    </view>
+
+    <!-- Cases section -->
+    <view class="section" wx:if="{{cases.length}}">
+      <view class="section-header">
+        <view class="section-title-group">
+          <text class="section-title">精选案例</text>
+          <text class="section-title-en">SELECTED CASES</text>
+        </view>
+        <text class="section-more" bindtap="onMoreCases">查看全部 ›</text>
+      </view>
+      <scroll-view scroll-x class="cases-scroll">
+        <view class="cases-inner">
+          <view class="case-card" wx:for="{{cases}}" wx:key="name" bindtap="onCaseTap" data-id="{{item.id}}">
+            <view class="case-img" style="background:{{item.bg || 'linear-gradient(135deg, #C8BFB4, #A89E93)'}};">
+              <image src="{{item.thumb || ''}}" mode="aspectFill" class="case-thumb" wx:if="{{item.thumb}}"/>
+            </view>
+            <text class="case-tag {{item.is_new ? 'new' : ''}}">{{item.category_name || item.tag || '对比'}}</text>
+            <view class="case-info">
+              <text class="case-name">{{item.name}}</text>
+              <text class="case-meta">{{item.meta}}</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- Courses section -->
+    <view class="section" wx:if="{{courses.length}}">
+      <view class="section-header">
+        <view class="section-title-group">
+          <text class="section-title">热门课程</text>
+          <text class="section-title-en">HOT COURSES</text>
+        </view>
+        <text class="section-more" bindtap="onMoreCourses">查看全部 ›</text>
+      </view>
+      <view>
+        <view class="course-item" wx:for="{{courses}}" wx:key="id" bindtap="onCourseTap" data-id="{{item.id}}">
+          <view class="course-thumb" style="background:{{item.bg || '#F0EFED'}};">
+            <image src="{{item.thumb || ''}}" mode="aspectFill" class="course-thumb-img" wx:if="{{item.thumb}}"/>
+            <text class="course-badge">{{item.tag || '入门'}}</text>
+          </view>
+          <view class="course-info">
+            <text class="course-name">{{item.name || item.title}}</text>
+            <text class="course-teacher">{{item.teacher || '王美学老师'}} · {{item.lessons || 12}}课时</text>
+            <view class="course-price-row">
+              <text class="course-price">¥{{item.price}} <text class="orig">¥{{item.original || '99'}}</text></text>
+              <view class="course-add" bindtap="onBuyCourse" data-id="{{item.id}}">购买</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Contact section -->
+    <view class="section" wx:if="{{contact}}">
+      <view class="section-header">
+        <view class="section-title-group">
+          <text class="section-title">联系我们</text>
+          <text class="section-title-en">CONTACT US</text>
+        </view>
+      </view>
+      <view class="contact-card">
+        <view class="contact-row">
+          <text class="contact-icon">📞</text>
+          <view>
+            <text class="contact-text">{{contact.phone || '400-888-9999'}}</text>
+            <text class="contact-label">客服热线</text>
+          </view>
+        </view>
+        <view class="contact-row">
+          <text class="contact-icon">💬</text>
+          <view>
+            <text class="contact-text">微信号: {{contact.wechat || 'alilaoxi_official'}}</text>
+            <text class="contact-label">微信客服</text>
+          </view>
+        </view>
+        <view class="contact-row">
+          <text class="contact-icon">🕐</text>
+          <view>
+            <text class="contact-text">{{contact.hours || '周一至周六 10:00-19:30'}}</text>
+            <text class="contact-label">营业时间</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Bottom spacer for tab bar -->
+    <view class="bottom-spacer"/>
+  </block>
+</view>

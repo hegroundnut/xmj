@@ -1,0 +1,95 @@
+<view class="page">
+  <!-- Nav bar -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight + 10}}px;">
+    <text class="nav-cancel" bindtap="onCancel">取消</text>
+    <text class="nav-title">发布动态</text>
+    <view class="nav-publish" bindtap="onSubmit">
+      <text>发布</text>
+    </view>
+  </view>
+
+  <!-- Editor -->
+  <view class="editor-section">
+    <textarea class="text-area" placeholder="分享你的洗眉经验、学习心得或案例故事..." value="{{content}}"
+      bindinput="onContentInput" maxlength="500" auto-focus="{{true}}"/>
+    <text class="char-count">{{content.length || 0}} / 500</text>
+  </view>
+
+  <view class="divider"/>
+
+  <!-- Media section -->
+  <view class="media-section">
+    <text class="media-title">添加图片 / 视频</text>
+    <view class="media-grid">
+      <view class="media-item" wx:for="{{images}}" wx:key="index">
+        <image src="{{item}}" mode="aspectFill" class="media-img"/>
+        <view class="media-remove" bindtap="onDelImage" data-index="{{index}}">
+          <text>✕</text>
+        </view>
+      </view>
+      <view class="media-item" wx:if="{{videoPath}}">
+        <text class="media-video-icon">▶</text>
+        <view class="media-remove" bindtap="onDelVideo">
+          <text>✕</text>
+        </view>
+      </view>
+      <view class="media-add" wx:if="{{images.length < 9}}">
+        <text class="add-icon" bindtap="onChooseImage">+</text>
+        <text class="add-text">添加</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="divider"/>
+
+  <!-- Options -->
+  <view class="options-section">
+    <view class="option-item" bindtap="onChooseLocation">
+      <text class="option-icon">📍</text>
+      <text class="option-text">添加位置</text>
+      <text class="option-value">{{location || '未选择'}}</text>
+      <text class="option-arrow">›</text>
+    </view>
+    <view class="option-item">
+      <text class="option-icon">🏷</text>
+      <text class="option-text">添加话题</text>
+      <text class="option-value">{{topic || '#洗眉技巧'}}</text>
+      <text class="option-arrow">›</text>
+    </view>
+    <view class="option-item">
+      <text class="option-icon">👥</text>
+      <text class="option-text">谁可以看</text>
+      <text class="option-value">所有人</text>
+      <text class="option-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- Member notice -->
+  <view class="member-notice" wx:if="{{!isMember}}">
+    <text class="notice-icon">ℹ</text>
+    <view class="notice-text">
+      <text class="notice-strong">会员专属功能</text>
+      <text>开通会员后可发布动态，与同行交流分享</text>
+    </view>
+  </view>
+
+  <!-- Bottom toolbar -->
+  <view class="toolbar">
+    <view class="tool-btn" bindtap="onChooseImage">
+      <text>🖼</text>
+    </view>
+    <view class="tool-btn" bindtap="onChooseVideo">
+      <text>🎬</text>
+    </view>
+    <view class="tool-divider"/>
+    <view class="tool-btn">
+      <text>😊</text>
+    </view>
+    <view class="tool-btn" bindtap="onChooseLocation">
+      <text>📍</text>
+    </view>
+    <view class="tool-btn">
+      <text>🏷</text>
+    </view>
+  </view>
+</view>

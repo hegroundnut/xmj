@@ -1,0 +1,37 @@
+<view class="page">
+  <!-- Nav bar -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight + 10}}px;">
+    <view class="nav-back" bindtap="onBack">
+      <text class="nav-back-icon">‹</text>
+    </view>
+    <text class="nav-title">我的课程</text>
+    <view class="nav-right"/>
+  </view>
+
+  <!-- States -->
+  <view class="state-box" wx:if="{{loading}}">
+    <text class="state-text">加载中...</text>
+  </view>
+  <view class="empty-hint" wx:elif="{{!loading && list.length === 0}}">
+    <text>暂无已购课程</text>
+  </view>
+
+  <!-- Course list -->
+  <view class="course-list" wx:else>
+    <view class="course-item" wx:for="{{list}}" wx:key="id" bindtap="onTap" data-id="{{item.id}}">
+      <image src="{{item.cover || item.thumb}}" mode="aspectFill" class="course-thumb" wx:if="{{item.cover || item.thumb}}"/>
+      <view class="course-thumb course-thumb-placeholder" wx:else>
+        <text>🎬</text>
+      </view>
+      <view class="course-info">
+        <text class="course-name">{{item.title || item.name || '课程'}}</text>
+        <text class="course-desc">{{item.description || item.desc || ''}}</text>
+        <view class="course-meta">
+          <text class="meta-item">📹 {{item.lesson_count || '0'}}课时</text>
+          <text class="meta-item">👤 {{item.student_count || '0'}}人已学</text>
+        </view>
+      </view>
+      <text class="course-arrow">›</text>
+    </view>
+  </view>
+</view>

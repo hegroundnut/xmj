@@ -1,28 +1,100 @@
-<view class="offline-page">
-  <navbar title="线下课详情" back="{{true}}"/>
+<view class="page">
+  <!-- ========== LIST VIEW ========== -->
+  <block wx:if="{{!viewingDetail}}">
+    <!-- Nav bar -->
+    <view class="nav-bar" style="padding-top: {{statusBarHeight + 10}}px;">
+      <view class="nav-back" bindtap="onBack">
+        <text class="nav-back-icon">‹</text>
+      </view>
+      <text class="nav-title">教学</text>
+      <view class="nav-spacer"/>
+    </view>
 
-  <loading wx:if="{{loading}}" show="{{loading}}"/>
-  <view wx:elif="{{error}}" class="error-box" bindtap="loadData">加载失败，点击重试</view>
-  <empty wx:elif="{{!classData}}" text="课程不存在"/>
+    <!-- Gradient header -->
+    <view class="page-header">
+      <view class="header-watermark">
+        <text class="wm wm-1">OFFLINE</text>
+        <text class="wm wm-2">ALI LAOXI</text>
+        <text class="wm wm-3">CLASS</text>
+      </view>
+      <text class="page-title">线下课</text>
+    </view>
 
-  <block wx:else>
-    <view class="content-area">
-      <!-- Hero -->
-      <view class="event-hero">
-        <view class="event-date-badge" wx:if="{{classData.class_date}}">
-          <text class="month">{{classData.month_short || ''}}</text>
-          <text class="day">{{classData.day || ''}}</text>
+    <!-- Tabs -->
+    <view class="tabs">
+      <view class="tab" bindtap="onGoOnline">
+        <text class="en">online</text>
+        <text class="cn">线上课程</text>
+      </view>
+      <view class="tab active">
+        <text class="en">offline</text>
+        <text class="cn">线下培训</text>
+      </view>
+    </view>
+
+    <!-- Loading / Error -->
+    <view class="state-box" wx:if="{{loading}}">
+      <text class="state-text">加载中...</text>
+    </view>
+    <view class="state-box" wx:elif="{{error}}" bindtap="loadList">
+      <text class="state-text">加载失败，点击重试</text>
+    </view>
+
+    <!-- Offline list -->
+    <view class="offline-list" wx:else>
+      <view class="offline-card" wx:for="{{offlineList}}" wx:key="id" bindtap="onViewDetail" data-id="{{item.id}}">
+        <view class="date-badge">
+          <text class="month">{{item.month_short || 'JUL'}}</text>
+          <text class="day">{{item.day || '15'}}</text>
         </view>
-        <text class="event-status">{{classData.status_label || '报名中'}}</text>
-        <view class="event-info">
-          <text class="event-title">{{classData.title}}</text>
-          <text class="event-sub">{{classData.location_city || ''}} · {{classData.duration || ''}}</text>
+        <view class="card-body">
+          <view class="card-top">
+            <text class="card-title">{{item.title}}</text>
+            <text class="status-badge {{item.is_full ? 'full' : 'open'}}">{{item.is_full ? '已满' : '报名中'}}</text>
+          </view>
+          <text class="card-location">{{item.location_city || '合肥'}} · {{item.address_short || item.address}}</text>
+          <view class="card-bottom">
+            <text class="card-time">{{item.start_time || '9:00'}}-{{item.end_time || '17:00'}} · {{item.duration || '2天'}}</text>
+            <text class="card-spots {{item.is_full ? 'muted' : ''}}">{{item.is_full ? '已满员' : '剩余 ' + (item.remaining_seats || 0) + ' 名额'}}</text>
+          </view>
         </view>
       </view>
+    </view>
 
-      <!-- Detail info -->
+    <view class="bottom-spacer"/>
+  </block>
+
+  <!-- ========== DETAIL VIEW ========== -->
+  <view class="state-box" wx:if="{{viewingDetail && loading}}"><text class="state-text">加载中...</text></view>
+  <view class="state-box" wx:elif="{{viewingDetail && error && !classData}}" bindtap="onRetryDetail"><text class="state-text">加载失败，点击重试</text></view>
+  <block wx:if="{{viewingDetail && classData}}">
+    <!-- Event hero -->
+    <view class="event-hero">
+      <text class="event-status">{{classData.status_label || '报名中'}}</text>
+      <view class="event-date-badge">
+        <text class="event-month">{{classData.month_short || 'JUL'}}</text>
+        <text class="event-day">{{classData.day || '15'}}</text>
+      </view>
+      <view class="event-info">
+        <text class="event-title">{{classData.title}}</text>
+        <text class="event-sub">{{classData.location_city || '合肥'}} · {{classData.duration || '2天集中培训'}}</text>
+      </view>
+    </view>
+
+    <!-- Nav bar overlay -->
+    <view class="nav-bar-overlay" style="padding-top: {{statusBarHeight + 10}}px;">
+      <view class="nav-back-circle" bindtap="onBackToList">
+        <text class="nav-back-icon-circle">‹</text>
+      </view>
+      <view class="nav-share-circle">
+        <text class="nav-share-icon-circle">◎</text>
+      </view>
+    </view>
+
+    <scroll-view scroll-y class="detail-content-area">
+      <!-- Course info -->
       <view class="detail-section">
-        <text class="section-label">课程信息</text>
+        <text class="section-title">课程信息</text>
         <view class="detail-card">
           <view class="detail-row">
             <text class="d-icon">📅</text>
@@ -35,7 +107,7 @@
             <text class="d-icon">📍</text>
             <view class="d-content">
               <text class="d-label">培训地点</text>
-              <text class="d-value">{{classData.address || '待定'}}</text>
+              <text class="d-value">{{classData.address || ''}}</text>
             </view>
           </view>
           <view class="detail-row" wx:if="{{classData.capacity}}">
@@ -56,33 +128,32 @@
       </view>
 
       <!-- Learning outcomes -->
-      <view class="detail-section" wx:if="{{classData.outcomes && classData.outcomes.length}}">
-        <text class="section-label">学习收获</text>
+      <view class="detail-section sm-top" wx:if="{{classData.outcomes && classData.outcomes.length}}">
+        <text class="section-title">学习收获</text>
         <view class="outcome-item" wx:for="{{classData.outcomes}}" wx:key="*this">
-          <text class="outcome-dot">·</text>
-          <text class="outcome-text">{{item}}</text>
+          <view class="outcome-dot"/><text class="outcome-text">{{item}}</text>
         </view>
       </view>
 
       <!-- Schedule -->
-      <view class="detail-section" wx:if="{{classData.schedule && classData.schedule.length}}">
-        <text class="section-label">课程安排</text>
+      <view class="detail-section sm-top" wx:if="{{classData.schedule && classData.schedule.length}}">
+        <text class="section-title">课程安排</text>
         <view class="detail-card">
           <view class="schedule-item" wx:for="{{classData.schedule}}" wx:key="time">
-            <text class="schedule-time">{{item.time}}</text>
-            <text class="schedule-content">{{item.content}}</text>
+            <text class="sched-time">{{item.time}}</text>
+            <text class="sched-content">{{item.content}}</text>
           </view>
         </view>
       </view>
 
       <!-- Teacher -->
-      <view class="detail-section" wx:if="{{classData.teacher}}">
-        <text class="section-label">授课导师</text>
+      <view class="detail-section sm-top">
+        <text class="section-title">授课导师</text>
         <view class="teacher-card">
-          <image src="{{classData.teacher.avatar || '/static/images/def_avatar.png'}}" class="teacher-avatar"/>
+          <image src="{{classData.teacher_avatar || '/static/images/def_avatar.png'}}" class="teacher-avatar"/>
           <view class="teacher-info">
-            <text class="teacher-name">{{classData.teacher.name || '导师'}}</text>
-            <text class="teacher-title">{{classData.teacher.title || ''}}</text>
+            <text class="teacher-name">{{classData.teacher_name || '王美学老师'}}</text>
+            <text class="teacher-title">{{classData.teacher_title || '资深洗眉专家 · 10年实操经验'}}</text>
           </view>
         </view>
       </view>
@@ -93,14 +164,12 @@
           <text class="price-current">¥{{classData.price}}</text>
           <text class="price-original" wx:if="{{classData.original_price}}">¥{{classData.original_price}}</text>
         </view>
-        <text class="price-seats" wx:if="{{classData.remaining_seats !== undefined}}">剩余 {{classData.remaining_seats}} 个名额</text>
+        <text class="price-seats" wx:if="{{classData.remaining_seats !== undefined && classData.remaining_seats !== null}}">剩余 {{classData.remaining_seats}} 个名额</text>
       </view>
 
-      <view class="divider"/>
-
       <!-- Booking form -->
-      <view class="detail-section">
-        <text class="section-label">预约报名</text>
+      <view class="detail-section sm-top">
+        <text class="section-title">📋 BOOKING</text>
         <view class="detail-card">
           <view class="form-row">
             <text class="form-label">姓名</text>
@@ -110,21 +179,21 @@
             <text class="form-label">手机号</text>
             <input class="form-input" type="number" placeholder="请输入手机号" value="{{bookingPhone}}" bindinput="onPhoneInput" maxlength="11"/>
           </view>
+          <text class="form-tip">预约成功后请添加店主微信确认</text>
+        </view>
+        <view class="qr-section" wx:if="{{classData.qr_code}}">
+          <text class="qr-label">店主微信</text>
+          <image src="{{classData.qr_code}}" mode="aspectFit" class="qr-img" bindtap="onPreviewQR"/>
         </view>
       </view>
 
-      <!-- QR code -->
-      <view class="detail-section" wx:if="{{classData.qr_code}}">
-        <text class="section-label">店主微信</text>
-        <image src="{{classData.qr_code}}" mode="aspectFit" class="qr-img" bindtap="onPreviewQR" wx:if="{{classData.qr_code}}"/>
-        <text class="qr-tip">预约成功后请添加店主微信确认</text>
-      </view>
-    </view>
+      <view style="height: 180rpx;"/>
+    </scroll-view>
 
     <!-- Bottom bar -->
     <view class="bottom-bar">
-      <button class="enroll-btn" bindtap="onSubmitBooking" disabled="{{bookingSubmitting}}">
-        {{bookingSubmitting ? '提交中...' : '立即预约'}}
+      <button class="enroll-btn" bindtap="onSubmit" disabled="{{submitting}}">
+        {{submitting ? '提交中...' : '立即预约'}}
       </button>
     </view>
   </block>

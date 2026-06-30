@@ -1,5 +1,9 @@
 const api = require('../request')
 
+function getCaseCategories() {
+  return api.get('category/case', {}, { noAuth: true })
+}
+
 function getCaseList(params) {
   return api.get('case/list', params || {}, { noAuth: true })
 }
@@ -24,4 +28,4 @@ function getCaseDetail(id) {
   return api.get('case/detail/' + id, {}, { noAuth: true })
 }
 
-module.exports = { getCaseList, getCaseDetail, getCaseComments, addCaseComment, toggleCaseFavorite, getCaseFavorites }
+module.exports = { getCaseCategories, getCaseList, getCaseDetail, getCaseComments, addCaseComment, toggleCaseFavorite, getCaseFavorites }

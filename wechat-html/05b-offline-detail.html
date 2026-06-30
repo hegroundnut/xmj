@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>线下课程详情 - 阿利老西</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{margin:0;padding:40px 0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#F0EFED;font-family:"PingFang SC",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;}
+.phone-frame{width:375px;height:812px;border-radius:44px;overflow:hidden;background:#fff;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.08),0 1px 3px rgba(0,0,0,0.04);}
+.phone-screen{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;position:relative;}
+.phone-screen::-webkit-scrollbar{display:none;}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:50px 20px 14px;position:absolute;top:0;left:0;right:0;z-index:10;}
+.nav-back{width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;background:rgba(255,255,255,0.9);}
+.nav-back svg{width:20px;height:20px;color:#1A1A1A;stroke-width:1.5;}
+.nav-share{width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;background:rgba(255,255,255,0.9);}
+.nav-share svg{width:18px;height:18px;color:#1A1A1A;stroke-width:1.5;}
+.event-hero{width:100%;height:200px;background:linear-gradient(135deg,#F5F4F2,#EBE9E6);position:relative;display:flex;align-items:flex-end;padding:20px;}
+.event-date-badge{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);padding:8px 14px;border-radius:8px;text-align:center;}
+.event-date-badge .month{font-size:10px;color:rgba(0,0,0,0.4);letter-spacing:2px;font-weight:300;}
+.event-date-badge .day{font-size:22px;font-weight:300;color:#1A1A1A;letter-spacing:1px;}
+.event-status{position:absolute;top:16px;left:16px;background:#1A1A1A;color:#fff;font-size:10px;padding:4px 14px;border-radius:12px;letter-spacing:1px;}
+.event-info{position:relative;z-index:2;}
+.event-title{font-size:20px;font-weight:300;color:#1A1A1A;letter-spacing:2px;margin-bottom:4px;}
+.event-sub{font-size:12px;color:rgba(0,0,0,0.4);font-weight:300;letter-spacing:1px;}
+.detail-section{padding:20px;}
+.detail-title{font-size:11px;letter-spacing:3px;color:rgba(0,0,0,0.3);text-transform:uppercase;margin-bottom:14px;font-weight:400;}
+.detail-card{background:#FAFAF8;border:1px solid rgba(0,0,0,0.04);border-radius:8px;padding:16px;margin-bottom:10px;}
+.detail-row{display:flex;align-items:flex-start;gap:12px;padding:8px 0;}
+.detail-icon{width:18px;height:18px;flex-shrink:0;margin-top:1px;}
+.detail-icon svg{width:18px;height:18px;color:rgba(0,0,0,0.3);stroke-width:1.2;}
+.detail-content{flex:1;}
+.detail-label{font-size:11px;color:rgba(0,0,0,0.3);font-weight:300;margin-bottom:2px;}
+.detail-value{font-size:13px;color:#1A1A1A;font-weight:400;letter-spacing:0.5px;}
+.outcome-list{display:flex;flex-direction:column;gap:10px;}
+.outcome-item{display:flex;align-items:flex-start;gap:10px;}
+.outcome-dot{width:5px;height:5px;border-radius:50%;background:#1A1A1A;margin-top:7px;flex-shrink:0;}
+.outcome-text{font-size:13px;color:rgba(0,0,0,0.5);line-height:1.6;font-weight:300;}
+.schedule-item{display:flex;gap:16px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.04);}
+.schedule-item:last-child{border-bottom:none;}
+.schedule-time{font-size:12px;color:#1A1A1A;font-weight:400;white-space:nowrap;min-width:60px;}
+.schedule-content{font-size:13px;color:rgba(0,0,0,0.5);font-weight:300;line-height:1.4;}
+.teacher-card{display:flex;align-items:center;gap:14px;padding:16px;background:#FAFAF8;border:1px solid rgba(0,0,0,0.04);border-radius:8px;}
+.teacher-avatar{width:48px;height:48px;border-radius:50%;background:#EBE9E6;flex-shrink:0;}
+.teacher-info{flex:1;}
+.teacher-name{font-size:14px;font-weight:400;color:#1A1A1A;letter-spacing:0.5px;}
+.teacher-title{font-size:11px;color:rgba(0,0,0,0.3);font-weight:300;margin-top:2px;}
+.price-section{padding:20px;display:flex;align-items:center;justify-content:space-between;}
+.price-info{display:flex;align-items:baseline;gap:8px;}
+.price-current{font-size:24px;font-weight:300;color:#1A1A1A;}
+.price-original{font-size:13px;color:rgba(0,0,0,0.25);text-decoration:line-through;font-weight:300;}
+.price-seats{font-size:11px;color:rgba(0,0,0,0.35);font-weight:300;}
+.bottom-bar{position:absolute;bottom:0;left:0;right:0;height:80px;padding:0 20px 28px;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,0.04);}
+.bottom-action{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;width:50px;}
+.bottom-action svg{width:20px;height:20px;color:rgba(0,0,0,0.35);stroke-width:1.2;}
+.bottom-action span{font-size:10px;color:rgba(0,0,0,0.3);font-weight:300;}
+.enroll-btn{flex:1;padding:14px;background:#1A1A1A;color:#fff;border:none;border-radius:24px;font-size:14px;font-weight:400;cursor:pointer;font-family:inherit;letter-spacing:2px;}
+.content-area{padding-bottom:90px;}
+</style>
+</head>
+<body>
+<div class="phone-frame"><div class="phone-screen">
+<div class="event-hero">
+<div class="event-status">报名中</div>
+<div class="event-date-badge"><div class="month">JUL</div><div class="day">15</div></div>
+<div class="event-info"><div class="event-title">洗眉实操高阶研修班</div><div class="event-sub">合肥 · 2天集中培训</div></div>
+</div>
+<div class="nav-bar">
+<div class="nav-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="15 18 9 12 15 6"/></svg></div>
+<div class="nav-share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
+</div>
+<div class="content-area">
+<div class="detail-section">
+<div class="detail-title">课程信息</div>
+<div class="detail-card">
+<div class="detail-row"><div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div><div class="detail-content"><div class="detail-label">培训时间</div><div class="detail-value">2026年7月15-16日 9:00-17:00</div></div></div>
+<div class="detail-row"><div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="detail-content"><div class="detail-label">培训地点</div><div class="detail-value">安徽省合肥市包河区宏村路1268号绿地中心D座2607室</div></div></div>
+<div class="detail-row"><div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="detail-content"><div class="detail-label">招生人数</div><div class="detail-value">限12人（小班制教学）</div></div></div>
+<div class="detail-row"><div class="detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="detail-content"><div class="detail-label">报名要求</div><div class="detail-value">需具备基础洗眉操作经验</div></div></div>
+</div>
+</div>
+<div class="detail-section" style="padding-top:0;">
+<div class="detail-title">学习收获</div>
+<div class="outcome-list">
+<div class="outcome-item"><div class="outcome-dot"></div><div class="outcome-text">掌握高难度色素沉着案例的处理方案</div></div>
+<div class="outcome-item"><div class="outcome-dot"></div><div class="outcome-text">学习分区精细化操作技术</div></div>
+<div class="outcome-item"><div class="outcome-dot"></div><div class="outcome-text">获得真人模特实操训练机会</div></div>
+<div class="outcome-item"><div class="outcome-dot"></div><div class="outcome-text">获取阿利老西高级操作认证证书</div></div>
+</div>
+</div>
+<div class="detail-section" style="padding-top:0;">
+<div class="detail-title">课程安排</div>
+<div class="detail-card">
+<div class="schedule-item"><div class="schedule-time">Day 1 AM</div><div class="schedule-content">理论精讲：高级色素分析与方案制定</div></div>
+<div class="schedule-item"><div class="schedule-time">Day 1 PM</div><div class="schedule-content">实操演示：导师现场示范 + 学员练习</div></div>
+<div class="schedule-item"><div class="schedule-time">Day 2 AM</div><div class="schedule-content">真人实操：学员独立操作（导师指导）</div></div>
+<div class="schedule-item"><div class="schedule-time">Day 2 PM</div><div class="schedule-content">案例复盘 + 答疑 + 颁证仪式</div></div>
+</div>
+</div>
+<div class="detail-section" style="padding-top:0;">
+<div class="detail-title">授课导师</div>
+<div class="teacher-card">
+<div class="teacher-avatar"></div>
+<div class="teacher-info"><div class="teacher-name">王美学老师</div><div class="teacher-title">资深洗眉专家 · 10年实操经验</div></div>
+</div>
+</div>
+<div class="price-section">
+<div class="price-info"><span class="price-current">¥3,980</span><span class="price-original">¥5,980</span></div>
+<div class="price-seats">剩余 4 个名额</div>
+</div>
+<div class="detail-section" style="padding-top:0;">
+<div class="detail-title" style="font-size:11px;letter-spacing:3px;color:rgba(0,0,0,0.3);">📋 bOOKING</div>
+<div class="detail-card">
+<div style="display:flex;flex-direction:column;gap:16px;">
+<div style="display:flex;align-items:center;gap:12px;padding-bottom:12px;border-bottom:1px solid rgba(0,0,0,0.08);"><span style="font-size:12px;color:rgba(0,0,0,0.4);white-space:nowrap;">姓名</span><input type="text" placeholder="请输入您的姓名" style="flex:1;border:none;outline:none;font-size:13px;font-family:inherit;color:#1A1A1A;background:transparent;"></div>
+<div style="display:flex;align-items:center;gap:12px;padding-bottom:12px;border-bottom:1px solid rgba(0,0,0,0.08);"><span style="font-size:12px;color:rgba(0,0,0,0.4);white-space:nowrap;">手机号</span><input type="tel" placeholder="请输入手机号" style="flex:1;border:none;outline:none;font-size:13px;font-family:inherit;color:#1A1A1A;background:transparent;"></div>
+<div style="font-size:11px;color:rgba(0,0,0,0.3);">预约成功后请添加店主微信确认</div>
+</div>
+</div>
+<div style="margin-top:12px;">
+<div style="font-size:12px;color:rgba(0,0,0,0.4);margin-bottom:10px;">店主微信</div>
+<div style="width:100px;height:100px;background:#F0EFED;border-radius:8px;display:flex;align-items:center;justify-content:center;"><span style="font-size:11px;color:rgba(0,0,0,0.25);">微信二维码</span></div>
+</div>
+</div>
+</div>
+<div class="bottom-bar">
+<button class="enroll-btn">立即预约</button>
+</div>
+</div></div>
+</body>
+</html>

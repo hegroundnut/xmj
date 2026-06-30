@@ -1,0 +1,41 @@
+<view class="page">
+  <!-- Nav bar -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight + 10}}px;">
+    <view class="nav-back" bindtap="onBack">
+      <text class="nav-back-icon">‹</text>
+    </view>
+    <text class="nav-title">我的发帖</text>
+    <view class="nav-right"/>
+  </view>
+
+  <!-- States -->
+  <view class="state-box" wx:if="{{loading}}">
+    <text class="state-text">加载中...</text>
+  </view>
+  <view class="empty-hint" wx:elif="{{!loading && list.length === 0}}">
+    <text>暂无发布的帖子</text>
+  </view>
+
+  <!-- Post list -->
+  <view class="post-list" wx:else>
+    <view class="post-item" wx:for="{{list}}" wx:key="id" bindtap="onTap" data-id="{{item.id}}">
+      <view class="post-header">
+        <text class="post-content">{{item.content || '无文字内容'}}</text>
+        <text class="post-delete" catchtap="onDelete" data-id="{{item.id}}">删除</text>
+      </view>
+
+      <!-- Post images -->
+      <view class="post-images" wx:if="{{item.images && item.images.length}}">
+        <image src="{{img}}" mode="aspectFill" class="post-img" wx:for="{{item.images}}" wx:key="*this" wx:if="{{index < 9}}"/>
+      </view>
+
+      <view class="post-footer">
+        <view class="post-stats">
+          <text>🤍 {{item.like_count || 0}}</text>
+          <text>💬 {{item.comment_count || 0}}</text>
+        </view>
+        <text class="post-time">{{item.add_time || item.create_time}}</text>
+      </view>
+    </view>
+  </view>
+</view>

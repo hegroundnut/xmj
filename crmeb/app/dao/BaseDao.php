@@ -146,7 +146,7 @@ abstract class BaseDao
      * 获取模型
      * @return BaseModel
      */
-    protected function getModel()
+    public function getModel()
     {
         return app()->make($this->setModel());
     }

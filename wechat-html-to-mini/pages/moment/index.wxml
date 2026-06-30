@@ -1,0 +1,77 @@
+<view class="page">
+  <!-- States -->
+  <view class="state-box" wx:if="{{loading && page === 1}}"><text class="state-text">加载中...</text></view>
+  <view class="state-box" wx:elif="{{error && page === 1}}" bindtap="loadData"><text class="state-text">加载失败，点击重试</text></view>
+
+  <block wx:if="{{!loading || list.length}}">
+    <!-- Page header with watermark -->
+    <view class="page-header">
+      <view>
+        <view class="wm-wrap">
+          <text class="wm wm-moments">MOMENTS</text>
+          <text class="wm wm-ali">ALI LAOXI</text>
+        </view>
+        <text class="page-title">朋友圈</text>
+      </view>
+      <text class="header-icon">◎</text>
+    </view>
+
+    <!-- Post list -->
+    <view class="post" wx:for="{{list}}" wx:key="id" wx:for-index="index" style="{{item.is_member_only ? 'opacity:0.6;' : ''}}">
+      <view class="post-header" bindtap="onContentTap" data-id="{{item.id}}">
+        <view class="avatar" style="background:linear-gradient(135deg, #E8E6E3, #D5D3D0);">
+          <image src="{{item.user_avatar || ''}}" mode="aspectFill" class="avatar-img" wx:if="{{item.user_avatar}}"/>
+        </view>
+        <view class="post-user">
+          <text class="post-name">{{item.user_name || item.user_nickname || '用户'}}
+            <text class="badge-cert" wx:if="{{item.is_certified}}">认证美业师</text>
+          </text>
+          <text class="post-meta">{{item.time || item.add_time}} · {{item.location || ''}}</text>
+        </view>
+      </view>
+      <text class="post-text" bindtap="onContentTap" data-id="{{item.id}}">{{item.content}}</text>
+
+      <!-- Image grid -->
+      <view class="post-images {{item.images && item.images.length === 3 ? 'g3' : ''}} {{item.images && item.images.length === 2 ? 'g2' : ''}} {{item.images && item.images.length === 1 ? 'g1' : ''}}" wx:if="{{item.images && item.images.length}}">
+        <view class="post-img" wx:for="{{item.images}}" wx:key="*this" wx:for-item="img"
+          bindtap="onPreviewImage" data-urls="{{item.images}}" data-current="{{img}}"
+          style="background:#EDEBE8;">
+          <image src="{{img || ''}}" mode="aspectFill" class="post-img-src" wx:if="{{img}}"/>
+        </view>
+      </view>
+
+      <!-- Actions -->
+      <view class="post-actions">
+        <view class="action-item {{item.is_liked ? 'liked' : ''}}" catchtap="onLike" data-index="{{index}}" data-id="{{item.id}}">
+          <text class="action-icon">{{item.is_liked ? '♥' : '♡'}}</text>
+          <text>{{item.like_count || 0}}</text>
+        </view>
+        <view class="action-item" catchtap="onComment" data-id="{{item.id}}">
+          <text class="action-icon">💬</text>
+          <text>{{item.comment_count || 0}}</text>
+        </view>
+        <view class="action-item {{item.is_favorited ? 'liked' : ''}}" catchtap="onFavorite" data-index="{{index}}" data-id="{{item.id}}">
+          <text class="action-icon">{{item.is_favorited ? '★' : '☆'}}</text>
+          <text>{{item.favorite_count || 0}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Load more -->
+    <view class="load-more" wx:if="{{hasMore && list.length}}">
+      <text bindtap="loadMore">加载更多</text>
+    </view>
+
+    <view class="empty-state" wx:if="{{!loading && list.length === 0}}">
+      <text>暂无动态，成为会员即可发布</text>
+    </view>
+
+    <!-- Bottom spacer -->
+    <view class="bottom-spacer"/>
+  </block>
+
+  <!-- FAB -->
+  <view class="fab" bindtap="onPublish">
+    <text class="fab-icon">+</text>
+  </view>
+</view>

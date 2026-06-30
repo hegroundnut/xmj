@@ -1,0 +1,84 @@
+/* ===== Page ===== */
+.page { background: #F8F7F5; min-height: 100vh; position: relative; }
+
+/* ===== Hero ===== */
+.hero { margin: 0; position: relative; height: 560rpx; overflow: hidden; }
+.hero-swiper { width: 100%; height: 100%; }
+.hero-img { width: 100%; height: 100%; }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.35) 100%); z-index: 1; }
+.hero-placeholder { width: 100%; height: 100%; position: relative; background: #1A1A1A; }
+
+.hero-text { position: absolute; bottom: 64rpx; left: 48rpx; right: 48rpx; z-index: 2; }
+.hero-brand { font-size: 18rpx; font-weight: 600; letter-spacing: 10rpx; color: rgba(255,255,255,0.5); margin-bottom: 16rpx; display: block; }
+.hero-title { font-size: 64rpx; font-weight: 300; color: #fff; letter-spacing: 16rpx; margin-bottom: 12rpx; text-shadow: 0 4rpx 32rpx rgba(0,0,0,0.2); display: block; }
+.hero-sub { font-size: 22rpx; color: rgba(255,255,255,0.55); letter-spacing: 6rpx; font-weight: 300; }
+.en-label { font-size: 18rpx; font-weight: 600; letter-spacing: 4rpx; margin-left: 8rpx; opacity: 0.7; }
+
+.hero-dots { position: absolute; bottom: 32rpx; right: 48rpx; display: flex; gap: 12rpx; z-index: 3; }
+.hero-dots .dot { width: 10rpx; height: 10rpx; border-radius: 50%; background: rgba(255,255,255,0.3); transition: all 0.3s ease; }
+.hero-dots .dot.active { background: #fff; width: 32rpx; border-radius: 6rpx; }
+
+/* ===== Products row ===== */
+.products-row { display: flex; align-items: center; gap: 24rpx; padding: 36rpx 40rpx; background: #fff; border-bottom: 1px solid rgba(0,0,0,0.04); }
+.prod-card { flex: 1; border-radius: 20rpx; overflow: hidden; background: #F5F4F2; }
+.prod-card:active { transform: scale(0.97); }
+.prod-thumb { width: 100%; height: 220rpx; overflow: hidden; background: #EDEBE8; }
+.prod-thumb-img { width: 100%; height: 100%; }
+.prod-info { padding: 16rpx 20rpx; background: #fff; }
+.prod-name { font-size: 22rpx; font-weight: 500; color: #1A1A1A; letter-spacing: 1rpx; margin-bottom: 4rpx; display: block; }
+.prod-sub { font-size: 18rpx; color: rgba(0,0,0,0.3); font-weight: 300; letter-spacing: 0.6rpx; display: block; }
+
+.more-btn { flex-shrink: 0; width: 96rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12rpx; }
+.more-icon { width: 72rpx; height: 72rpx; border-radius: 50%; border: 2rpx solid rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; }
+.more-arrow { font-size: 28rpx; color: rgba(0,0,0,0.35); }
+.more-label { font-size: 16rpx; color: rgba(0,0,0,0.3); letter-spacing: 1rpx; text-align: center; line-height: 1.3; white-space: pre-line; }
+
+/* ===== Section ===== */
+.section { padding: 44rpx 40rpx; margin-bottom: 0; background: #fff; }
+.section + .section { border-top: 16rpx solid #F8F7F5; }
+
+.section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32rpx; }
+.section-title-group { display: flex; flex-direction: column; }
+.section-title { font-size: 36rpx; font-weight: 300; color: #1A1A1A; letter-spacing: 6rpx; }
+.section-title-en { font-size: 18rpx; letter-spacing: 6rpx; color: rgba(0,0,0,0.2); font-weight: 600; margin-top: 6rpx; }
+.section-more { font-size: 22rpx; color: rgba(0,0,0,0.3); letter-spacing: 2rpx; }
+
+/* ===== Cases scroll ===== */
+.cases-scroll { white-space: nowrap; width: 100%; }
+.cases-inner { display: inline-flex; gap: 24rpx; padding: 0 40rpx; }
+.case-card { flex-shrink: 0; width: 310rpx; border-radius: 16rpx; overflow: hidden; background: #F5F4F2; position: relative; display: inline-block; }
+.case-img { height: 250rpx; position: relative; overflow: hidden; }
+.case-thumb { width: 100%; height: 100%; }
+.case-tag { position: absolute; top: 16rpx; left: 16rpx; background: #1A1A1A; color: #fff; font-size: 18rpx; font-weight: 500; padding: 6rpx 20rpx; border-radius: 24rpx; letter-spacing: 2rpx; z-index: 1; }
+.case-tag.new { background: #C85A3A; }
+.case-info { padding: 24rpx; }
+.case-name { font-size: 24rpx; font-weight: 500; color: #1A1A1A; margin-bottom: 6rpx; letter-spacing: 1rpx; display: block; }
+.case-meta { font-size: 20rpx; color: rgba(0,0,0,0.3); font-weight: 300; display: block; }
+
+/* ===== Courses list ===== */
+.course-item { display: flex; gap: 28rpx; padding: 28rpx 0; border-bottom: 1px solid rgba(0,0,0,0.04); }
+.course-item:last-child { border-bottom: none; }
+.course-thumb { width: 220rpx; height: 144rpx; border-radius: 12rpx; flex-shrink: 0; overflow: hidden; position: relative; background: #F0EFED; }
+.course-thumb-img { width: 100%; height: 100%; }
+.course-badge { position: absolute; top: 12rpx; left: 12rpx; background: rgba(0,0,0,0.7); color: #fff; font-size: 16rpx; padding: 4rpx 14rpx; border-radius: 20rpx; letter-spacing: 1rpx; font-weight: 500; }
+.course-info { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 10rpx; }
+.course-name { font-size: 26rpx; font-weight: 500; color: #1A1A1A; line-height: 1.4; letter-spacing: 1rpx; display: block; }
+.course-teacher { font-size: 20rpx; color: rgba(0,0,0,0.3); font-weight: 300; display: block; }
+.course-price-row { display: flex; align-items: center; gap: 16rpx; }
+.course-price { font-size: 28rpx; font-weight: 600; color: #1A1A1A; }
+.course-price .orig { font-size: 20rpx; color: rgba(0,0,0,0.25); font-weight: 300; text-decoration: line-through; }
+.course-add { padding: 12rpx 32rpx; border-radius: 32rpx; background: #1A1A1A; color: #fff; font-size: 22rpx; font-weight: 500; letter-spacing: 2rpx; margin-left: auto; }
+
+/* ===== Contact ===== */
+.contact-card { background: #F5F4F2; border-radius: 16rpx; padding: 36rpx; display: flex; flex-direction: column; gap: 24rpx; }
+.contact-row { display: flex; align-items: center; gap: 24rpx; }
+.contact-icon { font-size: 32rpx; }
+.contact-text { font-size: 24rpx; color: #1A1A1A; letter-spacing: 1rpx; display: block; }
+.contact-label { font-size: 18rpx; color: rgba(0,0,0,0.25); font-weight: 300; display: block; }
+
+/* ===== Bottom spacer ===== */
+.bottom-spacer { height: 160rpx; }
+
+/* ===== State ===== */
+.state-box { display: flex; align-items: center; justify-content: center; height: 100vh; }
+.state-text { font-size: 28rpx; color: rgba(0,0,0,0.3); font-weight: 300; }

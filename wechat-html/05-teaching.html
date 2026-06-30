@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>教学中心 - 阿利老西</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{margin:0;padding:40px 0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#F0EFED;font-family:"PingFang SC",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;}
+.phone-frame{width:375px;height:812px;border-radius:44px;overflow:hidden;background:#fff;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.08);}
+.phone-screen{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;position:relative;}
+.phone-screen::-webkit-scrollbar{display:none;}
+.status-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 28px 0;height:44px;}
+.status-time{font-size:15px;font-weight:500;color:#1A1A1A;}
+.page-header{padding:8px 24px 16px;background:linear-gradient(180deg, #E8DDD3 0%, #EDE4DA 40%, #F3ECE5 70%, #fff 100%);}
+.page-title{font-size:26px;font-weight:300;color:#1A1A1A;letter-spacing:3px;animation:titleFadeIn 0.8s ease-out 0.6s both;}
+.wm-wrap{position:relative;height:50px;overflow:hidden;margin-bottom:4px;}
+.wm{position:absolute;opacity:0;will-change:transform,opacity;}
+.wm-class{font-size:28px;font-weight:700;color:rgba(255,255,255,0.35);letter-spacing:3px;top:2px;left:-6px;text-shadow:0 0 10px rgba(255,255,255,0.08);--init-r:-5deg;transform:rotate(-5deg);animation:wmFadeIn 0.7s ease-out 0.1s forwards, wmOrbit 16s linear 0.8s infinite;}
+.wm-ali{font-size:20px;font-weight:300;color:rgba(255,255,255,0.3);letter-spacing:2px;top:14px;left:80px;text-shadow:0 0 8px rgba(255,255,255,0.06);--init-r:6deg;transform:rotate(6deg);animation:wmFadeIn 0.7s ease-out 0.3s forwards, wmOrbit 16s linear 1s infinite;}
+.wm-study{font-size:24px;font-weight:700;color:rgba(255,255,255,0.25);letter-spacing:2px;top:6px;left:180px;text-shadow:0 0 10px rgba(255,255,255,0.08);--init-r:-3deg;transform:rotate(-3deg);animation:wmFadeIn 0.7s ease-out 0.5s forwards, wmOrbit 16s linear 1.2s infinite;}
+@keyframes wmFadeIn{
+  from{opacity:0;transform:translateY(12px) rotate(0deg);}
+  to{opacity:1;transform:translateY(0) rotate(var(--init-r, 0deg));}
+}
+@keyframes titleFadeIn{
+  from{opacity:0;transform:translateY(8px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@keyframes wmOrbit{
+  0%{transform:rotate(-5deg) translate(0,0);}
+  12.5%{transform:rotate(-2deg) translate(5px,-6px);}
+  25%{transform:rotate(0deg) translate(9px,-3px);}
+  37.5%{transform:rotate(2deg) translate(7px,3px);}
+  50%{transform:rotate(5deg) translate(0,7px);}
+  62.5%{transform:rotate(3deg) translate(-7px,4px);}
+  75%{transform:rotate(0deg) translate(-9px,0);}
+  87.5%{transform:rotate(-2deg) translate(-5px,-5px);}
+  100%{transform:rotate(-5deg) translate(0,0);}
+}
+.member-card{margin:0 20px 20px;padding:0;border-radius:12px;background:#F0EBE0;border:1px solid rgba(107,118,79,0.12);position:relative;overflow:hidden;}
+.member-watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:42px;font-weight:900;color:rgba(107,118,79,0.1);letter-spacing:6px;white-space:nowrap;pointer-events:none;z-index:1;}
+.member-deco{position:absolute;font-size:8px;color:rgba(107,118,79,0.2);letter-spacing:2px;font-weight:400;z-index:1;pointer-events:none;text-transform:uppercase;}
+.member-content{position:relative;z-index:2;padding:14px 20px;}
+.member-label{font-size:8px;letter-spacing:3px;color:#6B764F;text-transform:uppercase;margin-bottom:5px;opacity:0.5;font-weight:400;}
+.member-title{font-size:15px;font-weight:800;color:#6B764F;letter-spacing:2px;margin-bottom:3px;}
+.member-desc{font-size:10px;color:#6B764F;font-weight:300;margin-bottom:10px;letter-spacing:1px;opacity:0.55;}
+.member-btn{display:inline-block;padding:6px 20px;background:#6B764F;color:#F0EBE0;font-size:10px;border-radius:20px;cursor:pointer;font-family:inherit;border:none;letter-spacing:2px;font-weight:500;}
+/* QR Modal */
+.modal-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:100;display:none;align-items:center;justify-content:center;animation:modalFadeIn 0.3s ease;}
+.modal-overlay.show{display:flex;}
+@keyframes modalFadeIn{from{opacity:0;}to{opacity:1;}}
+.modal-card{background:#fff;border-radius:16px;padding:28px 24px 24px;width:280px;text-align:center;position:relative;animation:modalSlideUp 0.35s ease;}
+@keyframes modalSlideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.modal-close{position:absolute;top:12px;right:14px;width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,0.05);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:rgba(0,0,0,0.3);line-height:1;}
+.modal-close:hover{background:rgba(0,0,0,0.08);}
+.modal-label{font-size:9px;letter-spacing:3px;color:#6B764F;text-transform:uppercase;opacity:0.5;margin-bottom:6px;}
+.modal-title{font-size:15px;font-weight:600;color:#1A1A1A;margin-bottom:14px;letter-spacing:1px;}
+.modal-qr{width:160px;height:160px;margin:0 auto 14px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);overflow:hidden;background:#FAFAF8;display:flex;align-items:center;justify-content:center;}
+.modal-qr svg{width:140px;height:140px;}
+.modal-desc{font-size:11px;color:rgba(0,0,0,0.4);line-height:1.6;letter-spacing:0.3px;font-weight:300;}
+.modal-desc strong{color:#6B764F;font-weight:500;}
+.modal-hint{margin-top:10px;font-size:10px;color:rgba(0,0,0,0.25);letter-spacing:0.5px;}
+/* Order Toast */
+.order-toast{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.9);background:rgba(26,26,26,0.92);backdrop-filter:blur(10px);color:#fff;padding:20px 24px;border-radius:14px;z-index:110;text-align:center;opacity:0;pointer-events:none;transition:all 0.3s ease;width:240px;}
+.order-toast.show{opacity:1;transform:translate(-50%,-50%) scale(1);}
+.toast-icon{font-size:28px;margin-bottom:8px;}
+.toast-title{font-size:13px;font-weight:500;letter-spacing:1px;margin-bottom:4px;}
+.toast-name{font-size:11px;color:rgba(255,255,255,0.5);font-weight:300;line-height:1.5;}
+.tabs{display:flex;padding:0 20px;border-bottom:1px solid rgba(0,0,0,0.06);}
+.tab{flex:1;text-align:center;padding:10px 0;cursor:pointer;position:relative;display:flex;flex-direction:column;align-items:center;gap:1px;}
+.tab .en{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:lowercase;color:rgba(0,0,0,0.22);}
+.tab .cn{font-size:13px;font-weight:400;color:rgba(0,0,0,0.35);letter-spacing:0.5px;}
+.tab.active .en{color:#1A1A1A;}
+.tab.active .cn{color:#1A1A1A;font-weight:500;}
+.tab.active::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:20px;height:1.5px;background:#1A1A1A;}
+.cat-bar{overflow-x:auto;white-space:nowrap;scrollbar-width:none;padding:12px 20px;-webkit-overflow-scrolling:touch;}
+.cat-bar::-webkit-scrollbar{display:none;}
+.cat-inner{display:inline-flex;gap:8px;}
+.cat-tag{display:inline-block;padding:5px 14px;border-radius:14px;font-size:11px;color:rgba(0,0,0,0.35);background:rgba(0,0,0,0.03);cursor:pointer;font-weight:400;letter-spacing:0.5px;flex-shrink:0;transition:all 0.2s;}
+.cat-tag:hover{color:rgba(0,0,0,0.5);background:rgba(0,0,0,0.05);}
+.cat-tag.active{color:#fff;background:#1A1A1A;font-weight:500;}
+.course-list{padding:0 20px;}
+.course-card{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid rgba(0,0,0,0.04);}
+.course-card:last-child{border-bottom:none;}
+.course-thumb{width:130px;height:82px;border-radius:8px;flex-shrink:0;overflow:hidden;position:relative;}
+.course-thumb .ph{width:100%;height:100%;background:#F0EFED;}
+.course-tag{position:absolute;top:6px;left:6px;background:#1A1A1A;color:#fff;font-size:9px;padding:2px 8px;border-radius:10px;letter-spacing:0.5px;}
+.course-info{flex:1;display:flex;flex-direction:column;justify-content:space-between;padding:2px 0;}
+.course-name{font-size:13px;font-weight:400;color:#1A1A1A;line-height:1.5;letter-spacing:0.5px;}
+.course-desc{font-size:11px;color:rgba(0,0,0,0.3);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-weight:300;}
+.course-bottom{display:flex;align-items:center;justify-content:space-between;}
+.course-price{font-size:13px;font-weight:500;color:#1A1A1A;}
+.course-price .orig{font-size:11px;color:rgba(0,0,0,0.2);font-weight:300;text-decoration:line-through;margin-left:4px;}
+.course-meta{font-size:10px;color:rgba(0,0,0,0.25);font-weight:300;}
+.course-buy{padding:5px 14px;border-radius:16px;background:#1A1A1A;color:#fff;font-size:10px;font-weight:400;border:none;cursor:pointer;font-family:inherit;letter-spacing:1px;flex-shrink:0;transition:all 0.2s ease;-webkit-tap-highlight-color:transparent;}
+.course-buy:active{transform:scale(0.95);background:#333;}
+.course-bottom-right{display:flex;align-items:center;gap:8px;}
+.tab-bar{position:absolute;bottom:0;left:0;right:0;height:83px;padding-bottom:28px;display:flex;align-items:center;justify-content:space-around;background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,0.04);}
+.tab-item{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;}
+.tab-icon{width:22px;height:22px;background-size:contain;background-repeat:no-repeat;background-position:center;}
+.tab-item.active span{color:#1A1A1A;font-size:10px;font-weight:400;letter-spacing:0.5px;}
+.tab-item:not(.active) span{color:rgba(0,0,0,0.25);font-size:10px;font-weight:400;letter-spacing:0.5px;}
+.tab-item.active .tab-icon{opacity:0.8;}
+.tab-item:not(.active) .tab-icon{opacity:0.2;filter:grayscale(1);}
+.icon-home{background-image:url("../uploads/image_1782813901351_114p3r6.png");}
+.icon-cases{background-image:url("../uploads/image_1782813901352_trz9vsr.png");}
+.icon-moments{background-image:url("../uploads/image_1782813901352_i5twl8j.png");}
+.icon-class{background-image:url("../uploads/image_1782813901352_mdf49kf.png");}
+.icon-me{background-image:url("../uploads/image_1782710209961_sv3yqm4.png");}
+.content-area{padding-bottom:100px;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+<div class="phone-frame"><div class="phone-screen">
+<div class="status-bar"><span class="status-time">9:41</span><div></div></div>
+<div class="content-area">
+<div class="page-header"><div class="wm-wrap">
+<span class="wm wm-class">CLASS</span>
+<span class="wm wm-ali">ALI LAOXI</span>
+<span class="wm wm-study">STUDY</span>
+</div><div class="page-title">教学中心</div></div>
+<div class="member-card">
+<div class="member-watermark">ALI LAOXI</div>
+<div class="member-deco" style="top:16px;right:20px;">BROW STUDIO</div>
+<div class="member-deco" style="bottom:16px;left:24px;">EST. 2020</div>
+<div class="member-deco" style="bottom:16px;right:20px;">HEFEI</div>
+<div class="member-content">
+<div class="member-label">ALI LAOXI MEMBER</div>
+<div class="member-title">开通会员 · 全部课程免费学</div>
+<div class="member-desc">解锁128+精品课程，持续更新</div>
+<button class="member-btn" onclick="openModal()">立即开通</button>
+</div>
+</div>
+<div class="tabs"><div class="tab active"><span class="en">online</span><span class="cn">线上课程</span></div><div class="tab" onclick="window.location.href='05c-offline-list.html'"><span class="en">offline</span><span class="cn">线下培训</span></div></div>
+<div class="cat-bar"><div class="cat-inner" id="catBar">
+<div class="cat-tag active" onclick="switchCat(this)">全部</div>
+<div class="cat-tag" onclick="switchCat(this)">眉部</div>
+<div class="cat-tag" onclick="switchCat(this)">眼部</div>
+<div class="cat-tag" onclick="switchCat(this)">唇部</div>
+<div class="cat-tag" onclick="switchCat(this)">祛斑</div>
+<div class="cat-tag" onclick="switchCat(this)">纹身</div>
+<div class="cat-tag" onclick="switchCat(this)">乳晕</div>
+<div class="cat-tag" onclick="switchCat(this)">私密</div>
+<div class="cat-tag" onclick="switchCat(this)">其他</div>
+</div></div>
+<div class="course-list" id="courseList"></div>
+</div>
+<div class="tab-bar">
+<div class="tab-item"><div class="tab-icon icon-home"></div><span>首页</span></div>
+<div class="tab-item"><div class="tab-icon icon-cases"></div><span>案例</span></div>
+<div class="tab-item"><div class="tab-icon icon-moments"></div><span>朋友圈</span></div>
+<div class="tab-item active"><div class="tab-icon icon-class"></div><span>教学</span></div>
+<div class="tab-item"><div class="tab-icon icon-me"></div><span>我的</span></div>
+</div>
+<div class="modal-overlay" id="qrModal" onclick="closeModal(event)">
+<div class="modal-card" onclick="event.stopPropagation()">
+<button class="modal-close" onclick="closeModal(event)">✕</button>
+<div class="modal-label">ALI LAOXI MEMBER</div>
+<div class="modal-title">扫码添加阿利老西</div>
+<div class="modal-qr"><svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+<rect width="140" height="140" fill="#fff"/>
+<g fill="#1A1A1A">
+<rect x="8" y="8" width="32" height="32" rx="2"/><rect x="12" y="12" width="24" height="24" rx="1" fill="#fff"/><rect x="16" y="16" width="16" height="16" rx="1"/>
+<rect x="100" y="8" width="32" height="32" rx="2"/><rect x="104" y="12" width="24" height="24" rx="1" fill="#fff"/><rect x="108" y="16" width="16" height="16" rx="1"/>
+<rect x="8" y="100" width="32" height="32" rx="2"/><rect x="12" y="104" width="24" height="24" rx="1" fill="#fff"/><rect x="16" y="108" width="16" height="16" rx="1"/>
+<rect x="48" y="8" width="5" height="5"/><rect x="58" y="8" width="5" height="5"/><rect x="68" y="8" width="5" height="5"/><rect x="78" y="12" width="5" height="5"/><rect x="88" y="8" width="5" height="5"/>
+<rect x="48" y="18" width="5" height="5"/><rect x="53" y="22" width="5" height="5"/><rect x="63" y="18" width="5" height="5"/><rect x="73" y="22" width="5" height="5"/><rect x="88" y="18" width="5" height="5"/>
+<rect x="48" y="28" width="5" height="5"/><rect x="58" y="32" width="5" height="5"/><rect x="68" y="28" width="5" height="5"/><rect x="83" y="28" width="5" height="5"/>
+<rect x="8" y="48" width="5" height="5"/><rect x="18" y="48" width="5" height="5"/><rect x="28" y="52" width="5" height="5"/><rect x="38" y="48" width="5" height="5"/>
+<rect x="48" y="48" width="5" height="5"/><rect x="58" y="52" width="5" height="5"/><rect x="68" y="48" width="5" height="5"/><rect x="78" y="52" width="5" height="5"/><rect x="88" y="48" width="5" height="5"/>
+<rect x="98" y="48" width="5" height="5"/><rect x="108" y="52" width="5" height="5"/><rect x="118" y="48" width="5" height="5"/><rect x="128" y="52" width="5" height="5"/>
+<rect x="8" y="58" width="5" height="5"/><rect x="23" y="62" width="5" height="5"/><rect x="38" y="58" width="5" height="5"/>
+<rect x="53" y="58" width="5" height="5"/><rect x="63" y="62" width="5" height="5"/><rect x="78" y="58" width="5" height="5"/><rect x="93" y="62" width="5" height="5"/>
+<rect x="108" y="58" width="5" height="5"/><rect x="123" y="62" width="5" height="5"/>
+<rect x="8" y="68" width="5" height="5"/><rect x="18" y="72" width="5" height="5"/><rect x="28" y="68" width="5" height="5"/><rect x="38" y="72" width="5" height="5"/>
+<rect x="48" y="68" width="5" height="5"/><rect x="58" y="72" width="5" height="5"/><rect x="68" y="68" width="5" height="5"/><rect x="78" y="72" width="5" height="5"/><rect x="88" y="68" width="5" height="5"/>
+<rect x="98" y="72" width="5" height="5"/><rect x="108" y="68" width="5" height="5"/><rect x="118" y="72" width="5" height="5"/><rect x="128" y="68" width="5" height="5"/>
+<rect x="8" y="78" width="5" height="5"/><rect x="23" y="82" width="5" height="5"/><rect x="38" y="78" width="5" height="5"/>
+<rect x="53" y="82" width="5" height="5"/><rect x="68" y="78" width="5" height="5"/><rect x="83" y="82" width="5" height="5"/>
+<rect x="98" y="78" width="5" height="5"/><rect x="113" y="82" width="5" height="5"/><rect x="128" y="78" width="5" height="5"/>
+<rect x="8" y="88" width="5" height="5"/><rect x="18" y="92" width="5" height="5"/><rect x="28" y="88" width="5" height="5"/><rect x="38" y="92" width="5" height="5"/>
+<rect x="48" y="100" width="5" height="5"/><rect x="58" y="104" width="5" height="5"/><rect x="68" y="100" width="5" height="5"/><rect x="78" y="108" width="5" height="5"/><rect x="88" y="100" width="5" height="5"/>
+<rect x="100" y="100" width="5" height="5"/><rect x="110" y="108" width="5" height="5"/><rect x="120" y="100" width="5" height="5"/><rect x="128" y="104" width="5" height="5"/>
+<rect x="48" y="112" width="5" height="5"/><rect x="63" y="118" width="5" height="5"/><rect x="78" y="112" width="5" height="5"/><rect x="88" y="118" width="5" height="5"/>
+<rect x="100" y="112" width="5" height="5"/><rect x="110" y="118" width="5" height="5"/><rect x="128" y="112" width="5" height="5"/>
+<rect x="48" y="124" width="5" height="5"/><rect x="58" y="128" width="5" height="5"/><rect x="73" y="124" width="5" height="5"/><rect x="88" y="128" width="5" height="5"/>
+<rect x="100" y="124" width="5" height="5"/><rect x="115" y="128" width="5" height="5"/><rect x="128" y="124" width="5" height="5"/>
+</g>
+<rect x="55" y="55" width="30" height="30" rx="4" fill="#07C160"/>
+<text x="70" y="74" text-anchor="middle" fill="#fff" font-size="14" font-weight="600" font-family="sans-serif">微</text>
+</svg></div>
+<div class="modal-desc">打开微信扫描二维码，添加<strong>阿利老西</strong><br>即可咨询会员详情并下单</div>
+<div class="modal-hint">长按识别二维码 · 添加微信好友</div>
+</div>
+</div>
+<div class="order-toast" id="orderToast">
+<div class="toast-icon">✓</div>
+<div class="toast-title">已加入订单</div>
+<div class="toast-name"></div>
+</div>
+</div></div>
+<script>
+var courses=[
+{n:'零基础洗眉入门全阶课程',d:'从设备认知到实操上手，系统掌握洗眉核心技术',t:'入门',p:'¥9.9',o:'¥99',s:1286,c:'眉部',bg:'#F0EFED'},
+{n:'高级眉形设计精讲',d:'面部黄金比例分析，个性化眉形定制设计方法论',t:'进阶',p:'¥9.9',o:'¥129',s:856,c:'眉部',bg:'#EBE9E6'},
+{n:'色素学与应用实战',d:'深入理解色素代谢原理，精准选择治疗参数',t:'专业',p:'¥9.9',o:'¥89',s:623,c:'眉部',bg:'#E8E6E3'},
+{n:'实操案例深度解析',d:'10个真实案例全流程拆解，常见问题与解决方案',t:'实战',p:'¥9.9',o:'¥79',s:412,c:'眉部',bg:'#F2F0ED'},
+{n:'老式纹眉清洗全阶课',d:'蓝眉红眉变色眉，各类失败纹眉修复方案',t:'进阶',p:'¥9.9',o:'¥109',s:967,c:'眉部',bg:'#EDEBE8'},
+{n:'眼部美瞳线清洗技巧',d:'精准操作不伤睫毛根部，安全去除失败眼线',t:'进阶',p:'¥9.9',o:'¥99',s:734,c:'眼部',bg:'#E6E8EB'},
+{n:'眼线晕染修复全流程',d:'解决眼线扩散、变色等问题，恢复自然眼周',t:'专业',p:'¥9.9',o:'¥119',s:521,c:'眼部',bg:'#E8EAED'},
+{n:'眼部色素管理基础',d:'眼周敏感区域操作要点与安全规范',t:'入门',p:'¥9.9',o:'¥79',s:389,c:'眼部',bg:'#E6E9EB'},
+{n:'唇部纹绣色彩修正',d:'解决唇色发暗、发黑、不均匀等问题',t:'专业',p:'¥9.9',o:'¥109',s:456,c:'唇部',bg:'#EBE6E8'},
+{n:'漂唇术后修复指南',d:'唇部色素代谢管理与色彩还原技巧',t:'进阶',p:'¥9.9',o:'¥89',s:312,c:'唇部',bg:'#EBE6E6'},
+{n:'激光祛斑原理与实操',d:'不同斑型的鉴别诊断与激光参数设定',t:'专业',p:'¥9.9',o:'¥139',s:678,c:'祛斑',bg:'#EBE9E6'},
+{n:'雀斑黄褐斑治疗方案',d:'分型分层治疗策略，术后管理全流程',t:'实战',p:'¥9.9',o:'¥119',s:543,c:'祛斑',bg:'#E9EBE6'},
+{n:'纹身清洗技术全解',d:'激光洗纹身原理、参数选择与术后护理',t:'进阶',p:'¥9.9',o:'¥99',s:892,c:'纹身',bg:'#E6EBE9'},
+{n:'彩色纹身去除方案',d:'多色墨水的分解策略与多次治疗规划',t:'专业',p:'¥9.9',o:'¥129',s:467,c:'纹身',bg:'#E4E8E6'},
+{n:'乳晕漂红技术精讲',d:'色素配比与操作手法，自然粉嫩效果',t:'专业',p:'¥9.9',o:'¥149',s:345,c:'乳晕',bg:'#E8E0E0'},
+{n:'私密色素管理课程',d:'私密部位色素沉着的原因分析与治疗方案',t:'专业',p:'¥9.9',o:'¥159',s:278,c:'私密',bg:'#E4E0E8'},
+{n:'色素精细化处理技巧',d:'小面积色素问题的精准定位与清除',t:'实战',p:'¥9.9',o:'¥89',s:198,c:'其他',bg:'#F2F0ED'},
+{n:'门店运营与客户管理',d:'洗眉门店的获客、转化、复购全流程',t:'进阶',p:'¥9.9',o:'¥99',s:634,c:'其他',bg:'#F0EDE8'}
+];
+var curCat='全部';
+
+function render(){
+  var list=curCat==='全部'?courses:courses.filter(function(c){return c.c===curCat;});
+  var el=document.getElementById('courseList');
+  if(!list.length){
+    el.innerHTML='<div style="text-align:center;padding:40px 0;color:rgba(0,0,0,0.2);font-size:13px;">暂无课程</div>';
+    return;
+  }
+  var html='';
+  list.forEach(function(c,i){
+    html+='<div class="course-card" style="animation:fadeUp 0.35s ease '+(i*50)+'ms both">';
+    html+='<div class="course-thumb"><div class="ph" style="background:'+c.bg+'"></div><div class="course-tag">'+c.t+'</div></div>';
+    html+='<div class="course-info"><div class="course-name">'+c.n+'</div><div class="course-desc">'+c.d+'</div>';
+    html+='<div class="course-bottom"><div class="course-price">'+c.p+' <span class="orig">'+c.o+'</span></div><div class="course-bottom-right"><div class="course-meta">'+c.s+'人已学</div><button class="course-buy" onclick="buyCourse(\''+c.n+'\')">购买</button></div></div>';
+    html+='</div></div>';
+  });
+  el.innerHTML=html;
+}
+
+function switchCat(el){
+  document.querySelectorAll('#catBar .cat-tag').forEach(function(e){e.classList.remove('active')});
+  el.classList.add('active');
+  curCat=el.textContent.trim();
+  el.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  render();
+}
+
+render();
+
+function openModal(){
+  document.getElementById('qrModal').classList.add('show');
+}
+function closeModal(e){
+  if(e.target.classList.contains('modal-overlay')||e.target.classList.contains('modal-close')){
+    document.getElementById('qrModal').classList.remove('show');
+  }
+}
+function buyCourse(name){
+  var el=document.getElementById('orderToast');
+  el.querySelector('.toast-name').textContent=name;
+  el.classList.add('show');
+  setTimeout(function(){el.classList.remove('show');},2500);
+}
+// Scroll parallax for watermark letters
+(function(){
+  var screen=document.querySelector('.phone-screen');
+  if(!screen)return;
+  var cls=document.querySelector('.wm-class');
+  var ali=document.querySelector('.wm-ali');
+  var study=document.querySelector('.wm-study');
+  if(!cls||!ali||!study)return;
+  screen.addEventListener('scroll',function(){
+    var y=screen.scrollTop;
+    var factor=y*0.15;
+    cls.style.marginTop=(factor*0.8)+'px';
+    ali.style.marginTop=(factor*1.2)+'px';
+    study.style.marginTop=(factor*0.5)+'px';
+  },{passive:true});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<view class="login-page">
+  <!-- Swiper carousel -->
+  <swiper class="carousel" autoplay="{{true}}" interval="{{3500}}" duration="{{1000}}" circular="{{true}}" bindchange="onSlideChange" current="{{currentSlide}}">
+    <swiper-item wx:for="{{slides}}" wx:key="*this">
+      <image src="{{item.image}}" mode="aspectFill" class="slide-img"/>
+      <view class="slide-overlay"/>
+      <view class="slide-text top-text">
+        <text class="slide-number">{{item.number}}</text>
+        <text class="slide-label">{{item.label}}</text>
+      </view>
+      <view class="slide-text center-text">
+        <text class="slide-big-text">{{item.title}}<text class="en-mix">{{item.enTitle}}</text></text>
+      </view>
+    </swiper-item>
+  </swiper>
+
+  <!-- Top/bottom gradients -->
+  <view class="top-gradient"/>
+  <view class="bottom-gradient"/>
+
+  <!-- Custom dots -->
+  <view class="carousel-dots" wx:if="{{slides.length > 1}}">
+    <view class="dot {{currentSlide === index ? 'active' : ''}}" wx:for="{{slides}}" wx:key="*this"/>
+  </view>
+
+  <!-- Bottom section -->
+  <view class="bottom-section">
+    <view class="brand-strip">
+      <view>
+        <text class="brand-logo-cn">阿利老西</text>
+        <text class="brand-logo-en">ALI LAOXI</text>
+      </view>
+    </view>
+    <button class="login-btn" bindtap="onWechatLogin" loading="{{loading}}">微信一键登录</button>
+    <view class="agreement">
+      <view class="checkbox {{agreed ? 'checked' : ''}}" bindtap="onToggleAgree">
+        <text wx:if="{{agreed}}" class="check-mark">✓</text>
+      </view>
+      <text class="agreement-text">登录即同意 <text class="link" bindtap="onPrivacy">《用户协议》</text> 和 <text class="link" bindtap="onPrivacy">《隐私政策》</text></text>
+    </view>
+  </view>
+</view>

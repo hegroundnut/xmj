@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/guide/index",
     "pages/home/index",
     "pages/case/index",
     "pages/moment/index",
@@ -12,7 +13,6 @@
     "pages/my/bookings",
     "pages/my/comments",
     "pages/my/posts",
-    "pages/guide/index",
     "pages/case-detail/index",
     "pages/course-detail/index",
     "pages/offline/index",
@@ -38,10 +38,10 @@
     }
   },
   "tabBar": {
-    "color": "#282828",
-    "selectedColor": "#e93323",
+    "color": "#999999",
+    "selectedColor": "#1A1A1A",
     "borderStyle": "white",
-    "backgroundColor": "#ffffff",
+    "backgroundColor": "#FAFAF8",
     "list": [
       { "pagePath": "pages/home/index", "text": "首页", "iconPath": "static/images/1-001.png", "selectedIconPath": "static/images/1-002.png" },
       { "pagePath": "pages/case/index", "text": "案例", "iconPath": "static/images/2-001.png", "selectedIconPath": "static/images/2-002.png" },
@@ -52,7 +52,7 @@
   },
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "洗眉机",
+    "navigationBarTitleText": "阿利老西",
     "navigationBarBackgroundColor": "#fff",
     "backgroundColor": "#F8F8F8"
   }

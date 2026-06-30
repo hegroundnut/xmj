@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>个人资料 - 阿利老西</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{margin:0;padding:40px 0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#F0EFED;font-family:"PingFang SC",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;}
+.phone-frame{width:375px;height:812px;border-radius:44px;overflow:hidden;background:#fff;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.08),0 1px 3px rgba(0,0,0,0.04);}
+.phone-screen{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;position:relative;}
+.phone-screen::-webkit-scrollbar{display:none;}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:50px 20px 14px;}
+.nav-back{width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.nav-back svg{width:20px;height:20px;color:#1A1A1A;stroke-width:1.5;}
+.nav-title{font-size:15px;font-weight:400;color:#1A1A1A;letter-spacing:2px;}
+.nav-save{font-size:14px;color:#1A1A1A;cursor:pointer;font-weight:400;letter-spacing:0.5px;}
+.avatar-section{padding:24px 0;display:flex;flex-direction:column;align-items:center;gap:12px;}
+.avatar-large{width:80px;height:80px;border-radius:50%;background:#F0EFED;border:2px solid rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:center;position:relative;}
+.avatar-large svg{width:36px;height:36px;color:rgba(0,0,0,0.2);stroke-width:1.2;}
+.avatar-edit{position:absolute;bottom:0;right:0;width:26px;height:26px;border-radius:50%;background:#1A1A1A;display:flex;align-items:center;justify-content:center;border:2px solid #fff;}
+.avatar-edit svg{width:12px;height:12px;color:#fff;stroke-width:1.5;}
+.avatar-hint{font-size:11px;color:rgba(0,0,0,0.3);font-weight:300;}
+.divider{height:8px;background:#FAFAF8;}
+.form-section{padding:0 20px;}
+.form-title{font-size:11px;letter-spacing:3px;color:rgba(0,0,0,0.25);text-transform:uppercase;margin:20px 0 12px;font-weight:400;}
+.form-item{padding:16px 0;border-bottom:1px solid rgba(0,0,0,0.04);}
+.form-item:last-child{border-bottom:none;}
+.form-label{font-size:11px;color:rgba(0,0,0,0.3);font-weight:300;margin-bottom:6px;letter-spacing:0.5px;}
+.form-value{font-size:15px;color:#1A1A1A;font-weight:400;letter-spacing:0.5px;display:flex;align-items:center;justify-content:space-between;}
+.form-value .arrow{font-size:14px;color:rgba(0,0,0,0.15);}
+.form-input{width:100%;border:none;outline:none;font-size:15px;color:#1A1A1A;font-family:inherit;font-weight:400;letter-spacing:0.5px;background:transparent;}
+.form-input::placeholder{color:rgba(0,0,0,0.2);}
+.form-textarea{width:100%;border:none;outline:none;font-size:14px;color:#1A1A1A;font-family:inherit;font-weight:300;line-height:1.6;resize:none;min-height:80px;background:transparent;}
+.form-textarea::placeholder{color:rgba(0,0,0,0.2);}
+.gender-options{display:flex;gap:10px;}
+.gender-option{flex:1;padding:10px;text-align:center;border:1px solid rgba(0,0,0,0.08);border-radius:8px;font-size:13px;color:rgba(0,0,0,0.4);cursor:pointer;font-weight:300;}
+.gender-option.active{border-color:#1A1A1A;color:#1A1A1A;font-weight:400;background:#FAFAF8;}
+.tag-section{padding:20px;}
+.tag-title{font-size:11px;letter-spacing:3px;color:rgba(0,0,0,0.25);text-transform:uppercase;margin-bottom:12px;font-weight:400;}
+.tag-list{display:flex;flex-wrap:wrap;gap:8px;}
+.tag{padding:6px 14px;border:1px solid rgba(0,0,0,0.08);border-radius:20px;font-size:12px;color:rgba(0,0,0,0.4);font-weight:300;cursor:pointer;}
+.tag.active{border-color:#1A1A1A;color:#1A1A1A;background:#FAFAF8;}
+.tag.add{border-style:dashed;color:rgba(0,0,0,0.25);}
+.save-section{padding:20px;}
+.save-btn{width:100%;padding:14px;background:#1A1A1A;color:#fff;border:none;border-radius:24px;font-size:14px;font-weight:400;cursor:pointer;font-family:inherit;letter-spacing:2px;}
+.content-area{padding-bottom:40px;}
+</style>
+</head>
+<body>
+<div class="phone-frame"><div class="phone-screen">
+<div class="nav-bar">
+<div class="nav-back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="15 18 9 12 15 6"/></svg></div>
+<span class="nav-title">编辑资料</span>
+<span class="nav-save">保存</span>
+</div>
+<div class="content-area">
+<div class="avatar-section">
+<div class="avatar-large"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><div class="avatar-edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div></div>
+<div class="avatar-hint">点击更换头像</div>
+</div>
+<div class="divider"></div>
+<div class="form-section">
+<div class="form-title">基本信息</div>
+<div class="form-item"><div class="form-label">昵称</div><input class="form-input" value="阿利老西用户" placeholder="请输入昵称"></div>
+<div class="form-item"><div class="form-label">手机号</div><div class="form-value">138****8888 <span class="arrow">›</span></div></div>
+<div class="form-item"><div class="form-label">性别</div><div class="gender-options"><div class="gender-option active">女</div><div class="gender-option">男</div><div class="gender-option">保密</div></div></div>
+<div class="form-item"><div class="form-label">所在城市</div><div class="form-value">杭州 <span class="arrow">›</span></div></div>
+<div class="form-item"><div class="form-label">个人简介</div><textarea class="form-textarea" placeholder="介绍一下自己...">美业从业者，专注洗眉技术5年，持续学习中。</textarea></div>
+</div>
+<div class="divider"></div>
+<div class="tag-section">
+<div class="tag-title">职业标签</div>
+<div class="tag-list">
+<span class="tag active">洗眉师</span>
+<span class="tag active">美业从业</span>
+<span class="tag">纹绣师</span>
+<span class="tag">美容院主</span>
+<span class="tag">学员</span>
+<span class="tag add">+ 添加</span>
+</div>
+</div>
+<div class="save-section">
+<button class="save-btn">保存修改</button>
+</div>
+</div>
+</div></div>
+</body>
+</html>

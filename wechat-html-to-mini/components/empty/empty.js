@@ -1,0 +1,1 @@
+Component({ properties: { show: { type: Boolean, value: true }, text: { type: String, value: '' }, hideIcon: { type: Boolean, value: false } } })

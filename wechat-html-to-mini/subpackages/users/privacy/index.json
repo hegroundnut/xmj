@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "隐私协议",
+  "usingComponents": {
+    "loading": "/components/loading/loading"
+  }
+}

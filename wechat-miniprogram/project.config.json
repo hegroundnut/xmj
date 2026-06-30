@@ -25,11 +25,32 @@
     "useMultiFrameRuntime": true,
     "useApiHook": true,
     "useApiHostProcess": true,
-    "babelSetting": { "ignore": [], "disablePlugins": [], "outputPath": "" },
-    "condition": false
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "condition": false,
+    "compileWorklet": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "swc": false,
+    "disableSWC": true
   },
   "compileType": "miniprogram",
   "libVersion": "3.3.4",
-  "packOptions": { "ignore": [], "include": [] },
-  "editorSetting": { "tabIndent": "insertSpaces", "tabSize": 2 }
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  },
+  "simulatorPluginLibVersion": {}
 }

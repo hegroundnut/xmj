@@ -1,0 +1,55 @@
+<view class="page">
+  <!-- Nav bar -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight + 10}}px;">
+    <view class="nav-back" bindtap="onBack">
+      <text class="nav-back-icon">‹</text>
+    </view>
+    <text class="nav-title">我的收藏</text>
+    <view class="nav-right"/>
+  </view>
+
+  <!-- Filter tabs -->
+  <scroll-view scroll-x class="filter-scroll">
+    <view class="filter-tabs">
+      <text class="filter-tab {{activeTab === 'all' ? 'active' : ''}}" bindtap="onTabChange" data-tab="all">全部</text>
+      <text class="filter-tab {{activeTab === 'moment' ? 'active' : ''}}" bindtap="onTabChange" data-tab="moment">帖子</text>
+      <text class="filter-tab {{activeTab === 'case' ? 'active' : ''}}" bindtap="onTabChange" data-tab="case">案例</text>
+      <text class="filter-tab {{activeTab === 'course' ? 'active' : ''}}" bindtap="onTabChange" data-tab="course">课程</text>
+    </view>
+  </scroll-view>
+
+  <!-- Content area -->
+  <view class="content-area">
+    <!-- Loading -->
+    <view class="state-box" wx:if="{{loading}}">
+      <text class="state-text">加载中...</text>
+    </view>
+
+    <!-- Empty -->
+    <view class="empty-hint" wx:elif="{{!loading && list.length === 0}}">
+      <text>暂无收藏内容</text>
+    </view>
+
+    <!-- List -->
+    <block wx:else>
+      <text class="section-count">共 {{list.length}} 条收藏</text>
+
+      <view class="fav-card" wx:for="{{list}}" wx:key="id" bindtap="onTap" data-id="{{item.id}}" data-type="{{item.type || activeTab}}">
+        <view class="fav-thumb">
+          <text class="thumb-icon" wx:if="{{!item.cover && !item.user_avatar}}">📄</text>
+          <image src="{{item.cover || item.user_avatar}}" mode="aspectFill" class="thumb-img" wx:else/>
+        </view>
+        <view class="fav-body">
+          <text class="fav-title">{{item.title || item.content || '无标题'}}</text>
+          <view class="fav-meta">
+            <text class="fav-tag">{{item.type_label || (activeTab === 'moment' ? '帖子' : activeTab === 'case' ? '案例' : activeTab === 'course' ? '课程' : activeTab)}}</text>
+            <text class="fav-date">{{item.add_time || item.create_time}}</text>
+          </view>
+        </view>
+        <view class="fav-actions">
+          <text class="fav-unsave" catchtap="onUnsave" data-id="{{item.id}}" data-type="{{item.type || activeTab}}">取消收藏</text>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

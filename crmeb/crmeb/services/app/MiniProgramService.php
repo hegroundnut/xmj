@@ -100,12 +100,11 @@ class MiniProgramService
         $wechat = SystemConfigService::more(['wechat_app_appsecret', 'wechat_app_appid', 'site_url', 'routine_appId', 'routine_appsecret', 'routine_token', 'routine_encodingaeskey']);
         $payment = SystemConfigService::more(['pay_weixin_mchid', 'pay_weixin_key', 'pay_weixin_client_cert', 'pay_weixin_client_key', 'pay_weixin_open', 'pay_new_weixin_open', 'pay_new_weixin_mchid']);
         $config = [];
+        $appId = 'wx3bebb7300327492c';
+        $appsecret = 'd9c2746a3a231ac7c84c444f4877549d';
         if (request()->isApp()) {
             $appId = isset($wechat['wechat_app_appid']) ? trim($wechat['wechat_app_appid']) : '';
             $appsecret = isset($wechat['wechat_app_appsecret']) ? trim($wechat['wechat_app_appsecret']) : '';
-        } else {
-            $appId = 'wx3bebb7300327492c';
-            $appsecret = 'FIXME_YOUR_APPSECRET';
         }
         $config = [
             'token' => isset($wechat['routine_token']) ? trim($wechat['routine_token']) : '',
@@ -176,8 +175,25 @@ class MiniProgramService
      */
     public static function getUserInfo($code)
     {
+        $options = self::options();
+        $config = $options['mini_program'];
+        $params = [
+            'appid'      => $config['app_id'],
+            'secret'     => $config['secret'],
+            'js_code'    => $code,
+            'grant_type' => 'authorization_code',
+        ];
         try {
-            return self::miniprogram()->sns->getSessionKey($code);
+            $client = new \GuzzleHttp\Client();
+            $response = $client->get('https://api.weixin.qq.com/sns/jscode2session', [
+                'query' => $params,
+            ]);
+            $body = $response->getBody()->getContents();
+            $result = json_decode($body, true);
+            if (isset($result['errcode']) && $result['errcode'] !== 0) {
+                throw new AdminException($result['errmsg'] ?? 'unknown error', $result['errcode']);
+            }
+            return $result;
         } catch (\Throwable $e) {
             throw new AdminException($e->getMessage());
         }

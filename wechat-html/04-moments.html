@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>朋友圈 - 阿利老西</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{margin:0;padding:40px 0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#F0EFED;font-family:"PingFang SC",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;}
+.phone-frame{width:375px;height:812px;border-radius:44px;overflow:hidden;background:#fff;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.08);}
+.phone-screen{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;position:relative;}
+.phone-screen::-webkit-scrollbar{display:none;}
+.status-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 28px 0;height:44px;}
+.status-time{font-size:15px;font-weight:500;color:#1A1A1A;}
+.status-icons svg{width:16px;height:16px;color:#1A1A1A;}
+.page-header{padding:8px 24px 12px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(180deg, #E8DDD3 0%, #EDE4DA 40%, #F3ECE5 70%, #fff 100%);}
+.page-title{font-size:26px;font-weight:300;color:#1A1A1A;letter-spacing:3px;}
+.header-icon svg{width:20px;height:20px;color:rgba(0,0,0,0.3);stroke-width:1.2;}
+.post{padding:16px 20px 12px;border-bottom:1px solid rgba(0,0,0,0.04);}
+.post-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.avatar{width:36px;height:36px;border-radius:50%;flex-shrink:0;}
+.post-user{flex:1;}
+.post-name{font-size:13px;font-weight:400;color:#1A1A1A;letter-spacing:0.5px;}
+.post-meta{font-size:10px;color:rgba(0,0,0,0.25);margin-top:2px;font-weight:300;}
+.post-text{font-size:13px;color:rgba(0,0,0,0.6);line-height:1.8;margin-bottom:12px;font-weight:300;}
+.post-images{display:grid;gap:3px;margin-bottom:12px;border-radius:8px;overflow:hidden;}
+.post-images.g3{grid-template-columns:1fr 1fr 1fr;}
+.post-images.g2{grid-template-columns:1fr 1fr;}
+.post-images.g1{grid-template-columns:1fr;}
+.post-img{height:100px;}
+.post-actions{display:flex;gap:20px;padding-top:6px;}
+.action-item{display:flex;align-items:center;gap:4px;cursor:pointer;}
+.action-item svg{width:16px;height:16px;color:rgba(0,0,0,0.25);stroke-width:1.2;}
+.action-item span{font-size:11px;color:rgba(0,0,0,0.3);font-weight:300;}
+.action-item.liked svg{color:#1A1A1A;}
+.action-item.liked span{color:#1A1A1A;}
+.fab{position:absolute;bottom:100px;right:16px;width:48px;height:48px;border-radius:50%;background:#1A1A1A;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.15);cursor:pointer;z-index:5;}
+.fab svg{width:20px;height:20px;color:#fff;}
+.tab-bar{position:absolute;bottom:0;left:0;right:0;height:83px;padding-bottom:28px;display:flex;align-items:center;justify-content:space-around;background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,0.04);}
+.tab-item{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;}
+.tab-icon{width:22px;height:22px;background-size:contain;background-repeat:no-repeat;background-position:center;}
+.tab-item.active span{color:#1A1A1A;font-size:10px;font-weight:400;letter-spacing:0.5px;}
+.tab-item:not(.active) span{color:rgba(0,0,0,0.25);font-size:10px;font-weight:400;letter-spacing:0.5px;}
+.tab-item.active .tab-icon{opacity:0.8;}
+.tab-item:not(.active) .tab-icon{opacity:0.2;filter:grayscale(1);}
+.icon-home{background-image:url("../uploads/image_1782813901351_114p3r6.png");}
+.icon-cases{background-image:url("../uploads/image_1782813901352_trz9vsr.png");}
+.icon-moments{background-image:url("../uploads/image_1782813901352_i5twl8j.png");}
+.icon-class{background-image:url("../uploads/image_1782813901352_mdf49kf.png");}
+.icon-me{background-image:url("../uploads/image_1782710209961_sv3yqm4.png");}
+.content-area{padding-bottom:100px;}
+.badge-cert{font-size:9px;color:rgba(0,0,0,0.35);border:1px solid rgba(0,0,0,0.1);padding:1px 7px;border-radius:10px;margin-left:4px;font-weight:300;}
+</style>
+</head>
+<body>
+<div class="phone-frame"><div class="phone-screen">
+<div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M2 22h20V2z"/></svg></div></div>
+<div class="content-area">
+<div class="page-header"><div><div style="position:relative;height:40px;overflow:hidden;margin-bottom:2px;"><span style="position:absolute;font-size:26px;font-weight:700;color:rgba(255,255,255,0.35);letter-spacing:3px;transform:rotate(-6deg);top:4px;left:-8px;">MOMENTS</span><span style="position:absolute;font-size:22px;font-weight:300;color:rgba(255,255,255,0.3);letter-spacing:2px;transform:rotate(4deg);top:10px;left:100px;">ALI LAOXI</span></div><div class="page-title">朋友圈</div></div><div class="header-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div></div>
+<div class="post">
+<div class="post-header"><div class="avatar" style="background:linear-gradient(135deg,#E8E6E3,#D5D3D0);"></div><div class="post-user"><div class="post-name">美丽达人小美 <span class="badge-cert">认证美业师</span></div><div class="post-meta">2小时前 · 上海</div></div></div>
+<div class="post-text">今天完成了一组超满意的洗眉案例！第5代设备真的太稳了，冷却系统升级后客户反馈舒适度提升很多。分享一下前后对比～</div>
+<div class="post-images g3"><div class="post-img" style="background:#EDEBE8;"></div><div class="post-img" style="background:#F0EFED;"></div><div class="post-img" style="background:#EBE9E6;"></div></div>
+<div class="post-actions"><div class="action-item liked"><svg viewBox="0 0 24 24" fill="#1A1A1A" stroke="#1A1A1A" stroke-width="1.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>128</span></div><div class="action-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>32</span></div><div class="action-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><span>56</span></div><div class="action-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg><span>分享</span></div></div>
+</div>
+<div class="post">
+<div class="post-header"><div class="avatar" style="background:linear-gradient(135deg,#D5D8DD,#C5C8CD);"></div><div class="post-user"><div class="post-name">王老师美学课堂</div><div class="post-meta">5小时前 · 北京</div></div></div>
+<div class="post-text">新一期线下实操集训营开始报名了！7月15-17日上海站，手把手教学，限额12人。名额有限，感兴趣的同学抓紧～</div>
+<div class="post-images g1"><div class="post-img" style="height:140px;background:#F0EFED;"></div></div>
+<div class="post-actions"><div class="action-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>89</span></div><div class="action-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>15</span></div><div class="action-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><span>23</span></div><div class="action-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/></svg><span>分享</span></div></div>
+</div>
+<div class="post" style="opacity:0.6;">
+<div class="post-header"><div class="avatar" style="background:linear-gradient(135deg,#DDD8D5,#CCC8C5);"></div><div class="post-user"><div class="post-name">Aesthetic Studio</div><div class="post-meta">昨天 · 广州</div></div></div>
+<div class="post-text">分享一组今天的工作成果，客户的眉毛从老式纹眉变成自然野生眉，效果太惊艳了！</div>
+<div class="post-images g2"><div class="post-img" style="background:#EDEBE8;"></div><div class="post-img" style="background:#F0EFED;"></div></div>
+<div class="post-actions"><div class="action-item" style="opacity:0.5;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>45</span></div><div class="action-item" style="opacity:0.5;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>8</span></div><div class="action-item" style="opacity:0.5;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><span>12</span></div><div class="action-item" style="opacity:0.5;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/></svg><span>分享</span></div></div>
+</div>
+<div class="post">
+<div class="post-header"><div class="avatar" style="background:linear-gradient(135deg,#E0DDD5,#D0CDC5);"></div><div class="post-user"><div class="post-name">Linda美睫美学</div><div class="post-meta">2天前 · 成都</div></div></div>
+<div class="post-text">学完色素学课程终于理解了为什么不同肤色需要不同参数，以前走了好多弯路。建议新手先把理论课学扎实再上手！</div>
+<div class="post-actions"><div class="action-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>67</span></div><div class="action-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>11</span></div><div class="action-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><span>28</span></div><div class="action-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/></svg><span>分享</span></div></div>
+</div>
+</div>
+<div class="fab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+<div class="tab-bar">
+<div class="tab-item"><div class="tab-icon icon-home"></div><span>首页</span></div>
+<div class="tab-item"><div class="tab-icon icon-cases"></div><span>案例</span></div>
+<div class="tab-item active"><div class="tab-icon icon-moments"></div><span>朋友圈</span></div>
+<div class="tab-item"><div class="tab-icon icon-class"></div><span>教学</span></div>
+<div class="tab-item"><div class="tab-icon icon-me"></div><span>我的</span></div>
+</div>
+</div></div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<view class="page">
+  <!-- Nav bar -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight + 10}}px;">
+    <view class="nav-back" bindtap="onBack">
+      <text class="nav-back-icon">‹</text>
+    </view>
+    <text class="nav-title">线下课预约</text>
+    <view class="nav-right"/>
+  </view>
+
+  <!-- States -->
+  <view class="state-box" wx:if="{{loading}}">
+    <text class="state-text">加载中...</text>
+  </view>
+  <view class="empty-hint" wx:elif="{{!loading && list.length === 0}}">
+    <text>暂无预约记录</text>
+  </view>
+
+  <!-- Booking list -->
+  <view class="booking-list" wx:else>
+    <view class="booking-item" wx:for="{{list}}" wx:key="id">
+      <view class="booking-header">
+        <text class="booking-title">{{item.title || '线下课程'}}</text>
+        <text class="booking-status {{item.status === 1 ? 'cancelled' : ''}}">{{item.status_label || (item.status === 1 ? '已取消' : '已预约')}}</text>
+      </view>
+      <view class="booking-meta">
+        <view class="meta-row">
+          <text class="meta-icon">📅</text>
+          <text>{{item.class_date || ''}} {{item.start_time || ''}}-{{item.end_time || ''}}</text>
+        </view>
+        <view class="meta-row">
+          <text class="meta-icon">📍</text>
+          <text>{{item.address || '地址未定'}}</text>
+        </view>
+        <view class="meta-row" wx:if="{{item.teacher_name}}">
+          <text class="meta-icon">👤</text>
+          <text>{{item.teacher_name}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

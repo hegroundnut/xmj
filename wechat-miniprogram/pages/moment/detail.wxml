@@ -26,7 +26,8 @@
 
     <view class="comment-section">
       <text class="section-title">评论 ({{moment.comment_count || 0}})</text>
-      <comment-list comments="{{moment.comments}}" bind:reply="onReply" bind:delete="onDeleteComment"/>
+      <comment-list wx:if="{{moment.comments && moment.comments.length}}" comments="{{moment.comments}}" bind:reply="onReply" bind:delete="onDeleteComment"/>
+      <view wx:else class="comment-empty">暂无评论，成为会员即可评论</view>
     </view>
 
     <view class="comment-input-bar" wx:if="{{isLogin}}">
