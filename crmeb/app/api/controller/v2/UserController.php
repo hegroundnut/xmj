@@ -32,6 +32,8 @@ class UserController
     public function info(Request $request)
     {
         $user = $request->user();
+        $isSuperMember = ($user->is_teaching_member ?? 0) == 1;
+        $isRegularMember = ($user->overdue_time ?? 0) > time();
         $data = [
             'uid' => $user->uid,
             'nickname' => $user->nickname ?? '',
@@ -39,6 +41,8 @@ class UserController
             'phone' => $user->phone ?? '',
             'is_teaching_member' => $user->is_teaching_member ?? 0,
             'overdue_time' => $user->overdue_time ?? 0,
+            'is_member' => ($isSuperMember || $isRegularMember) ? 1 : 0,
+            'member_type' => $isSuperMember ? 'super' : ($isRegularMember ? 'regular' : 'none'),
         ];
         return app('json')->success($data);
     }

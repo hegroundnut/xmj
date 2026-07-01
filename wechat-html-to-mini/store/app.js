@@ -19,7 +19,7 @@ const store = {
     app.globalData.token = wx.getStorageSync(KEYS.TOKEN) || ''
     app.globalData.userInfo = wx.getStorageSync(KEYS.USER_INFO) || null
     app.globalData.isLogin = !!app.globalData.token
-    app.globalData.isMember = !!(app.globalData.userInfo && app.globalData.userInfo.is_teaching_member === 1)
+    app.globalData.isMember = !!(app.globalData.userInfo && (app.globalData.userInfo.is_member === 1 || app.globalData.userInfo.is_teaching_member === 1 || (app.globalData.userInfo.overdue_time && app.globalData.userInfo.overdue_time > Math.floor(Date.now() / 1000))))
   },
 
   getToken() { return getApp().globalData.token },
@@ -43,7 +43,7 @@ const store = {
   setUserInfo(info) {
     const app = getApp()
     app.globalData.userInfo = info
-    app.globalData.isMember = !!(info && info.is_teaching_member === 1)
+    app.globalData.isMember = !!(info && (info.is_member === 1 || info.is_teaching_member === 1 || (info.overdue_time && info.overdue_time > Math.floor(Date.now() / 1000))))
     wx.setStorageSync(KEYS.USER_INFO, info)
   },
 

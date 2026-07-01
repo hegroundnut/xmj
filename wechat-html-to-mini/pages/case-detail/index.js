@@ -110,5 +110,54 @@ Page({
     const { url, urls } = e.currentTarget.dataset
     const list = urls ? JSON.parse(urls) : [url]
     wx.previewImage({ current: url, urls: list })
+  },
+
+  onSaveAllImages() {
+    if (!this.data.isLogin) {
+      return wx.navigateTo({ url: '/subpackages/users/wechat_login/index' })
+    }
+    if (!this.data.isMember) {
+      return wx.showToast({ title: '开通会员后可保存图片', icon: 'none' })
+    }
+    const images = this.data.caseData.images || []
+    if (!images.length) return
+    wx.showLoading({ title: '保存中...' })
+    let saved = 0
+    images.forEach(url => {
+      wx.getImageInfo({
+        src: url,
+        success: (res) => {
+          wx.saveImageToPhotosAlbum({
+            filePath: res.path,
+            success: () => { saved++; if (saved === images.length) { wx.hideLoading(); wx.showToast({ title: '保存成功' }) } },
+            fail: () => { saved++; if (saved === images.length) { wx.hideLoading(); wx.showToast({ title: '部分图片保存失败', icon: 'none' }) } }
+          })
+        },
+        fail: () => { saved++; if (saved === images.length) { wx.hideLoading(); wx.showToast({ title: '部分图片保存失败', icon: 'none' }) } }
+      })
+    })
+  },
+
+  onSaveVideo() {
+    if (!this.data.isLogin) {
+      return wx.navigateTo({ url: '/subpackages/users/wechat_login/index' })
+    }
+    if (!this.data.isMember) {
+      return wx.showToast({ title: '开通会员后可保存视频', icon: 'none' })
+    }
+    const videoUrl = this.data.caseData.media_url
+    if (!videoUrl) return
+    wx.showLoading({ title: '保存中...' })
+    wx.downloadFile({
+      url: videoUrl,
+      success: (res) => {
+        wx.saveVideoToPhotosAlbum({
+          filePath: res.tempFilePath,
+          success: () => { wx.hideLoading(); wx.showToast({ title: '保存成功' }) },
+          fail: () => { wx.hideLoading(); wx.showToast({ title: '保存失败', icon: 'none' }) }
+        })
+      },
+      fail: () => { wx.hideLoading(); wx.showToast({ title: '下载失败', icon: 'none' }) }
+    })
   }
 })

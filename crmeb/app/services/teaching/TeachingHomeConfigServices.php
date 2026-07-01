@@ -61,35 +61,32 @@ class TeachingHomeConfigServices extends BaseServices
                 'enabled' => true,
                 'items' => [],
             ],
-            'notice' => [
+            'hero_text' => [
                 'enabled' => true,
-                'text' => '欢迎来到洗眉机教学平台',
-            ],
-            'quick_nav' => [
-                'enabled' => true,
-                'items' => [
-                    ['icon' => 'product', 'title' => '产品展示', 'page' => '/pages/teaching/product/index'],
-                    ['icon' => 'case', 'title' => '案例展示', 'page' => '/pages/teaching/case/index'],
-                    ['icon' => 'course', 'title' => '教学课程', 'page' => '/pages/teaching/course/index'],
-                    ['icon' => 'offline', 'title' => '线下课程', 'page' => '/pages/teaching/offline/index'],
-                ],
+                'brand' => 'ALI LAOXI',
+                'title' => '阿利老西',
+                'subtitle' => '专业洗眉设备 · 第5代新品',
             ],
             'featured_cases' => [
                 'enabled' => true,
                 'title' => '精选案例',
+                'title_en' => 'SELECTED CASES',
                 'limit' => 4,
             ],
             'latest_courses' => [
                 'enabled' => true,
                 'title' => '热门课程',
+                'title_en' => 'HOT COURSES',
                 'limit' => 3,
             ],
             'contact' => [
                 'enabled' => true,
                 'title' => '联系我们',
-                'qrcode' => '',
+                'title_en' => 'CONTACT US',
                 'phone' => '',
                 'wechat' => '',
+                'hours' => '周一至周六 10:00-19:30',
+                'qrcode' => '',
             ],
         ];
     }

@@ -2,11 +2,12 @@
   <div class="teaching-member">
     <el-card>
       <div slot="header" class="clearfix">
-        <span style="font-weight:bold">教学会员管理</span>
+        <span style="font-weight:bold">会员管理</span>
         <el-input v-model="keyword" placeholder="搜索昵称/手机号/UID" clearable size="small" style="width:240px;margin-left:10px" @change="loadList" />
-        <el-select v-model="filterMember" placeholder="会员状态" clearable size="small" style="margin-left:10px;width:120px" @change="loadList">
-          <el-option label="会员" :value="1" />
-          <el-option label="非会员" :value="0" />
+        <el-select v-model="filterMember" placeholder="会员类型" clearable size="small" style="margin-left:10px;width:140px" @change="loadList">
+          <el-option label="超级会员" value="super" />
+          <el-option label="普通会员" value="regular" />
+          <el-option label="非会员" value="none" />
         </el-select>
       </div>
       <el-table :data="list" border stripe v-loading="loading">
@@ -17,20 +18,27 @@
         <el-table-column prop="nickname" label="昵称" width="140" />
         <el-table-column prop="phone" label="手机号" width="130" />
         <el-table-column prop="add_time" label="注册时间" width="150" />
-        <el-table-column label="会员状态" width="120">
+        <el-table-column label="会员类型" width="130">
           <template slot-scope="{row}">
-            <el-tag :type="row.is_teaching_member ? 'success' : 'info'" size="small">
-              {{ row.is_teaching_member ? '会员' : '非会员' }}
-            </el-tag>
+            <el-tag v-if="row.member_type === 'super'" type="warning" size="small">超级会员</el-tag>
+            <el-tag v-else-if="row.member_type === 'regular'" type="success" size="small">普通会员</el-tag>
+            <el-tag v-else type="info" size="small">非会员</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="120">
+        <el-table-column label="到期时间" width="120">
+          <template slot-scope="{row}">
+            <span v-if="row.member_type === 'regular'">{{ row.overdue_time_text }}</span>
+            <span v-else-if="row.member_type === 'super'" style="color:#999">永久</span>
+            <span v-else style="color:#ccc">-</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="140">
           <template slot-scope="{row}">
             <el-button
               :type="row.is_teaching_member ? 'warning' : 'primary'"
               size="mini"
               @click="handleToggle(row)"
-            >{{ row.is_teaching_member ? '取消会员' : '设为会员' }}</el-button>
+            >{{ row.is_teaching_member ? '取消超级' : '设为超级' }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -71,7 +79,7 @@ export default {
       try {
         const params = { page: this.page, limit: this.limit };
         if (this.keyword) params.keyword = this.keyword;
-        if (this.filterMember !== '') params.is_teaching_member = this.filterMember;
+        if (this.filterMember) params.member_type = this.filterMember;
         const res = await getTeachingMemberList(params);
         this.list = res.data.list || [];
         this.total = res.data.count || 0;
@@ -85,7 +93,7 @@ export default {
     },
     handleToggle(row) {
       const newStatus = row.is_teaching_member ? 0 : 1;
-      const action = newStatus ? '设为会员' : '取消会员';
+      const action = newStatus ? '设为超级会员' : '取消超级会员';
       this.$confirm(`确定${action}「${row.nickname}」？`, '提示', { type: 'warning' }).then(async () => {
         await setTeachingMember(row.uid, newStatus);
         this.$message.success('操作成功');

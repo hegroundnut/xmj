@@ -28,6 +28,9 @@
             <text class="compare-badge">{{index === 0 ? '治疗前' : '第'+index+'次'}}</text>
           </view>
         </view>
+        <view class="save-bar">
+          <view class="save-btn" bindtap="onSaveAllImages">保存图片</view>
+        </view>
       </view>
     </block>
 
@@ -40,6 +43,7 @@
         </view>
         <view class="video-progress"><view class="video-progress-bar" style="width: 35%;"/></view>
         <text class="video-time">02:15 / 06:30</text>
+        <view class="save-video-btn" bindtap="onSaveVideo">保存视频</view>
       </view>
 
       <view class="info-section">

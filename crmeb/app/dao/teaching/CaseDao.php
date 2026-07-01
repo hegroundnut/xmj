@@ -34,6 +34,9 @@ class CaseDao extends BaseDao
             })
             ->when(isset($where['category_id']) && $where['category_id'] > 0, function ($query) use ($where) {
                 $query->where('category_id', $where['category_id']);
+            })
+            ->when(isset($where['is_home']) && $where['is_home'] !== '', function ($query) use ($where) {
+                $query->where('is_home', (int)$where['is_home']);
             });
     }
 
