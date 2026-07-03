@@ -58,17 +58,19 @@ TabBar 底部导航 (5个Tab):
 
 会员类型:
   超级会员 — is_teaching_member == 1，管理员手动设置，永久有效
-  普通会员 — overdue_time > time()，购买会员卡获得，有到期时间
+  普通会员 — overdue_time > time()，管理员手动设置，有到期时间
   非会员   — 以上两者皆不满足
 
 会员判定逻辑 (后端 MomentServices::isMember):
   is_teaching_member == 1   → 超级会员
   OR overdue_time > time()  → 普通会员
-  满足其一即为"会员"（任意会员权限相同）
+  满足其一即为"会员"（朋友圈权限相同；课程权限按 member_level 区分）
 
 管理员操作:
   后台 → 洗眉机 → 会员管理 → 点击"设为超级"/"取消超级"
   调用 PUT /adminapi/teaching_member/set/{uid}  { is_teaching_member: 1 }
+  后台 → 洗眉机 → 会员管理 → 点击"设为普通"（选择到期日期）/"取消普通"
+  调用 PUT /adminapi/teaching_member/set_regular/{uid}  { action: 'set', overdue_time: '2027-12-31 23:59:59' }
 
 会员可使用的功能:
   - 发布朋友圈帖子
@@ -76,7 +78,7 @@ TabBar 底部导航 (5个Tab):
   - 收藏 / 取消收藏
   - 发表评论 / 回复
   - 分享计数
-  - 免费观看"会员免费"课程
+  - 观看会员等级对应的课程（member_level=1 普通+超级可看，member_level=2 仅超级可看）
   - 保存案例图片/视频到相册
 
 非会员限制:
@@ -116,16 +118,17 @@ TabBar 底部导航 (5个Tab):
   - 支持取消收藏
 ```
 
-### 4. 课程购买流程
+### 4. 课程观看权限
 
 ```
+课程已取消价格，改为按会员等级控制：
+  member_level=1: 普通会员可看（普通会员+超级会员均可观看）
+  member_level=2: 超级会员可看（仅超级会员可观看）
+
 课程列表 → 点击课程 → 课程详情 (GET /api/v2/course/detail/{id})
+  → 返回 can_watch=true/false, member_level, member_level_text
   → 如果 can_watch=true: 直接播放
-  → 如果 can_watch=false:
-      → 调用 POST /api/v2/course/create_order { course_id }
-      → 返回 { order_sn, price, pay_params }
-      → 前端调起微信支付 (使用 pay_params 参数)
-      → 支付成功后 can_watch变为true
+  → 如果 can_watch=false: 提示需要对应等级会员
 ```
 
 ### 5. 线下课预约流程
@@ -177,9 +180,8 @@ Authori-zation: Bearer <token>   (需要登录的接口必传)
 
 ### 需要登录的接口
 - GET /api/v2/user/info — 用户信息（含 is_member, member_type 字段）
-- GET /api/v2/course/list — 课程列表（支持 category_id 筛选，返回含 category_name）
-- GET /api/v2/course/detail/:id — 课程详情
-- POST /api/v2/course/create_order — 创建订单
+- GET /api/v2/course/list — 课程列表（支持 category_id 筛选，返回含 category_name, member_level, can_watch）
+- GET /api/v2/course/detail/:id — 课程详情（含 member_level, member_level_text, can_watch）
 - POST /api/v2/offline_class/booking — 提交预约
 - POST /api/v2/case_comment/add — 发表评论
 - 所有 /api/v2/moment/* 接口

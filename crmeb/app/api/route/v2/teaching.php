@@ -49,7 +49,6 @@ Route::group('case_comment', function () {
 Route::group('course', function () {
     Route::get('list', 'v2.CourseController/get_list')->option(['real_name' => '课程列表']);
     Route::get('detail/:id', 'v2.CourseController/get_detail')->option(['real_name' => '课程详情']);
-    Route::post('create_order', 'v2.CourseController/create_order')->option(['real_name' => '创建试听订单']);
 })->middleware(\app\api\middleware\AuthTokenMiddleware::class, false);
 
 // 线下课程 — 需要登录（预约部分）

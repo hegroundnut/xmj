@@ -102,4 +102,37 @@ class MemberController
         $this->services->update((int)$uid, ['is_teaching_member' => (int)$status]);
         return app('json')->success($status ? '已设为超级会员' : '已取消超级会员');
     }
+
+    /**
+     * 设置/取消普通会员
+     * @param int $uid
+     * @return mixed
+     */
+    public function setRegularMember($uid)
+    {
+        $data = request()->getMore([
+            ['action', 'set'],
+            ['overdue_time', ''],
+        ]);
+        if ($data['action'] === 'set') {
+            if (empty($data['overdue_time'])) {
+                return app('json')->fail('请选择到期时间');
+            }
+            $overdueTs = strtotime($data['overdue_time']);
+            if (!$overdueTs || $overdueTs <= time()) {
+                return app('json')->fail('到期时间必须大于当前时间');
+            }
+            $this->services->update((int)$uid, [
+                'overdue_time' => $overdueTs,
+                'is_money_level' => 1,
+            ]);
+            return app('json')->success('已设为普通会员');
+        } else {
+            $this->services->update((int)$uid, [
+                'overdue_time' => 0,
+                'is_money_level' => 0,
+            ]);
+            return app('json')->success('已取消普通会员');
+        }
+    }
 }

@@ -46,6 +46,9 @@ docker exec -i crmeb_mysql mysql -uroot -p123456 crmeb < scripts/migration_categ
 
 # 7. 案例表新增精选字段 (is_home)
 docker exec -i crmeb_mysql mysql -uroot -p123456 crmeb < scripts/migration_member_featured.sql
+
+# 8. 课程表新增会员等级字段 (member_level)、取消价格
+docker exec -i crmeb_mysql mysql -uroot -p123456 crmeb < scripts/migration_member_level.sql
 ```
 
 ### 2.2 验证表创建
@@ -58,7 +61,7 @@ docker exec crmeb_mysql mysql -uroot -p123456 crmeb -e "SHOW TABLES LIKE 'eb_%';
 - `eb_product_info` — 产品信息（支持多条，含 is_home、category_id 字段）
 - `eb_teaching_category` — 教学分类（案例/课程/产品共用，type: 1=案例 2=课程 3=产品）
 - `eb_case` — 案例（含 category_id、is_home 字段）
-- `eb_course` — 教学课程（含 category_id 字段）
+- `eb_course` — 教学课程（含 category_id, member_level 字段，无价格）
 - `eb_course_order` — 课程订单
 - `eb_offline_class` — 线下排期
 - `eb_offline_booking` — 线下预约
@@ -123,12 +126,12 @@ docker exec crmeb_php sh -c "cp -r /var/www_mount/public/. /var/www_native/publi
 └── 洗眉机
     ├── 产品管理        ← 支持多产品CRUD + 首页显示开关 + 分类筛选/管理
     ├── 案例管理        ← 支持分类筛选 + 分类管理弹窗 + 精选开关（首页展示）
-    ├── 课程管理        ← 支持分类筛选 + 分类管理弹窗
+    ├── 课程管理        ← 支持分类筛选 + 分类管理弹窗 + 可看等级选择（普通会员/超级会员）
     ├── 线下排期
     ├── 预约记录
     ├── 评论管理
     ├── 首页配置
-    └── 会员管理        ← 显示超级会员/普通会员/非会员，支持按类型筛选
+    └── 会员管理        ← 显示超级会员/普通会员/非会员，支持设为/取消超级会员、设为/取消普通会员
 ```
 
 ## 六、重置管理员密码
@@ -176,7 +179,7 @@ docker exec -it crmeb_php bash
 - 检查 `eb_system_menus` 表中 `is_show_path=1` 的记录
 
 ### 表不存在错误
-- 确认所有 migration SQL 已执行（包括 `scripts/migration_category_product.sql` 和 `scripts/migration_member_featured.sql`）
+- 确认所有 migration SQL 已执行（包括 `scripts/migration_category_product.sql`、`scripts/migration_member_featured.sql` 和 `scripts/migration_member_level.sql`）
 - `docker exec crmeb_mysql mysql -uroot -p123456 crmeb -e "SHOW TABLES LIKE 'eb_%';"` 检查
 
 ### 会员管理页报错
