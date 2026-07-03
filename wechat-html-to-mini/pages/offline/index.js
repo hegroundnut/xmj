@@ -8,10 +8,9 @@ Page({
     offlineList: [],
     loading: true,
     error: false,
-    bookingName: '',
-    bookingPhone: '',
-    submitting: false,
     isLogin: false,
+    showQR: false,
+    qrCode: '',
     statusBarHeight: 20
   },
 
@@ -22,6 +21,7 @@ Page({
       isLogin: app.globalData.isLogin,
       statusBarHeight: sys.statusBarHeight
     })
+    this.loadQrCode()
     if (options.id) {
       this.setData({ viewingDetail: true, classId: options.id })
       this.loadDetail(options.id)
@@ -32,6 +32,15 @@ Page({
 
   onShow() {
     this.setData({ isLogin: getApp().globalData.isLogin })
+  },
+
+  loadQrCode() {
+    const { homeApi } = require('../../utils/api/index')
+    homeApi.getHomeConfig().then(res => {
+      const config = res.data || {}
+      const qrCode = (config.contact && config.contact.qrcode) || ''
+      if (qrCode) this.setData({ qrCode })
+    }).catch(() => {})
   },
 
   loadList() {
@@ -79,38 +88,13 @@ Page({
     wx.navigateBack()
   },
 
-  onNameInput(e) { this.setData({ bookingName: e.detail.value }) },
-  onPhoneInput(e) { this.setData({ bookingPhone: e.detail.value }) },
-
-  onSubmit() {
-    const { classData, bookingName, bookingPhone, isLogin, submitting } = this.data
-    if (submitting) return
-    if (!isLogin) {
-      wx.navigateTo({ url: '/subpackages/users/wechat_login/index' })
-      return
-    }
-    if (!bookingName.trim()) return wx.showToast({ title: '请输入姓名', icon: 'none' })
-    if (!/^1[3-9]\d{9}$/.test(bookingPhone.trim())) {
-      return wx.showToast({ title: '请输入有效手机号', icon: 'none' })
-    }
-    this.setData({ submitting: true })
-    teachingApi.createOfflineBooking({
-      class_id: classData.id,
-      name: bookingName.trim(),
-      phone: bookingPhone.trim()
-    }).then(() => {
-      wx.showToast({ title: '预约成功', icon: 'success' })
-      this.setData({ bookingName: '', bookingPhone: '', submitting: false })
-    }).catch(err => {
-      wx.showToast({ title: (err && err.msg) || '预约失败', icon: 'none' })
-      this.setData({ submitting: false })
-    })
+  onOpenQR() {
+    this.setData({ showQR: true })
   },
 
-  onPreviewQR() {
-    const { classData } = this.data
-    if (classData && classData.qr_code) {
-      wx.previewImage({ urls: [classData.qr_code] })
+  onCloseQR(e) {
+    if (e.target === e.currentTarget) {
+      this.setData({ showQR: false })
     }
   }
 })

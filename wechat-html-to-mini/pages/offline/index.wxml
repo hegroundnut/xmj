@@ -97,28 +97,28 @@
         <text class="section-title">课程信息</text>
         <view class="detail-card">
           <view class="detail-row">
-            <text class="d-icon">📅</text>
+            <image src="/static/svg/info-calendar.svg" class="d-icon-svg"/>
             <view class="d-content">
               <text class="d-label">培训时间</text>
               <text class="d-value">{{classData.class_date || ''}} {{classData.start_time || ''}}-{{classData.end_time || ''}}</text>
             </view>
           </view>
           <view class="detail-row">
-            <text class="d-icon">📍</text>
+            <image src="/static/svg/info-map-pin.svg" class="d-icon-svg"/>
             <view class="d-content">
               <text class="d-label">培训地点</text>
               <text class="d-value">{{classData.address || ''}}</text>
             </view>
           </view>
           <view class="detail-row" wx:if="{{classData.capacity}}">
-            <text class="d-icon">👥</text>
+            <image src="/static/svg/users.svg" class="d-icon-svg"/>
             <view class="d-content">
               <text class="d-label">招生人数</text>
               <text class="d-value">限{{classData.capacity}}人{{classData.teaching_style ? '（' + classData.teaching_style + '）' : ''}}</text>
             </view>
           </view>
           <view class="detail-row" wx:if="{{classData.requirements}}">
-            <text class="d-icon">✅</text>
+            <image src="/static/svg/form-check.svg" class="d-icon-svg"/>
             <view class="d-content">
               <text class="d-label">报名要求</text>
               <text class="d-value">{{classData.requirements}}</text>
@@ -146,18 +146,6 @@
         </view>
       </view>
 
-      <!-- Teacher -->
-      <view class="detail-section sm-top">
-        <text class="section-title">授课导师</text>
-        <view class="teacher-card">
-          <image src="{{classData.teacher_avatar || '/static/images/def_avatar.png'}}" class="teacher-avatar"/>
-          <view class="teacher-info">
-            <text class="teacher-name">{{classData.teacher_name || '王美学老师'}}</text>
-            <text class="teacher-title">{{classData.teacher_title || '资深洗眉专家 · 10年实操经验'}}</text>
-          </view>
-        </view>
-      </view>
-
       <!-- Price -->
       <view class="price-section" wx:if="{{classData.price}}">
         <view class="price-info">
@@ -167,34 +155,28 @@
         <text class="price-seats" wx:if="{{classData.remaining_seats !== undefined && classData.remaining_seats !== null}}">剩余 {{classData.remaining_seats}} 个名额</text>
       </view>
 
-      <!-- Booking form -->
-      <view class="detail-section sm-top">
-        <text class="section-title">📋 BOOKING</text>
-        <view class="detail-card">
-          <view class="form-row">
-            <text class="form-label">姓名</text>
-            <input class="form-input" placeholder="请输入您的姓名" value="{{bookingName}}" bindinput="onNameInput"/>
-          </view>
-          <view class="form-row">
-            <text class="form-label">手机号</text>
-            <input class="form-input" type="number" placeholder="请输入手机号" value="{{bookingPhone}}" bindinput="onPhoneInput" maxlength="11"/>
-          </view>
-          <text class="form-tip">预约成功后请添加店主微信确认</text>
-        </view>
-        <view class="qr-section" wx:if="{{classData.qr_code}}">
-          <text class="qr-label">店主微信</text>
-          <image src="{{classData.qr_code}}" mode="aspectFit" class="qr-img" bindtap="onPreviewQR"/>
-        </view>
-      </view>
 
       <view style="height: 180rpx;"/>
     </scroll-view>
 
     <!-- Bottom bar -->
     <view class="bottom-bar">
-      <button class="enroll-btn" bindtap="onSubmit" disabled="{{submitting}}">
-        {{submitting ? '提交中...' : '立即预约'}}
+      <button class="enroll-btn" bindtap="onOpenQR">
+        立即预约
       </button>
+    </view>
+
+    <!-- QR Modal -->
+    <view class="modal-overlay {{showQR ? 'show' : ''}}" catchtap="onCloseQR" wx:if="{{showQR}}">
+      <view class="modal-card">
+        <view class="modal-close" bindtap="onCloseQR">✕</view>
+        <text class="modal-label">ALI LAOXI</text>
+        <text class="modal-title">扫码添加预约</text>
+        <view class="modal-qr">
+          <image src="{{qrCode}}" mode="aspectFit" class="modal-qr-img" wx:if="{{qrCode}}"/>
+        </view>
+        <text class="modal-desc">扫描二维码添加微信\n预约线下课程名额</text>
+      </view>
     </view>
   </block>
 </view>

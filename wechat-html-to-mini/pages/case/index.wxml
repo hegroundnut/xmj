@@ -48,7 +48,7 @@
             <view class="slide-media" style="background:{{item.bg || '#F0EFED'}};">
               <image src="{{item.thumb || item.image || ''}}" mode="aspectFill" class="slide-thumb" wx:if="{{!item.is_video && (item.thumb || item.image)}}"/>
               <view class="badge-video" wx:if="{{item.is_video}}">
-                <text class="play-icon">▶</text>
+                <image src="/static/svg/media-play.svg" class="play-icon-svg"/>
               </view>
               <text class="badge-duration" wx:if="{{item.is_video && item.duration}}">{{item.duration}}</text>
               <text class="badge-compare" wx:if="{{!item.is_video}}">{{item.category_name || '对比'}}</text>
@@ -59,7 +59,7 @@
             </view>
             <view class="slide-actions">
               <view class="action-btn {{liked[item.id] ? 'fav-active' : ''}}" catchtap="onToggleFav" data-id="{{item.id}}">
-                <text class="action-icon">{{liked[item.id] ? '♥' : '♡'}}</text>
+                <image src="/static/svg/action-heart.svg" class="action-svg {{liked[item.id] ? 'active' : ''}}"/>
                 <text>{{liked[item.id] ? '已收藏' : '收藏'}}</text>
               </view>
               <view class="action-btn save-btn" catchtap="onSaveAlbum" data-id="{{item.id}}">

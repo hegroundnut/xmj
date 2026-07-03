@@ -51,6 +51,7 @@
 .menu-item { display: flex; align-items: center; padding: 30rpx 32rpx; border-bottom: 2rpx solid rgba(0,0,0,0.04); }
 .menu-item:last-child { border-bottom: none; }
 .menu-icon { font-size: 36rpx; margin-right: 28rpx; width: 40rpx; text-align: center; }
+.menu-icon-img { width: 36rpx; height: 36rpx; flex-shrink: 0; margin-right: 24rpx; }
 .menu-text { flex: 1; font-size: 26rpx; color: #1A1A1A; letter-spacing: 1rpx; }
 .menu-arrow { font-size: 28rpx; color: rgba(0,0,0,0.15); }
 .menu-badge { font-size: 20rpx; color: #fff; background: #1A1A1A; padding: 4rpx 16rpx; border-radius: 20rpx; margin-right: 16rpx; font-weight: 400; }

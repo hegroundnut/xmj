@@ -6,7 +6,7 @@
     </view>
     <text class="nav-title">{{type === 2 ? '视频案例' : '案例详情'}}</text>
     <view class="nav-share">
-      <text class="nav-share-icon">◎</text>
+      <image src="/static/svg/action-share.svg" class="nav-share-svg"/>
     </view>
   </view>
 
@@ -140,13 +140,13 @@
   <!-- Bottom bar -->
   <view class="bottom-bar" wx:if="{{caseData}}">
     <view class="bar-icon {{liked ? 'liked' : ''}}" bindtap="onToggleLike">
-      <text>{{liked ? '❤️' : '🤍'}}</text>
+      <image src="/static/svg/action-heart.svg" class="bar-svg {{liked ? 'liked' : ''}}"/>
     </view>
     <view class="bar-icon">
-      <text>🔖</text>
+      <image src="/static/svg/action-bookmark.svg" class="bar-svg"/>
     </view>
     <view class="bar-icon">
-      <text>💬</text>
+      <image src="/static/svg/action-chat.svg" class="bar-svg"/>
     </view>
     <view class="consult-btn" bindtap="onConsult">咨询此案例</view>
   </view>

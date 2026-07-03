@@ -1,8 +1,8 @@
 /* ===== Page ===== */
-.page { background: #fff; min-height: 100vh; position: relative; padding-bottom: 120rpx; }
+.page { background: #fff; min-height: 100vh; position: relative; padding-bottom: 120rpx; overflow-x: hidden; box-sizing: border-box; }
 
 /* ===== Page header ===== */
-.page-header { padding: 16rpx 48rpx 32rpx; background: linear-gradient(180deg, #E8DDD3 0%, #EDE4DA 40%, #F3ECE5 70%, #fff 100%); }
+.page-header { padding: 16rpx 40rpx 32rpx; background: linear-gradient(180deg, #E8DDD3 0%, #EDE4DA 40%, #F3ECE5 70%, #fff 100%); }
 .page-title { font-size: 52rpx; font-weight: 300; color: #1A1A1A; letter-spacing: 6rpx; animation: titleFadeIn 0.8s ease-out 0.6s both; }
 
 .wm-wrap { position: relative; height: 100rpx; overflow: hidden; margin-bottom: 8rpx; }

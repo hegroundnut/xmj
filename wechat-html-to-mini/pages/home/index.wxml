@@ -112,21 +112,21 @@
       </view>
       <view class="contact-card">
         <view class="contact-row">
-          <text class="contact-icon">📞</text>
+          <image src="/static/svg/contact-phone.svg" class="contact-icon-svg"/>
           <view>
             <text class="contact-text">{{contact.phone || '400-888-9999'}}</text>
             <text class="contact-label">客服热线</text>
           </view>
         </view>
         <view class="contact-row">
-          <text class="contact-icon">💬</text>
+          <image src="/static/svg/contact-wechat.svg" class="contact-icon-svg"/>
           <view>
             <text class="contact-text">微信号: {{contact.wechat || 'alilaoxi_official'}}</text>
             <text class="contact-label">微信客服</text>
           </view>
         </view>
         <view class="contact-row">
-          <text class="contact-icon">🕐</text>
+          <image src="/static/svg/contact-clock.svg" class="contact-icon-svg"/>
           <view>
             <text class="contact-text">{{contact.hours || '周一至周六 10:00-19:30'}}</text>
             <text class="contact-label">营业时间</text>

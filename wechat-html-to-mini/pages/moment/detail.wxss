@@ -41,6 +41,8 @@
 .stat-item { display: flex; align-items: center; gap: 12rpx; }
 .stat-icon { font-size: 32rpx; }
 .stat-icon.liked { color: #e93323; }
+.stat-svg { width: 28rpx; height: 28rpx; opacity: 0.35; }
+.stat-svg.liked { opacity: 1; }
 .stat-num { font-size: 24rpx; color: rgba(0,0,0,0.35); font-weight: 300; }
 
 /* ===== Comments section ===== */
@@ -61,4 +63,6 @@
 .input-field { flex: 1; padding: 20rpx 32rpx; border: 2rpx solid rgba(0,0,0,0.08); border-radius: 40rpx; font-size: 26rpx; color: rgba(0,0,0,0.3); background: #FAFAF8; }
 .input-actions { display: flex; gap: 16rpx; }
 .input-action { width: 72rpx; height: 72rpx; display: flex; align-items: center; justify-content: center; }
+.input-action-svg { width: 32rpx; height: 32rpx; opacity: 0.35; }
+.input-action-svg.liked { opacity: 1; }
 .login-tip { flex: 1; text-align: center; font-size: 26rpx; color: rgba(0,0,0,0.3); font-weight: 300; }

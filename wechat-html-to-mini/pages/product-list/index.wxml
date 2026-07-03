@@ -32,21 +32,7 @@
 
     <!-- Product grid -->
     <view class="product-grid">
-      <!-- Featured product - full width -->
-      <view class="featured" wx:if="{{featured}}" bindtap="onFeaturedTap">
-        <view class="feat-thumb">
-          <image src="{{featured.image || featured.thumb || '/static/images/product_default.png'}}" mode="aspectFill" class="feat-img"/>
-        </view>
-        <view class="feat-info">
-          <text class="feat-badge">精选推荐</text>
-          <text class="feat-name">{{featured.name || featured.title}}</text>
-          <text class="feat-sub">{{featured.subtitle || featured.desc || ''}}</text>
-          <text class="feat-arrow">查看详情 →</text>
-        </view>
-      </view>
-
-      <!-- Regular product cards -->
-      <view class="prod-card {{!featured && index === 0 ? 'featured-fallback' : ''}}" wx:for="{{filteredProducts}}" wx:key="id"
+      <view class="prod-card" wx:for="{{filteredProducts}}" wx:key="id"
         bindtap="onProductTap" data-id="{{item.id}}">
         <view class="card-thumb">
           <image src="{{item.image || item.thumb || '/static/images/product_default.png'}}" mode="aspectFill" class="thumb-img"/>

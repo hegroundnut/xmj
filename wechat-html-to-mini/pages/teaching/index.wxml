@@ -24,7 +24,7 @@
         <text class="member-label">ALI LAOXI MEMBER</text>
         <text class="member-title">开通会员 · 全部课程免费学</text>
         <text class="member-desc">解锁128+精品课程，持续更新</text>
-        <view class="member-btn" bindtap="onOpenMember">立即开通</view>
+        <view class="member-btn" bindtap="onOpenQR">立即开通</view>
       </view>
     </view>
 
@@ -83,7 +83,7 @@
       <text class="modal-label">ALI LAOXI MEMBER</text>
       <text class="modal-title">扫码添加阿利老西</text>
       <view class="modal-qr">
-        <image src="/static/images/qr_placeholder.png" mode="aspectFit" class="modal-qr-img"/>
+        <image src="{{qrCode || '/static/images/qr_placeholder.png'}}" mode="aspectFit" class="modal-qr-img"/>
       </view>
       <text class="modal-desc">打开微信扫描二维码，添加<text class="modal-strong">阿利老西</text>\n即可咨询会员详情并下单</text>
       <text class="modal-hint">长按识别二维码 · 添加微信好友</text>

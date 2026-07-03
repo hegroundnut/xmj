@@ -43,11 +43,11 @@
     "borderStyle": "white",
     "backgroundColor": "#FAFAF8",
     "list": [
-      { "pagePath": "pages/home/index", "text": "首页", "iconPath": "static/images/1-001.png", "selectedIconPath": "static/images/1-002.png" },
-      { "pagePath": "pages/case/index", "text": "案例", "iconPath": "static/images/2-001.png", "selectedIconPath": "static/images/2-002.png" },
-      { "pagePath": "pages/moment/index", "text": "朋友圈", "iconPath": "static/images/3-001.png", "selectedIconPath": "static/images/3-002.png" },
-      { "pagePath": "pages/teaching/index", "text": "教学", "iconPath": "static/images/4-001.png", "selectedIconPath": "static/images/4-002.png" },
-      { "pagePath": "pages/my/index", "text": "我的", "iconPath": "static/images/5-001.png", "selectedIconPath": "static/images/5-002.png" }
+      { "pagePath": "pages/home/index", "text": "首页", "iconPath": "static/tabbar/tab-home.png", "selectedIconPath": "static/tabbar/tab-home.png" },
+      { "pagePath": "pages/case/index", "text": "案例", "iconPath": "static/tabbar/tab-cases.png", "selectedIconPath": "static/tabbar/tab-cases.png" },
+      { "pagePath": "pages/moment/index", "text": "朋友圈", "iconPath": "static/tabbar/tab-moments.png", "selectedIconPath": "static/tabbar/tab-moments.png" },
+      { "pagePath": "pages/teaching/index", "text": "教学", "iconPath": "static/tabbar/tab-teaching.png", "selectedIconPath": "static/tabbar/tab-teaching.png" },
+      { "pagePath": "pages/my/index", "text": "我的", "iconPath": "static/tabbar/tab-profile.png", "selectedIconPath": "static/tabbar/tab-profile.png" }
     ]
   },
   "window": {

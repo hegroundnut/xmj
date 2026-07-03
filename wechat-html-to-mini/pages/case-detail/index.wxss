@@ -8,6 +8,7 @@
 .nav-title { font-size: 30rpx; font-weight: 400; color: #1A1A1A; letter-spacing: 4rpx; }
 .nav-share { width: 64rpx; height: 64rpx; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(0,0,0,0.04); }
 .nav-share-icon { font-size: 32rpx; color: #1A1A1A; }
+.nav-share-svg { width: 32rpx; height: 32rpx; opacity: 0.6; }
 
 /* ===== Content area ===== */
 .content-area { padding-bottom: 160rpx; }
@@ -90,8 +91,9 @@
 
 /* ===== Bottom bar ===== */
 .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 140rpx; padding: 0 40rpx 56rpx; display: flex; align-items: center; gap: 24rpx; background: rgba(255,255,255,0.95); border-top: 1px solid rgba(0,0,0,0.04); z-index: 100; }
-.bar-icon { width: 80rpx; height: 80rpx; display: flex; align-items: center; justify-content: center; font-size: 36rpx; }
-.bar-icon.liked { }
+.bar-icon { width: 80rpx; height: 80rpx; display: flex; align-items: center; justify-content: center; }
+.bar-svg { width: 36rpx; height: 36rpx; opacity: 0.4; }
+.bar-svg.liked { opacity: 1; }
 .consult-btn { flex: 1; padding: 24rpx; background: #1A1A1A; color: #fff; border: none; border-radius: 48rpx; font-size: 26rpx; font-weight: 400; letter-spacing: 4rpx; }
 
 /* ===== Comment input bar ===== */

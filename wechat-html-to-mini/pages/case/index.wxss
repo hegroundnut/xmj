@@ -44,6 +44,9 @@
 .badge-compare { position: absolute; top: 24rpx; left: 24rpx; background: #1A1A1A; color: #fff; font-size: 20rpx; padding: 8rpx 24rpx; border-radius: 24rpx; letter-spacing: 2rpx; font-weight: 500; }
 .badge-video { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 96rpx; height: 96rpx; border-radius: 50%; background: rgba(255,255,255,0.92); display: flex; align-items: center; justify-content: center; box-shadow: 0 4rpx 24rpx rgba(0,0,0,0.1); }
 .play-icon { font-size: 36rpx; color: #1A1A1A; margin-left: 6rpx; }
+.play-icon-svg { width: 36rpx; height: 36rpx; margin-left: 6rpx; }
+.action-svg { width: 24rpx; height: 24rpx; opacity: 0.35; }
+.action-svg.active { opacity: 1; }
 .badge-duration { position: absolute; bottom: 24rpx; right: 24rpx; background: rgba(0,0,0,0.6); color: #fff; font-size: 22rpx; padding: 6rpx 20rpx; border-radius: 20rpx; font-weight: 400; }
 
 .slide-info { padding: 32rpx 36rpx 0; }

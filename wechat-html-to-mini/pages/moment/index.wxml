@@ -13,7 +13,7 @@
         </view>
         <text class="page-title">朋友圈</text>
       </view>
-      <text class="header-icon">◎</text>
+      <image src="/static/svg/more-horizontal.svg" class="header-icon-svg"/>
     </view>
 
     <!-- Post list -->
@@ -43,15 +43,15 @@
       <!-- Actions -->
       <view class="post-actions">
         <view class="action-item {{item.is_liked ? 'liked' : ''}}" catchtap="onLike" data-index="{{index}}" data-id="{{item.id}}">
-          <text class="action-icon">{{item.is_liked ? '♥' : '♡'}}</text>
+          <image src="/static/svg/action-heart.svg" class="action-svg {{item.is_liked ? 'active' : ''}}"/>
           <text>{{item.like_count || 0}}</text>
         </view>
         <view class="action-item" catchtap="onComment" data-id="{{item.id}}">
-          <text class="action-icon">💬</text>
+          <image src="/static/svg/action-chat.svg" class="action-svg"/>
           <text>{{item.comment_count || 0}}</text>
         </view>
         <view class="action-item {{item.is_favorited ? 'liked' : ''}}" catchtap="onFavorite" data-index="{{index}}" data-id="{{item.id}}">
-          <text class="action-icon">{{item.is_favorited ? '★' : '☆'}}</text>
+          <image src="/static/svg/action-bookmark.svg" class="action-svg {{item.is_favorited ? 'active' : ''}}"/>
           <text>{{item.favorite_count || 0}}</text>
         </view>
       </view>

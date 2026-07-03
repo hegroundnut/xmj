@@ -73,6 +73,7 @@
 .contact-card { background: #F5F4F2; border-radius: 16rpx; padding: 36rpx; display: flex; flex-direction: column; gap: 24rpx; }
 .contact-row { display: flex; align-items: center; gap: 24rpx; }
 .contact-icon { font-size: 32rpx; }
+.contact-icon-svg { width: 32rpx; height: 32rpx; flex-shrink: 0; opacity: 0.4; }
 .contact-text { font-size: 24rpx; color: #1A1A1A; letter-spacing: 1rpx; display: block; }
 .contact-label { font-size: 18rpx; color: rgba(0,0,0,0.25); font-weight: 300; display: block; }
 

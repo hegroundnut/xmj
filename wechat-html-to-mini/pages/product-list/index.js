@@ -6,7 +6,6 @@ Page({
     categories: [],
     products: [],
     filteredProducts: [],
-    featured: null,
     loading: true,
     error: false,
     statusBarHeight: 20
@@ -26,13 +25,10 @@ Page({
     ]).then(([catRes, prodRes]) => {
       const cats = (catRes.data || []).map(c => c.name)
       const products = (prodRes.data && prodRes.data.list) || prodRes.data || []
-      const featured = products.length > 0 ? products[0] : null
-      const rest = products.length > 1 ? products.slice(1) : []
       this.setData({
         categories: ['全部', ...cats],
-        products: rest,
-        featured,
-        filteredProducts: rest,
+        products: products,
+        filteredProducts: products,
         loading: false
       })
     }).catch(() => {
@@ -53,13 +49,6 @@ Page({
     const id = e.currentTarget.dataset.id
     if (id) {
       wx.navigateTo({ url: '/pages/product-detail/index?id=' + id })
-    }
-  },
-
-  onFeaturedTap() {
-    const { featured } = this.data
-    if (featured && featured.id) {
-      wx.navigateTo({ url: '/pages/product-detail/index?id=' + featured.id })
     }
   },
 

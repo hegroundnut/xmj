@@ -97,11 +97,11 @@
   <!-- Bottom bar -->
   <view class="bottom-bar" wx:if="{{course}}">
     <view class="bottom-action {{course.is_favorited ? 'fav-active' : ''}}" bindtap="onToggleFav">
-      <text class="action-icon">{{course.is_favorited ? '★' : '🔖'}}</text>
+      <image src="/static/svg/action-bookmark.svg" class="bottom-action-svg {{course.is_favorited ? 'active' : ''}}"/>
       <text class="action-label">{{course.is_favorited ? '已收藏' : '收藏'}}</text>
     </view>
     <view class="bottom-action">
-      <text class="action-icon">◎</text>
+      <image src="/static/svg/action-share.svg" class="bottom-action-svg"/>
       <text class="action-label">分享</text>
     </view>
     <button class="buy-btn" bindtap="onBuy">

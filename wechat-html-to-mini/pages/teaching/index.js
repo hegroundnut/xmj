@@ -12,13 +12,24 @@ Page({
     loading: true,
     error: false,
     isMember: false,
-    showQR: false
+    showQR: false,
+    qrCode: ''
   },
 
   onLoad() {
     const app = getApp()
     this.setData({ isMember: app.globalData.isMember })
     this.loadData()
+    this.loadQrCode()
+  },
+
+  loadQrCode() {
+    const { homeApi } = require('../../utils/api/index')
+    homeApi.getHomeConfig().then(res => {
+      const config = res.data || {}
+      const qrCode = (config.contact && config.contact.qrcode) || ''
+      if (qrCode) this.setData({ qrCode })
+    }).catch(() => {})
   },
 
   onShow() {
