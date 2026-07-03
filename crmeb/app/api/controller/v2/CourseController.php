@@ -11,8 +11,6 @@
 namespace app\api\controller\v2;
 
 use app\services\teaching\CourseServices;
-use app\services\teaching\CourseOrderServices;
-use app\services\teaching\CoursePayServices;
 use think\facade\App;
 
 /**
@@ -50,34 +48,5 @@ class CourseController
     {
         $uid = request()->uid ?? 0;
         return app('json')->success($this->services->getDetail((int)$id, $uid));
-    }
-
-    /**
-     * 创建试听订单
-     * POST /api/v2/course/create_order
-     */
-    public function create_order(CourseOrderServices $orderServices)
-    {
-        [$courseId] = request()->getMore([
-            ['course_id', 0],
-        ], true);
-        if (!$courseId) return app('json')->fail('参数错误');
-        $uid = request()->uid;
-        $course = $this->services->getDetail((int)$courseId, $uid);
-        if ($course['can_watch']) {
-            return app('json')->fail('您已可观看此课程，无需购买');
-        }
-        $orderSn = $orderServices->createOrder($uid, (int)$courseId, (float)$course['price']);
-
-        $result = ['order_sn' => $orderSn, 'price' => $course['price']];
-        try {
-            /** @var CoursePayServices $coursePayServices */
-            $coursePayServices = app()->make(CoursePayServices::class);
-            $payParams = $coursePayServices->pay($orderSn, (float)$course['price'], 'routine');
-            $result['pay_params'] = $payParams;
-        } catch (\Exception $e) {
-            $result['pay_error'] = $e->getMessage();
-        }
-        return app('json')->success($result);
     }
 }

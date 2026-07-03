@@ -49,11 +49,12 @@ class CourseController extends AuthController
             ['cover', ''],
             ['desc', ''],
             ['video_url', ''],
-            ['price', 9.90],
-            ['is_free_for_member', 1],
+            ['member_level', 1],
             ['sort', 0],
             ['status', 1],
         ]);
+        $data['price'] = 0;
+        $data['is_free_for_member'] = 1;
         $data['add_time'] = time();
         $this->services->save($data);
         return app('json')->success('添加成功');
@@ -67,11 +68,12 @@ class CourseController extends AuthController
             ['cover', ''],
             ['desc', ''],
             ['video_url', ''],
-            ['price', 9.90],
-            ['is_free_for_member', 1],
+            ['member_level', 1],
             ['sort', 0],
             ['status', 1],
         ]);
+        $data['price'] = 0;
+        $data['is_free_for_member'] = 1;
         $this->services->update((int)$id, $data);
         return app('json')->success('修改成功');
     }

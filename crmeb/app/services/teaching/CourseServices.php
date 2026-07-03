@@ -13,7 +13,7 @@ namespace app\services\teaching;
 use app\dao\teaching\CourseDao;
 use app\dao\teaching\TeachingCategoryDao;
 use app\services\BaseServices;
-use app\services\user\UserServices;
+use app\model\user\User;
 use crmeb\exceptions\ApiException;
 
 /**
@@ -27,6 +27,36 @@ class CourseServices extends BaseServices
     }
 
     /**
+     * 获取用户会员类型
+     * @param int $uid
+     * @return string super|regular|none
+     */
+    protected function getUserMemberType(int $uid): string
+    {
+        if ($uid <= 0) return 'none';
+        $user = User::find($uid);
+        if (!$user) return 'none';
+        if ($user->is_teaching_member == 1) return 'super';
+        if ($user->overdue_time > time()) return 'regular';
+        return 'none';
+    }
+
+    /**
+     * 判断用户是否能观看指定课程
+     * member_level=1: 普通会员可看（普通+超级）
+     * member_level=2: 超级会员可看（仅超级）
+     * @param string $memberType
+     * @param int $memberLevel
+     * @return bool
+     */
+    protected function canWatch(string $memberType, int $memberLevel): bool
+    {
+        if ($memberType === 'super') return true;
+        if ($memberType === 'regular' && $memberLevel <= 1) return true;
+        return false;
+    }
+
+    /**
      * 获取课程列表（含会员权限信息）
      * @param array $where
      * @param int $uid
@@ -35,23 +65,18 @@ class CourseServices extends BaseServices
     public function getList(array $where, int $uid)
     {
         [$page, $limit] = $this->getPageValue();
-        $field = 'id,title,category_id,cover,desc,price,is_free_for_member,sort,status,add_time';
+        $field = 'id,title,category_id,cover,desc,member_level,sort,status,add_time';
         $list = $this->dao->courseList($where, $field, $page, $limit);
-        // 检查是否教学会员
-        $isMember = false;
-        if ($uid > 0) {
-            /** @var UserServices $userServices */
-            $userServices = app()->make(UserServices::class);
-            $isMember = (bool)$userServices->value(['uid' => $uid], 'is_teaching_member');
-        }
+        $memberType = $this->getUserMemberType($uid);
         /** @var TeachingCategoryDao $categoryDao */
         $categoryDao = app()->make(TeachingCategoryDao::class);
         $categories = $categoryDao->getCategoryList(2);
         $categoryMap = array_column($categories, 'name', 'id');
         foreach ($list as &$item) {
             $item['cover'] = set_file_url($item['cover']);
-            $item['is_member'] = $isMember;
-            $item['can_watch'] = $isMember || $item['is_free_for_member'];
+            $item['member_type'] = $memberType;
+            $item['can_watch'] = $this->canWatch($memberType, (int)$item['member_level']);
+            $item['member_level_text'] = $item['member_level'] == 2 ? '超级会员' : '普通会员';
             $item['add_time'] = date('Y-m-d H:i', $item['add_time']);
             $item['category_name'] = $categoryMap[$item['category_id']] ?? '';
         }
@@ -72,16 +97,13 @@ class CourseServices extends BaseServices
         if (!$info || !$info['status']) {
             throw new ApiException('课程不存在或已下架');
         }
+        $info = $info->toArray();
         $info['cover'] = set_file_url($info['cover']);
         $info['video_url'] = set_file_url($info['video_url']);
-        // 检查会员
-        $isMember = false;
-        if ($uid > 0) {
-            $userServices = app()->make(UserServices::class);
-            $isMember = (bool)$userServices->value(['uid' => $uid], 'is_teaching_member');
-        }
-        $info['is_member'] = $isMember;
-        $info['can_watch'] = $isMember || $info['is_free_for_member'];
+        $memberType = $this->getUserMemberType($uid);
+        $info['member_type'] = $memberType;
+        $info['can_watch'] = $this->canWatch($memberType, (int)$info['member_level']);
+        $info['member_level_text'] = $info['member_level'] == 2 ? '超级会员' : '普通会员';
         return $info;
     }
 }

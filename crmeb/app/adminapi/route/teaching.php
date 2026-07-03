@@ -104,7 +104,8 @@ Route::group('teaching_booking', function () {
 // 用户会员管理
 Route::group('teaching_member', function () {
     Route::get('list', 'v1.teaching.MemberController/index')->option(['real_name' => '教学会员列表']);
-    Route::put('set/:uid', 'v1.teaching.MemberController/setMember')->option(['real_name' => '设置教学会员']);
+    Route::put('set/:uid', 'v1.teaching.MemberController/setMember')->option(['real_name' => '设置超级会员']);
+    Route::put('set_regular/:uid', 'v1.teaching.MemberController/setRegularMember')->option(['real_name' => '设置普通会员']);
 })->middleware([
     \app\http\middleware\AllowOriginMiddleware::class,
     \app\adminapi\middleware\AdminAuthTokenMiddleware::class,

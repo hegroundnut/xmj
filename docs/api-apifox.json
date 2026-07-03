@@ -15,7 +15,7 @@
     { "name": "分类", "description": "案例/课程/产品分类" },
     { "name": "案例", "description": "案例展示（含分类）" },
     { "name": "案例评论", "description": "案例评论" },
-    { "name": "课程", "description": "教学课程" },
+    { "name": "课程", "description": "教学课程（无价格，按会员等级控制观看权限）" },
     { "name": "线下课", "description": "线下课程排期" },
     { "name": "朋友圈-帖子", "description": "朋友圈帖子" },
     { "name": "朋友圈-评论", "description": "朋友圈评论" },
@@ -154,7 +154,7 @@
       "get": {
         "tags": ["课程"],
         "summary": "获取课程列表",
-        "description": "需要登录(用于判断会员状态)。支持按分类筛选。返回值含 category_id 和 category_name",
+        "description": "需要登录。返回含 member_level(1=普通会员可看 2=超级会员可看), can_watch, member_level_text, category_name",
         "parameters": [
           { "name": "category_id", "in": "query", "schema": { "type": "integer" }, "description": "0=全部，其他=指定分类ID" },
           { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
@@ -167,34 +167,11 @@
       "get": {
         "tags": ["课程"],
         "summary": "获取课程详情",
-        "description": "需要登录",
+        "description": "需要登录。返回含 member_level, member_level_text, can_watch, member_type",
         "parameters": [
           { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" }, "description": "课程ID" }
         ],
         "responses": { "200": { "description": "成功" } }
-      }
-    },
-    "/api/v2/course/create_order": {
-      "post": {
-        "tags": ["课程"],
-        "summary": "创建试听订单",
-        "description": "需要登录。会员免费课程不需创建订单",
-        "security": [{ "bearerAuth": [] }],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["course_id"],
-                "properties": {
-                  "course_id": { "type": "integer", "description": "课程ID" }
-                }
-              }
-            }
-          }
-        },
-        "responses": { "200": { "description": "返回 order_sn + price + pay_params(微信支付参数)" } }
       }
     },
     "/api/v2/offline_class/list": {
@@ -733,8 +710,7 @@
                   "cover": { "type": "string" },
                   "desc": { "type": "string" },
                   "video_url": { "type": "string" },
-                  "price": { "type": "number", "default": 9.90 },
-                  "is_free_for_member": { "type": "integer", "enum": [0, 1], "default": 1, "description": "1=会员免费" },
+                  "member_level": { "type": "integer", "enum": [1, 2], "default": 1, "description": "1=普通会员可看 2=超级会员可看" },
                   "sort": { "type": "integer", "default": 0 },
                   "status": { "type": "integer", "enum": [0, 1], "default": 1 }
                 }
@@ -913,6 +889,30 @@
                 "type": "object",
                 "properties": {
                   "is_teaching_member": { "type": "integer", "enum": [0, 1], "description": "1=设为超级会员 0=取消超级会员" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_member/set_regular/{uid}": {
+      "put": {
+        "tags": ["管理后台-教学"],
+        "summary": "设置/取消普通会员",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "uid", "in": "path", "required": true, "schema": { "type": "integer" }, "description": "用户UID" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "action": { "type": "string", "enum": ["set", "cancel"], "description": "set=设为普通会员 cancel=取消普通会员" },
+                  "overdue_time": { "type": "string", "description": "到期时间，例如 2027-12-31 23:59:59（action=set时必填）" }
                 }
               }
             }

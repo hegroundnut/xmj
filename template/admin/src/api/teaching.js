@@ -119,6 +119,9 @@ export function getTeachingMemberList(params) {
 export function setTeachingMember(uid, status) {
   return request({ url: `teaching_member/set/${uid}`, method: 'put', data: { is_teaching_member: status } });
 }
+export function setRegularMember(uid, data) {
+  return request({ url: `teaching_member/set_regular/${uid}`, method: 'put', data });
+}
 
 /**
  * 分类管理

@@ -14,6 +14,12 @@
         </el-table-column>
         <el-table-column prop="title" label="标题" />
         <el-table-column prop="category_name" label="分类" width="120" />
+        <el-table-column label="可看等级" width="120">
+          <template slot-scope="{row}">
+            <el-tag v-if="row.member_level == 2" type="warning" size="small">超级会员</el-tag>
+            <el-tag v-else type="success" size="small">普通会员</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="sort" label="排序" width="80" />
         <el-table-column label="状态" width="80">
           <template slot-scope="{row}">
@@ -55,13 +61,14 @@
         <el-form-item label="标题">
           <el-input v-model="courseForm.title" />
         </el-form-item>
-        <el-form-item label="价格">
-          <el-input v-model="courseForm.price" placeholder="9.9">
-            <template slot="append">元</template>
-          </el-input>
-        </el-form-item>
-        <el-form-item label="会员免费">
-          <el-switch v-model="courseForm.is_free_for_member" :active-value="1" :inactive-value="0" />
+        <el-form-item label="可看等级">
+          <el-radio-group v-model="courseForm.member_level">
+            <el-radio :label="1">普通会员可看</el-radio>
+            <el-radio :label="2">超级会员可看</el-radio>
+          </el-radio-group>
+          <div style="font-size:12px;color:#999;margin-top:4px">
+            普通会员可看 = 普通会员和超级会员均可观看；超级会员可看 = 仅超级会员可观看
+          </div>
         </el-form-item>
         <el-form-item label="描述">
           <el-input v-model="courseForm.desc" type="textarea" :rows="3" placeholder="课程描述" />
@@ -123,7 +130,7 @@ export default {
       dialogVisible: false,
       dialogTitle: '添加课程',
       submitLoading: false,
-      courseForm: { title: '', category_id: 0, cover: '', price: '9.9', is_free_for_member: 0, desc: '', video_url: '', sort: 0, status: 1 },
+      courseForm: { title: '', category_id: 0, cover: '', member_level: 1, desc: '', video_url: '', sort: 0, status: 1 },
       editId: null,
       coverModal: false,
       gridBtn: { xl: 6, lg: 8, md: 12, sm: 24, xs: 24 },
@@ -158,7 +165,7 @@ export default {
     handleAdd() {
       this.editId = null;
       this.dialogTitle = '添加课程';
-      this.courseForm = { title: '', category_id: 0, cover: '', price: '9.9', is_free_for_member: 0, desc: '', video_url: '', sort: 0, status: 1 };
+      this.courseForm = { title: '', category_id: 0, cover: '', member_level: 1, desc: '', video_url: '', sort: 0, status: 1 };
       this.dialogVisible = true;
     },
     handleEdit(row) {
@@ -168,8 +175,7 @@ export default {
         title: row.title,
         category_id: row.category_id || 0,
         cover: row.cover,
-        price: row.price || '9.9',
-        is_free_for_member: row.is_free_for_member ?? 0,
+        member_level: row.member_level || 1,
         desc: row.desc || '',
         video_url: row.video_url || '',
         sort: row.sort || 0,
@@ -203,8 +209,9 @@ export default {
       } catch (e) {}
     },
     async handleStatus(row, val) {
-      await updateCourse(row.id, { ...row, status: val });
+      await updateCourse(row.id, { ...row, status: val, member_level: row.member_level || 1 });
       this.$message.success('状态已更新');
+      this.loadList();
     },
     async handleAddCategory() {
       if (!this.newCategoryName.trim()) return this.$message.warning('请输入分类名称');

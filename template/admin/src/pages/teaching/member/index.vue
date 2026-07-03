@@ -32,13 +32,19 @@
             <span v-else style="color:#ccc">-</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="140">
+        <el-table-column label="操作" width="260">
           <template slot-scope="{row}">
             <el-button
               :type="row.is_teaching_member ? 'warning' : 'primary'"
               size="mini"
-              @click="handleToggle(row)"
+              @click="handleToggleSuper(row)"
             >{{ row.is_teaching_member ? '取消超级' : '设为超级' }}</el-button>
+            <el-button
+              v-if="row.member_type !== 'super'"
+              :type="row.member_type === 'regular' ? 'danger' : 'success'"
+              size="mini"
+              @click="handleRegular(row)"
+            >{{ row.member_type === 'regular' ? '取消普通' : '设为普通' }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -51,11 +57,27 @@
         style="margin-top:15px"
       />
     </el-card>
+
+    <!-- 设置普通会员弹窗 -->
+    <el-dialog title="设置普通会员" :visible.sync="regularDialog" width="400px" :close-on-click-modal="false">
+      <el-form label-width="80px">
+        <el-form-item label="用户">
+          <span>{{ regularTarget.nickname }} (UID: {{ regularTarget.uid }})</span>
+        </el-form-item>
+        <el-form-item label="到期时间">
+          <el-date-picker v-model="regularExpiry" type="date" placeholder="选择到期日期" style="width:100%" value-format="yyyy-MM-dd" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button @click="regularDialog = false">取消</el-button>
+        <el-button type="primary" @click="handleSetRegular">确定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getTeachingMemberList, setTeachingMember } from '@/api/teaching';
+import { getTeachingMemberList, setTeachingMember, setRegularMember } from '@/api/teaching';
 
 export default {
   name: 'teachingMember',
@@ -68,6 +90,9 @@ export default {
       loading: false,
       keyword: '',
       filterMember: '',
+      regularDialog: false,
+      regularTarget: {},
+      regularExpiry: '',
     };
   },
   mounted() {
@@ -91,7 +116,7 @@ export default {
       this.page = p;
       this.loadList();
     },
-    handleToggle(row) {
+    handleToggleSuper(row) {
       const newStatus = row.is_teaching_member ? 0 : 1;
       const action = newStatus ? '设为超级会员' : '取消超级会员';
       this.$confirm(`确定${action}「${row.nickname}」？`, '提示', { type: 'warning' }).then(async () => {
@@ -99,6 +124,26 @@ export default {
         this.$message.success('操作成功');
         this.loadList();
       });
+    },
+    handleRegular(row) {
+      if (row.member_type === 'regular') {
+        this.$confirm(`确定取消「${row.nickname}」的普通会员？`, '提示', { type: 'warning' }).then(async () => {
+          await setRegularMember(row.uid, { action: 'cancel' });
+          this.$message.success('已取消普通会员');
+          this.loadList();
+        });
+      } else {
+        this.regularTarget = row;
+        this.regularExpiry = '';
+        this.regularDialog = true;
+      }
+    },
+    async handleSetRegular() {
+      if (!this.regularExpiry) return this.$message.warning('请选择到期时间');
+      await setRegularMember(this.regularTarget.uid, { action: 'set', overdue_time: this.regularExpiry + ' 23:59:59' });
+      this.$message.success('已设为普通会员');
+      this.regularDialog = false;
+      this.loadList();
     },
   },
 };
