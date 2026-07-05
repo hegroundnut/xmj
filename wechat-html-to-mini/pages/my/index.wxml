@@ -4,20 +4,52 @@
     <text class="nav-title">我的</text>
   </view>
 
+  <!-- Watermark -->
+  <view class="deco-text">
+    <text class="wm wm-profile">PROFILE</text>
+    <text class="wm wm-ali">ALI LAOXI</text>
+  </view>
+
   <!-- Profile card -->
   <view class="profile-card">
-    <view class="profile-top" wx:if="{{isLogin}}">
-      <image src="{{userInfo.avatar || '/static/images/def_avatar.png'}}" class="avatar" mode="aspectFill"/>
-      <view class="profile-info">
-        <text class="nickname">{{userInfo.nickname || '用户'}}</text>
-        <text class="uid">ID: {{userInfo.uid || '---'}}</text>
+    <!-- Decorative elements -->
+    <text class="profile-watermark">ALI LAOXI</text>
+    <text class="profile-deco" style="top:16rpx;right:20rpx;">MEMBER</text>
+    <text class="profile-deco" style="bottom:16rpx;left:24rpx;">STUDIO</text>
+    <text class="profile-deco" style="bottom:16rpx;right:20rpx;">HEFEI</text>
+
+    <view class="profile-content" wx:if="{{isLogin}}">
+      <view class="profile-avatar-wrap">
+        <image src="{{userInfo.avatar || '/static/images/def_avatar.png'}}" class="profile-avatar" mode="aspectFill"/>
+        <view class="member-level-badge super" wx:if="{{isSuperMember}}">
+          <text class="level-text">SVIP</text>
+        </view>
+        <view class="member-level-badge regular" wx:elif="{{isMember}}">
+          <text class="level-text">VIP</text>
+        </view>
+      </view>
+      <view class="profile-detail">
+        <text class="profile-nickname">{{userInfo.nickname || '用户'}}</text>
+        <text class="profile-uid">ID: {{userInfo.uid || '---'}}</text>
+        <text class="profile-member-status super" wx:if="{{isSuperMember}}">超级会员</text>
+        <text class="profile-member-status regular" wx:elif="{{isMember}}">普通会员</text>
+        <text class="profile-member-status guest" wx:else>普通用户</text>
+      </view>
+      <view class="profile-edit-btn" bindtap="onEditProfile">
+        <text>修改资料</text>
       </view>
     </view>
-    <view class="profile-top" wx:else bindtap="onGoLogin">
-      <image src="/static/svg/user.svg" class="avatar"/>
-      <view class="profile-info">
-        <text class="nickname">点击登录</text>
-        <text class="uid">登录解锁全部功能</text>
+
+    <view class="profile-content profile-guest" wx:else bindtap="onGoLogin">
+      <view class="profile-avatar-wrap">
+        <image src="/static/svg/user.svg" class="profile-avatar"/>
+      </view>
+      <view class="profile-detail">
+        <text class="profile-nickname">点击登录</text>
+        <text class="profile-uid">登录解锁全部功能</text>
+      </view>
+      <view class="profile-edit-btn">
+        <text>去登录</text>
       </view>
     </view>
   </view>
@@ -77,5 +109,19 @@
   <view class="account-footer">
     <button class="logout-btn" bindtap="onLogout" wx:if="{{isLogin}}">退出登录</button>
     <button class="login-btn" bindtap="onGoLogin" wx:else>去登录</button>
+  </view>
+
+  <!-- QR Modal -->
+  <view class="modal-overlay {{showQR ? 'show' : ''}}" catchtap="onCloseQR" wx:if="{{showQR}}">
+    <view class="modal-card">
+      <view class="modal-close" bindtap="onCloseQR">✕</view>
+      <text class="modal-label">ALI LAOXI MEMBER</text>
+      <text class="modal-title">扫码添加阿利老西</text>
+      <view class="modal-qr">
+        <image src="{{qrCode || '/static/images/qr_placeholder.png'}}" mode="aspectFit" class="modal-qr-img"/>
+      </view>
+      <text class="modal-desc">打开微信扫描二维码，添加<text class="modal-strong">阿利老西</text>\n即可咨询详情</text>
+      <text class="modal-hint">长按识别二维码 · 添加微信好友</text>
+    </view>
   </view>
 </view>

@@ -7,14 +7,27 @@ Page({
     userInfo: null,
     isLogin: false,
     isMember: false,
+    isSuperMember: false,
+    memberType: 'none',
     loading: true,
     showQR: false,
+    qrCode: '',
     statusBarHeight: 20
   },
 
   onLoad() {
     const sys = wx.getSystemInfoSync()
     this.setData({ statusBarHeight: sys.statusBarHeight })
+    this.loadQrCode()
+  },
+
+  loadQrCode() {
+    const { homeApi } = require('../../utils/api/index')
+    homeApi.getHomeConfig().then(res => {
+      const config = res.data || {}
+      const qrCode = (config.contact && config.contact.qrcode) || ''
+      if (qrCode) this.setData({ qrCode })
+    }).catch(() => {})
   },
 
   onShow() {
@@ -29,7 +42,13 @@ Page({
         const info = res.data
         if (info) {
           store.setUserInfo(info)
-          this.setData({ userInfo: info, isMember: info.is_teaching_member === 1 })
+          const memberType = info.member_type || (info.is_teaching_member === 1 ? 'super' : (info.is_member === 1 ? 'regular' : 'none'))
+          this.setData({
+            userInfo: info,
+            isMember: info.is_member === 1,
+            isSuperMember: info.is_teaching_member === 1,
+            memberType: memberType
+          })
         }
       }).finally(() => this.setData({ loading: false }))
     } else {
@@ -70,7 +89,7 @@ Page({
       success: res => {
         if (res.confirm) {
           logout()
-          this.setData({ isLogin: false, isMember: false, userInfo: null })
+          this.setData({ isLogin: false, isMember: false, isSuperMember: false, memberType: 'none', userInfo: null })
         }
       }
     })

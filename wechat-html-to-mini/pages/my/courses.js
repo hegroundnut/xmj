@@ -14,7 +14,7 @@ Page({
   },
 
   loadData() {
-    myApi.getMyCourses().then(res => {
+    myApi.getMyFavorites({ type: 'course', page: 1, limit: 100 }).then(res => {
       this.setData({ list: (res.data && res.data.list) || [], loading: false })
     }).catch(() => this.setData({ loading: false }))
   },

@@ -58,12 +58,7 @@ Page({
   onOpenQR() {
     this.setData({ showQR: true })
   },
-  onCloseQR(e) {
-    if (e.target === e.currentTarget) {
-      this.setData({ showQR: false })
-    }
-  },
-  onCloseQRBtn() {
+  onCloseQR() {
     this.setData({ showQR: false })
   },
 

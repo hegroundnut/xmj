@@ -27,20 +27,41 @@ Page({
     let promise
 
     if (activeTab === 'moment') {
-      promise = momentApi.getFavorites({ page: 1, limit: 100 })
+      promise = momentApi.getFavorites({ page: 1, limit: 100 }).then(res => {
+        const list = ((res.data && res.data.list) || res.data || [])
+        return (Array.isArray(list) ? list : []).map(item => ({ ...item, type: 'moment', type_label: '帖子' }))
+      })
     } else if (activeTab === 'case') {
-      promise = caseApi.getCaseFavorites({ page: 1, limit: 100 })
+      promise = caseApi.getCaseFavorites({ page: 1, limit: 100 }).then(res => {
+        const list = ((res.data && res.data.list) || res.data || [])
+        return (Array.isArray(list) ? list : []).map(item => ({ ...item, type: 'case', type_label: '案例' }))
+      })
+    } else if (activeTab === 'course') {
+      promise = myApi.getMyFavorites({ type: 'course', page: 1, limit: 100 }).then(res => {
+        const list = ((res.data && res.data.list) || res.data || [])
+        return (Array.isArray(list) ? list : []).map(item => ({ ...item, type: 'course', type_label: '课程' }))
+      })
     } else {
-      promise = myApi.getMyFavorites({ type: activeTab, page: 1, limit: 100 })
+      // 'all' tab: merge all three types
+      promise = Promise.all([
+        momentApi.getFavorites({ page: 1, limit: 100 }).then(res => {
+          const list = ((res.data && res.data.list) || res.data || [])
+          return (Array.isArray(list) ? list : []).map(item => ({ ...item, type: 'moment', type_label: '帖子' }))
+        }).catch(() => []),
+        caseApi.getCaseFavorites({ page: 1, limit: 100 }).then(res => {
+          const list = ((res.data && res.data.list) || res.data || [])
+          return (Array.isArray(list) ? list : []).map(item => ({ ...item, type: 'case', type_label: '案例' }))
+        }).catch(() => []),
+        myApi.getMyFavorites({ type: 'course', page: 1, limit: 100 }).then(res => {
+          const list = ((res.data && res.data.list) || res.data || [])
+          return (Array.isArray(list) ? list : []).map(item => ({ ...item, type: 'course', type_label: '课程' }))
+        }).catch(() => [])
+      ]).then(([moments, cases, courses]) => {
+        return [...moments, ...cases, ...courses]
+      })
     }
 
-    promise.then(res => {
-      let list = (res.data && res.data.list) || res.data || []
-      if (!Array.isArray(list)) list = []
-      list = list.map(item => ({
-        ...item,
-        type_label: activeTab === 'moment' ? '帖子' : activeTab === 'case' ? '案例' : activeTab === 'course' ? '课程' : (item.type_label || '')
-      }))
+    promise.then(list => {
       this.setData({ list, loading: false })
     }).catch(() => this.setData({ loading: false }))
   },

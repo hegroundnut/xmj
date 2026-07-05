@@ -35,31 +35,6 @@
         <text class="info-badge">👤 {{course.student_count || '1286'}}人已学</text>
         <text class="info-badge">⭐ {{course.rating || '4.9'}}分</text>
       </view>
-      <view class="price-section">
-        <view class="price-top-row">
-          <view class="price-left">
-            <text class="price-current">¥{{course.price || '9.9'}}</text>
-            <text class="price-label">试听价</text>
-          </view>
-          <text class="member-badge" wx:if="{{course.is_free_for_member === 1}}">会员免费</text>
-          <text class="price-original" wx:if="{{course.original_price}}">¥{{course.original_price}}</text>
-        </view>
-        <text class="member-notice" wx:if="{{!isMember}}">开通会员可免费观看全部课程</text>
-      </view>
-    </view>
-
-    <view class="divider"/>
-
-    <!-- Teacher -->
-    <view class="teacher-section">
-      <view class="teacher-card">
-        <image src="{{course.teacher_avatar || '/static/images/def_avatar.png'}}" class="teacher-avatar"/>
-        <view class="teacher-info">
-          <text class="teacher-name">{{course.teacher_name || '王美学老师'}}</text>
-          <text class="teacher-title">{{course.teacher_title || '资深洗眉专家 · 高级讲师'}}</text>
-          <text class="teacher-stats">授课 {{course.teacher_course_count || '36'}} 门 · 学员 {{course.teacher_student_count || '5000'}}+</text>
-        </view>
-      </view>
     </view>
 
     <view class="divider"/>
@@ -104,8 +79,6 @@
       <image src="/static/svg/action-share.svg" class="bottom-action-svg"/>
       <text class="action-label">分享</text>
     </view>
-    <button class="buy-btn" bindtap="onBuy">
-      {{isMember || course.is_free_for_member === 1 ? '开始学习 · 会员免费' : '¥' + (course.price || '9.9') + ' 试听 · 会员免费'}}
-    </button>
+    <button class="buy-btn" bindtap="onBuy">开始学习</button>
   </view>
 </view>

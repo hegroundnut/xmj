@@ -42,7 +42,6 @@
         <view class="card-info">
           <text class="card-name">{{item.name || item.title}}</text>
           <text class="card-sub">{{item.subtitle || item.desc || ''}}</text>
-          <text class="card-price">¥{{item.price}}</text>
         </view>
       </view>
 

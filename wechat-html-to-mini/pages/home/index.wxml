@@ -88,14 +88,14 @@
         <view class="course-item" wx:for="{{courses}}" wx:key="id" bindtap="onCourseTap" data-id="{{item.id}}">
           <view class="course-thumb" style="background:{{item.bg || '#F0EFED'}};">
             <image src="{{item.thumb || ''}}" mode="aspectFill" class="course-thumb-img" wx:if="{{item.thumb}}"/>
-            <text class="course-badge">{{item.tag || '入门'}}</text>
+            <text class="course-badge">{{item.category_name || item.tag || '入门'}}</text>
           </view>
           <view class="course-info">
             <text class="course-name">{{item.name || item.title}}</text>
             <text class="course-teacher">{{item.teacher || '王美学老师'}} · {{item.lessons || 12}}课时</text>
             <view class="course-price-row">
-              <text class="course-price">¥{{item.price}} <text class="orig">¥{{item.original || '99'}}</text></text>
-              <view class="course-add" bindtap="onBuyCourse" data-id="{{item.id}}">购买</view>
+              <text class="course-meta">{{item.students || item.enroll_count || 0}}人已学</text>
+              <view class="course-add" bindtap="onCourseTap" data-id="{{item.id}}">学习</view>
             </view>
           </view>
         </view>

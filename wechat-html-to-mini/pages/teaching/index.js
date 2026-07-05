@@ -99,10 +99,8 @@ Page({
     this.setData({ showQR: true })
   },
 
-  onCloseQR(e) {
-    if (e.target === e.currentTarget) {
-      this.setData({ showQR: false })
-    }
+  onCloseQR() {
+    this.setData({ showQR: false })
   },
 
   onOfflineTap() {

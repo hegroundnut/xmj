@@ -58,6 +58,9 @@
 .course-bottom { display: flex; align-items: center; justify-content: space-between; }
 .course-price { font-size: 26rpx; font-weight: 500; color: #1A1A1A; }
 .course-price .orig { font-size: 22rpx; color: rgba(0,0,0,0.2); font-weight: 300; text-decoration: line-through; margin-left: 8rpx; }
+.course-level-tag { font-size: 20rpx; font-weight: 500; padding: 4rpx 16rpx; border-radius: 20rpx; letter-spacing: 1rpx; flex-shrink: 0; }
+.course-level-tag.super { color: #C85A3A; background: rgba(200,90,58,0.08); }
+.course-level-tag.regular { color: #6B764F; background: rgba(107,118,79,0.08); }
 .course-meta { font-size: 20rpx; color: rgba(0,0,0,0.25); font-weight: 300; }
 .course-bottom-right { display: flex; align-items: center; gap: 16rpx; }
 .course-buy { padding: 10rpx 28rpx; border-radius: 32rpx; background: #1A1A1A; color: #fff; font-size: 20rpx; font-weight: 400; letter-spacing: 2rpx; flex-shrink: 0; }

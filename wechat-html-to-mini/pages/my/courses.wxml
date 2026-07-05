@@ -13,7 +13,7 @@
     <text class="state-text">加载中...</text>
   </view>
   <view class="empty-hint" wx:elif="{{!loading && list.length === 0}}">
-    <text>暂无已购课程</text>
+    <text>暂无收藏课程</text>
   </view>
 
   <!-- Course list -->

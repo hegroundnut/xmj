@@ -170,12 +170,13 @@
     <view class="modal-overlay {{showQR ? 'show' : ''}}" catchtap="onCloseQR" wx:if="{{showQR}}">
       <view class="modal-card">
         <view class="modal-close" bindtap="onCloseQR">✕</view>
-        <text class="modal-label">ALI LAOXI</text>
-        <text class="modal-title">扫码添加预约</text>
+        <text class="modal-label">ALI LAOXI MEMBER</text>
+        <text class="modal-title">扫码添加阿利老西</text>
         <view class="modal-qr">
-          <image src="{{qrCode}}" mode="aspectFit" class="modal-qr-img" wx:if="{{qrCode}}"/>
+          <image src="{{qrCode || '/static/images/qr_placeholder.png'}}" mode="aspectFit" class="modal-qr-img"/>
         </view>
-        <text class="modal-desc">扫描二维码添加微信\n预约线下课程名额</text>
+        <text class="modal-desc">打开微信扫描二维码，添加<text class="modal-strong">阿利老西</text>\n即可预约线下课程名额</text>
+        <text class="modal-hint">长按识别二维码 · 添加微信好友</text>
       </view>
     </view>
   </block>
