@@ -15,4 +15,12 @@ use think\facade\Route;
  */
 Route::group('user', function () {
     Route::get('info', 'v2.UserController/info');
+    Route::post('update', 'v2.UserController/update')->option(['real_name' => '修改用户资料']);
+})->middleware(\app\api\middleware\AuthTokenMiddleware::class, true);
+
+/**
+ * 图片上传（朋友圈、头像等，需登录）
+ */
+Route::group('upload', function () {
+    Route::post('image', 'v2.UploadController/image')->option(['real_name' => '图片上传']);
 })->middleware(\app\api\middleware\AuthTokenMiddleware::class, true);

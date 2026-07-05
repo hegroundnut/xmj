@@ -46,4 +46,35 @@ class UserController
         ];
         return app('json')->success($data);
     }
+
+    /**
+     * 修改当前用户资料（昵称、头像）
+     * POST /api/v2/user/update
+     * @param Request $request
+     * @return mixed
+     */
+    public function update(Request $request)
+    {
+        $uid = (int)$request->uid();
+        $data = $request->postMore([
+            ['nickname', ''],
+            ['avatar', ''],
+        ]);
+        $update = [];
+        $nickname = trim($data['nickname']);
+        if ($nickname !== '') {
+            if (mb_strlen($nickname) > 16) {
+                return app('json')->fail('昵称不能超过16个字符');
+            }
+            $update['nickname'] = $nickname;
+        }
+        if (trim($data['avatar']) !== '') {
+            $update['avatar'] = trim($data['avatar']);
+        }
+        if (empty($update)) {
+            return app('json')->fail('没有需要修改的内容');
+        }
+        $this->services->update($uid, $update);
+        return app('json')->success('修改成功');
+    }
 }

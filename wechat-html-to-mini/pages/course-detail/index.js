@@ -1,5 +1,4 @@
 const { teachingApi } = require('../../utils/api/index')
-const { requestPayment } = require('../../utils/payment')
 
 Page({
   data: {
@@ -9,6 +8,8 @@ Page({
     error: false,
     isLogin: false,
     isMember: false,
+    showVideo: false,
+    videoError: false,
     statusBarHeight: 20
   },
 
@@ -51,37 +52,41 @@ Page({
 
   onBack() { wx.navigateBack() },
 
-  onBuy() {
-    const { course, isLogin, isMember } = this.data
+  // 点击播放：校验登录 + 会员权限，再打开播放器
+  onPlay() {
+    const { course, isLogin } = this.data
+    if (!course) return
     if (!isLogin) {
       wx.navigateTo({ url: '/subpackages/users/wechat_login/index' })
       return
     }
-    if (isMember || (course && course.is_free_for_member === 1)) {
-      // Direct play
-      wx.showToast({ title: '开始学习', icon: 'success' })
+    if (!course.video_url) {
+      wx.showToast({ title: '暂无视频', icon: 'none' })
       return
     }
-    const price = (course && course.price) || '9.90'
-    wx.showModal({
-      title: '购买课程',
-      content: '支付 ¥' + price + ' 购买本课程',
-      success: res => {
-        if (res.confirm) {
-          teachingApi.createCourseOrder(course.id).then(orderRes => {
-            const payParams = (orderRes.data && orderRes.data.pay_params) || orderRes.data
-            return requestPayment(payParams)
-          }).then(() => {
-            wx.showToast({ title: '支付成功', icon: 'success' })
-            this.setData({ 'course.can_watch': true })
-          }).catch(err => {
-            if (err && err.code !== 'cancel') {
-              wx.showToast({ title: (err && err.msg) || '支付失败', icon: 'none' })
-            }
-          })
+    if (!course.can_watch) {
+      wx.showModal({
+        title: '开通会员观看',
+        content: '本课程需' + (course.member_level_text || '会员') + '可观看，前往开通？',
+        confirmText: '去开通',
+        success: res => {
+          if (res.confirm) wx.navigateTo({ url: '/pages/member/index' })
         }
-      }
-    })
+      })
+      return
+    }
+    this.setData({ showVideo: true, videoError: false })
+  },
+
+  onBuy() { this.onPlay() },
+
+  onCloseVideo() {
+    this.setData({ showVideo: false, videoError: false })
+  },
+
+  // COS/CDN 失效或视频无法加载时提示联系管理员
+  onVideoError() {
+    this.setData({ videoError: true })
   },
 
   onToggleFav() {

@@ -65,7 +65,7 @@ Page({
       wx.navigateTo({ url: '/subpackages/users/wechat_login/index' })
       return
     }
-    wx.showToast({ title: '编辑资料', icon: 'none' })
+    wx.navigateTo({ url: '/pages/my/edit' })
   },
 
   onNav(e) {

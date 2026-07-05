@@ -464,6 +464,70 @@
         }
       }
     },
+    "/api/v2/user/update": {
+      "post": {
+        "tags": ["用户"],
+        "summary": "修改当前用户资料",
+        "description": "需要登录。修改当前用户的昵称和/或头像。nickname 最长16字符；avatar 传图片URL（先通过 /api/v2/upload/image 上传获得）。两个参数可任填其一。",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nickname": { "type": "string", "description": "昵称（≤16字符）" },
+                  "avatar": { "type": "string", "description": "头像图片URL" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "修改成功" } }
+      }
+    },
+    "/api/v2/upload/image": {
+      "post": {
+        "tags": ["用户"],
+        "summary": "图片上传（朋友圈/头像）",
+        "description": "需要登录。表单字段 file 上传图片，图片由服务器本地存储并自动压缩（等比缩放最长边≤1600px，质量75%）。返回 { name, url }。",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": { "type": "string", "format": "binary", "description": "图片文件" }
+                },
+                "required": ["file"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "上传成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": { "type": "string" },
+                        "url": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/adminapi/login": {
       "post": {
         "tags": ["管理后台-登录"],
@@ -728,6 +792,45 @@
         "security": [{ "adminAuth": [] }],
         "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
         "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_course/upload_video": {
+      "post": {
+        "tags": ["管理后台-教学"],
+        "summary": "上传课程视频到腾讯云COS",
+        "description": "表单字段 file 上传视频，直接存储到腾讯云 COS（不使用CDN），返回可播放的视频URL。需先在服务器 .env 配置 [COS] 信息，否则返回失败提示。上传成功后把返回的 url 填入课程的 video_url。",
+        "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": { "type": "string", "format": "binary", "description": "视频文件（mp4）" }
+                },
+                "required": ["file"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "上传成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": { "url": { "type": "string", "description": "COS视频地址" } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/adminapi/teaching_course/delete/{id}": {

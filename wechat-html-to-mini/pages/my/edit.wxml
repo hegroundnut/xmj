@@ -1,0 +1,38 @@
+<view class="page">
+  <!-- Nav bar -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight + 10}}px;">
+    <view class="nav-back" bindtap="onBack">
+      <text class="nav-back-icon">‹</text>
+    </view>
+    <text class="nav-title">修改资料</text>
+    <view class="nav-placeholder"/>
+  </view>
+
+  <!-- Avatar section -->
+  <view class="edit-card">
+    <text class="card-label">ALI LAOXI PROFILE</text>
+    <view class="avatar-row" bindtap="onChooseAvatar">
+      <image src="{{avatar || '/static/images/def_avatar.png'}}" class="edit-avatar" mode="aspectFill"/>
+      <view class="avatar-tip">
+        <text class="avatar-tip-title">点击更换头像</text>
+        <text class="avatar-tip-sub">建议使用清晰的正方形图片</text>
+      </view>
+      <text class="avatar-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- Nickname section -->
+  <view class="edit-card">
+    <view class="form-item">
+      <text class="form-label">昵称</text>
+      <input class="form-input" placeholder="请输入昵称" placeholder-class="form-placeholder"
+        value="{{nickname}}" maxlength="16" bindinput="onNicknameInput" />
+    </view>
+    <text class="form-hint">最多 16 个字符</text>
+  </view>
+
+  <!-- Submit -->
+  <view class="submit-wrap">
+    <button class="submit-btn" bindtap="onSubmit" loading="{{submitting}}" disabled="{{submitting}}">保存</button>
+  </view>
+</view>

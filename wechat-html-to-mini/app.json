@@ -8,6 +8,7 @@
     "pages/moment/publish",
     "pages/teaching/index",
     "pages/my/index",
+    "pages/my/edit",
     "pages/my/favorites",
     "pages/my/courses",
     "pages/my/bookings",

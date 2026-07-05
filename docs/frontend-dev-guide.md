@@ -180,11 +180,32 @@ Authori-zation: Bearer <token>   (需要登录的接口必传)
 
 ### 需要登录的接口
 - GET /api/v2/user/info — 用户信息（含 is_member, member_type 字段）
+- POST /api/v2/user/update — 修改当前用户资料（参数：nickname 昵称、avatar 头像URL；两者可任填其一）
+- POST /api/v2/upload/image — 图片上传（表单字段 file，图片由服务器本地存储并自动压缩，返回 { name, url }）
 - GET /api/v2/course/list — 课程列表（支持 category_id 筛选，返回含 category_name, member_level, can_watch）
-- GET /api/v2/course/detail/:id — 课程详情（含 member_level, member_level_text, can_watch）
+- GET /api/v2/course/detail/:id — 课程详情（含 member_level, member_level_text, can_watch, video_url）
 - POST /api/v2/offline_class/booking — 提交预约
 - POST /api/v2/case_comment/add — 发表评论
 - 所有 /api/v2/moment/* 接口
+
+### 用户资料修改流程（pages/my/edit）
+```
+点击"修改资料" → 进入 pages/my/edit
+  → 选择头像 → wx.chooseImage → POST /api/v2/upload/image 上传（服务器压缩）→ 得到 avatar URL
+  → 输入昵称（≤16字符）
+  → 保存 → POST /api/v2/user/update { nickname, avatar } → 更新本地缓存
+```
+
+### 课程视频播放（COS）
+```
+课程详情返回 video_url（管理员上传到腾讯云 COS 得到的地址，或手动填写的外部链接）
+点击播放 → 校验登录 + can_watch 会员权限 → 打开 <video> 播放器
+视频加载失败（COS/CDN 失效）→ video binderror → 弹出"视频失效，请联系管理员"提示
+```
+
+### 图片压缩说明
+- 用户朋友圈图片、后台管理员上传的图片统一走服务器本地存储，上传时由服务端自动等比压缩（最长边≤1600px，质量75%）后再保存，减小体积。
+- 朋友圈发布前，小程序先将本地图片 POST /api/v2/upload/image 上传拿到 URL，再调用 moment/create。
 
 ### 需要会员的接口 (在登录基础上还需要 is_teaching_member=1)
 - POST /api/v2/moment/create — 发布帖子
