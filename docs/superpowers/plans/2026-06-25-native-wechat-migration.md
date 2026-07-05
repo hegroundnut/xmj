@@ -41,7 +41,7 @@
 {
   "miniprogramRoot": "./",
   "projectname": "wash-eyebrow",
-  "description": "洗眉机",
+  "description": "知识分享",
   "appid": "wx3bebb7300327492c",
   "setting": {
     "urlCheck": false,
@@ -201,7 +201,7 @@ App({
   },
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "洗眉机",
+    "navigationBarTitleText": "知识分享",
     "navigationBarBackgroundColor": "#fff",
     "backgroundColor": "#F8F8F8"
   }
@@ -1268,7 +1268,7 @@ index.wxml:
 <view class="login-page">
   <view class="login-logo">
     <image src="/static/images/1-001.png" mode="aspectFit" class="logo-img"/>
-    <text class="logo-text">洗眉机</text>
+    <text class="logo-text">知识分享</text>
     <text class="logo-sub">微信一键登录，体验全部功能</text>
   </view>
   <view class="login-bottom">
@@ -1503,7 +1503,7 @@ git commit -m "feat: add privacy page"
 index.json:
 ```json
 {
-  "navigationBarTitleText": "洗眉机",
+  "navigationBarTitleText": "知识分享",
   "navigationStyle": "custom",
   "usingComponents": {
     "loading": "/components/loading/loading",
@@ -1513,7 +1513,7 @@ index.json:
 ```
 index.wxml:
 ```xml
-<navbar title="洗眉机"/>
+<navbar title="知识分享"/>
 <view class="home-page" style="padding-top: {{navHeight}}px;">
   <loading show="{{loading}}"/>
   <view wx:elif="{{error}}" class="error-box" bindtap="loadData">加载失败，点击重试</view>
@@ -2151,7 +2151,7 @@ index.wxml:
   <swiper class="guide-swiper" indicator-dots>
     <swiper-item>
       <image src="/static/images/1-001.png" mode="aspectFit" class="guide-img"/>
-      <text class="guide-text">洗眉机产品展示</text>
+      <text class="guide-text">知识分享产品展示</text>
     </swiper-item>
     <swiper-item>
       <image src="/static/images/2-001.png" mode="aspectFit" class="guide-img"/>

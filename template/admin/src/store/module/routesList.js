@@ -6,7 +6,7 @@ const routesListModule = {
     routesList: [],
   },
   mutations: {
-    // 设置路由，菜单中使用到（仅保留朋友圈和洗眉机）
+    // 设置路由，菜单中使用到（仅保留朋友圈和知识分享）
     getRoutesList(state, data) {
       state.routesList = data.filter(
         (item) => item.path && allowedMenuPaths.some((p) => item.path.indexOf(p) === 0)

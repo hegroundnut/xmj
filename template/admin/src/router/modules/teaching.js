@@ -19,7 +19,7 @@ export default {
   name: 'teaching',
   header: 'teaching',
   meta: {
-    title: '洗眉机',
+    title: '知识分享',
     auth: ['admin-teaching-index'],
   },
   redirect: {
@@ -104,6 +104,26 @@ export default {
         keepAlive: true,
       },
       component: () => import('@/pages/teaching/member/index'),
+    },
+    {
+      path: 'image_material',
+      name: `${pre}imageMaterial`,
+      meta: {
+        title: '图片素材',
+        auth: ['admin-teaching-image-material'],
+        keepAlive: true,
+      },
+      component: () => import('@/pages/teaching/material/imageMaterial/index'),
+    },
+    {
+      path: 'video_material',
+      name: `${pre}videoMaterial`,
+      meta: {
+        title: '视频素材',
+        auth: ['admin-teaching-video-material'],
+        keepAlive: true,
+      },
+      component: () => import('@/pages/teaching/material/videoMaterial/index'),
     },
   ],
 };

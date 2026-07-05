@@ -1,4 +1,4 @@
--- 洗眉机小程序 — 分类系统迁移脚本
+-- 知识分享小程序 — 分类系统迁移脚本
 -- 执行: docker exec -i crmeb_mysql mysql -uroot -p123456 crmeb < migration_category_product.sql
 -- 放置位置: crmeb/sql/migration_category_product.sql
 -- 说明: 新增教学分类表、产品分类表，并为案例/课程/产品表增加 category_id 字段
@@ -57,7 +57,7 @@ ON DUPLICATE KEY UPDATE `name`=`name`;
 
 -- 10. 产品分类种子数据（5个分类）
 INSERT INTO `eb_product_category` (`name`, `sort`, `status`, `add_time`) VALUES
-('无创洗眉机', 1, 1, UNIX_TIMESTAMP()),
+('无创知识分享', 1, 1, UNIX_TIMESTAMP()),
 ('二氧化碳点阵', 2, 1, UNIX_TIMESTAMP()),
 ('超皮秒', 3, 1, UNIX_TIMESTAMP()),
 ('脱毛仪', 4, 1, UNIX_TIMESTAMP()),

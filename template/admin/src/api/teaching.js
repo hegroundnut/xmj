@@ -138,3 +138,41 @@ export function updateCategory(id, data) {
 export function deleteCategory(id) {
   return request({ url: `teaching_category/delete/${id}`, method: 'delete' });
 }
+
+/**
+ * 图片素材管理
+ */
+export function getImageMaterialList(params) {
+  return request({ url: 'teaching_material/list', method: 'get', params });
+}
+export function uploadImageMaterial(data) {
+  return request({ url: 'teaching_material/upload_image', method: 'post', data, file: true });
+}
+export function deleteImageMaterial(ids) {
+  return request({ url: 'teaching_material/delete', method: 'post', data: { ids } });
+}
+export function renameImageMaterial(id, realName) {
+  return request({ url: `teaching_material/rename/${id}`, method: 'put', data: { real_name: realName } });
+}
+export function moveImageMaterial(data) {
+  return request({ url: 'teaching_material/move', method: 'put', data });
+}
+
+/**
+ * 视频素材管理
+ */
+export function getVideoMaterialList(params) {
+  return request({ url: 'teaching_material/video_list', method: 'get', params });
+}
+export function uploadVideoMaterial(data) {
+  return request({ url: 'teaching_material/upload_video', method: 'post', data, file: true, timeout: 600000 });
+}
+export function saveCloudVideo(data) {
+  return request({ url: 'teaching_material/video_save', method: 'post', data });
+}
+export function deleteVideoMaterial(ids) {
+  return request({ url: 'teaching_material/video_delete', method: 'post', data: { ids } });
+}
+export function renameVideoMaterial(id, realName) {
+  return request({ url: `teaching_material/video_rename/${id}`, method: 'put', data: { real_name: realName } });
+}

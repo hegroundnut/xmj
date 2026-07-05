@@ -11,7 +11,7 @@
 use think\facade\Route;
 
 /**
- * 洗眉机小程序 API v2 路由（精简版）
+ * 知识分享小程序 API v2 路由（精简版）
  * 仅保留登录授权 + 教学模块路由，商城路由已移除
  */
 Route::group('v2', function () {
@@ -31,7 +31,7 @@ Route::group('v2', function () {
         })->option(['mark' => 'wechat_auto', 'mark_name' => '微信授权']);
     });
 
-    // 洗眉机教学路由
+    // 知识分享教学路由
     require __DIR__ . '/v2/teaching.php';
 
     // 用户路由

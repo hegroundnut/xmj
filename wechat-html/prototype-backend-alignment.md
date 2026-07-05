@@ -79,15 +79,15 @@ GET /api/v2/course/list
 | 序号 | 标签名 | 后端 `category_id` (建议) | 说明 |
 |------|--------|--------------------------|------|
 | 0 | 全部 | — | 前端筛选，不传 category_id |
-| 1 | 无创洗眉机 | 1 | 核心产品线 |
+| 1 | 无创知识分享 | 1 | 核心产品线 |
 | 2 | 二氧化碳点阵 | 2 | 点阵激光设备 |
 | 3 | 超皮秒 | 3 | 皮秒激光设备 |
 | 4 | 脱毛仪 | 4 | 脱毛设备 |
 | 5 | 其他产品 | 5 | 其他设备 |
 
 **当前产品:**
-- SEE洗眉 mini → `data-cat="无创洗眉机"` → category_id=1
-- SEE洗眉 Ultra → `data-cat="无创洗眉机"` → category_id=1
+- SEE洗眉 mini → `data-cat="无创知识分享"` → category_id=1
+- SEE洗眉 Ultra → `data-cat="无创知识分享"` → category_id=1
 
 **API 调用映射:**
 ```
@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `eb_product_category` (
 
 ```sql
 INSERT INTO `eb_product_category` (`name`, `sort`, `status`, `add_time`) VALUES
-('无创洗眉机', 1, 1, UNIX_TIMESTAMP()),
+('无创知识分享', 1, 1, UNIX_TIMESTAMP()),
 ('二氧化碳点阵', 2, 1, UNIX_TIMESTAMP()),
 ('超皮秒', 3, 1, UNIX_TIMESTAMP()),
 ('脱毛仪', 4, 1, UNIX_TIMESTAMP()),

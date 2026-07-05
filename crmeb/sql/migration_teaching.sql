@@ -1,4 +1,4 @@
--- 洗眉机小程序数据库迁移脚本
+-- 知识分享小程序数据库迁移脚本
 -- 执行: mysql -u root -p <database> < migration_teaching.sql
 
 -- 1. 产品信息表
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `eb_product_info` (
   `add_time` int(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机产品信息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='知识分享产品信息';
 
 -- 2. 案例表
 CREATE TABLE IF NOT EXISTS `eb_case` (
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `eb_case` (
   `add_time` int(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_status_sort` (`status`, `sort`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机案例';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='知识分享案例';
 
 -- 3. 教学课程表
 CREATE TABLE IF NOT EXISTS `eb_course` (
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `eb_course` (
   `add_time` int(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_status_sort` (`status`, `sort`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机教学课程';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='知识分享教学课程';
 
 -- 4. 课程订单表
 CREATE TABLE IF NOT EXISTS `eb_course_order` (
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `eb_course_order` (
   UNIQUE KEY `uk_order_sn` (`order_sn`),
   KEY `idx_uid` (`uid`),
   KEY `idx_course_id` (`course_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机课程订单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='知识分享课程订单';
 
 -- 5. 线下课程排期表
 CREATE TABLE IF NOT EXISTS `eb_offline_class` (
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `eb_offline_class` (
   `add_time` int(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_date_status` (`class_date`, `status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机线下课程排期';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='知识分享线下课程排期';
 
 -- 6. 线下预约记录表
 CREATE TABLE IF NOT EXISTS `eb_offline_booking` (
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `eb_offline_booking` (
   PRIMARY KEY (`id`),
   KEY `idx_uid` (`uid`),
   KEY `idx_class_id` (`class_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机线下预约记录';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='知识分享线下预约记录';
 
 -- 7. 案例评论表
 CREATE TABLE IF NOT EXISTS `eb_case_comment` (
@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `eb_case_comment` (
   KEY `idx_case_id` (`case_id`),
   KEY `idx_uid` (`uid`),
   KEY `idx_pid` (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机案例评论';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='知识分享案例评论';
 
 -- 8. 首页配置表
 CREATE TABLE IF NOT EXISTS `eb_teaching_home_config` (
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `eb_teaching_home_config` (
   `update_time` int(11) NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机首页配置';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='知识分享首页配置';
 
 -- 9. 用户表新增教学会员字段（仅当 eb_user 表存在时执行）
 SET @tbl_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'eb_user');

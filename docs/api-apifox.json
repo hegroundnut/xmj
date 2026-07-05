@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "洗眉机小程序 API",
-    "description": "洗眉机教学平台全部接口文档\n\n## 环境\n- 开发环境: http://localhost:8011\n- API前缀: /api/v2 (小程序) /adminapi (管理后台)\n\n## 认证\n- 小程序API: Bearer Token (JWT), 除标注\"无需登录\"外的接口均需在 Header 中传 `Authori-zation: Bearer <token>`\n- 管理后台API: 同上, token 通过 POST /adminapi/login 获取",
+    "title": "知识分享小程序 API",
+    "description": "知识分享教学平台全部接口文档\n\n## 环境\n- 开发环境: http://localhost:8011\n- API前缀: /api/v2 (小程序) /adminapi (管理后台)\n\n## 认证\n- 小程序API: Bearer Token (JWT), 除标注\"无需登录\"外的接口均需在 Header 中传 `Authori-zation: Bearer <token>`\n- 管理后台API: 同上, token 通过 POST /adminapi/login 获取",
     "version": "1.0.0"
   },
   "servers": [
@@ -11,7 +11,7 @@
   "tags": [
     { "name": "登录认证", "description": "微信小程序授权登录" },
     { "name": "首页", "description": "首页配置" },
-    { "name": "产品", "description": "洗眉机产品信息（支持多产品，含分类）" },
+    { "name": "产品", "description": "知识分享产品信息（支持多产品，含分类）" },
     { "name": "分类", "description": "案例/课程/产品分类" },
     { "name": "案例", "description": "案例展示（含分类）" },
     { "name": "案例评论", "description": "案例评论" },

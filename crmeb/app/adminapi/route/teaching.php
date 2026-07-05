@@ -11,7 +11,7 @@
 use think\facade\Route;
 
 /**
- * 洗眉机教学管理路由
+ * 知识分享教学管理路由
  */
 
 // 产品管理
@@ -26,7 +26,7 @@ Route::group('teaching_product', function () {
     \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
     \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
     \app\adminapi\middleware\AdminLogMiddleware::class
-])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
+])->option(['mark' => 'teaching', 'mark_name' => '知识分享']);
 
 // 案例管理
 Route::group('teaching_case', function () {
@@ -39,7 +39,7 @@ Route::group('teaching_case', function () {
     \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
     \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
     \app\adminapi\middleware\AdminLogMiddleware::class
-])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
+])->option(['mark' => 'teaching', 'mark_name' => '知识分享']);
 
 // 课程管理
 Route::group('teaching_course', function () {
@@ -53,7 +53,7 @@ Route::group('teaching_course', function () {
     \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
     \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
     \app\adminapi\middleware\AdminLogMiddleware::class
-])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
+])->option(['mark' => 'teaching', 'mark_name' => '知识分享']);
 
 // 线下排期管理
 Route::group('teaching_offline', function () {
@@ -66,7 +66,7 @@ Route::group('teaching_offline', function () {
     \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
     \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
     \app\adminapi\middleware\AdminLogMiddleware::class
-])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
+])->option(['mark' => 'teaching', 'mark_name' => '知识分享']);
 
 // 首页配置管理
 Route::group('teaching_home_config', function () {
@@ -77,7 +77,7 @@ Route::group('teaching_home_config', function () {
     \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
     \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
     \app\adminapi\middleware\AdminLogMiddleware::class
-])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
+])->option(['mark' => 'teaching', 'mark_name' => '知识分享']);
 
 // 案例评论管理
 Route::group('teaching_case_comment', function () {
@@ -89,7 +89,7 @@ Route::group('teaching_case_comment', function () {
     \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
     \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
     \app\adminapi\middleware\AdminLogMiddleware::class
-])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
+])->option(['mark' => 'teaching', 'mark_name' => '知识分享']);
 
 // 预约记录
 Route::group('teaching_booking', function () {
@@ -100,7 +100,7 @@ Route::group('teaching_booking', function () {
     \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
     \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
     \app\adminapi\middleware\AdminLogMiddleware::class
-])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
+])->option(['mark' => 'teaching', 'mark_name' => '知识分享']);
 
 // 用户会员管理
 Route::group('teaching_member', function () {
@@ -112,7 +112,7 @@ Route::group('teaching_member', function () {
     \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
     \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
     \app\adminapi\middleware\AdminLogMiddleware::class
-])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
+])->option(['mark' => 'teaching', 'mark_name' => '知识分享']);
 
 // 分类管理
 Route::group('teaching_category', function () {
@@ -125,4 +125,23 @@ Route::group('teaching_category', function () {
     \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
     \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
     \app\adminapi\middleware\AdminLogMiddleware::class
-])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
+])->option(['mark' => 'teaching', 'mark_name' => '知识分享']);
+
+// 图片素材管理
+Route::group('teaching_material', function () {
+    Route::get('list', 'v1.teaching.MaterialController/imageList')->option(['real_name' => '图片素材列表']);
+    Route::post('upload_image', 'v1.teaching.MaterialController/uploadImage')->option(['real_name' => '上传图片']);
+    Route::post('delete', 'v1.teaching.MaterialController/deleteImage')->option(['real_name' => '删除图片']);
+    Route::put('rename/:id', 'v1.teaching.MaterialController/renameImage')->option(['real_name' => '重命名图片']);
+    Route::put('move', 'v1.teaching.MaterialController/moveImage')->option(['real_name' => '移动图片分类']);
+    Route::get('video_list', 'v1.teaching.MaterialController/videoList')->option(['real_name' => '视频素材列表']);
+    Route::post('upload_video', 'v1.teaching.MaterialController/uploadVideo')->option(['real_name' => '上传视频']);
+    Route::post('video_save', 'v1.teaching.MaterialController/saveCloudVideo')->option(['real_name' => '保存云视频']);
+    Route::post('video_delete', 'v1.teaching.MaterialController/deleteVideo')->option(['real_name' => '删除视频']);
+    Route::put('video_rename/:id', 'v1.teaching.MaterialController/renameVideo')->option(['real_name' => '重命名视频']);
+})->middleware([
+    \app\http\middleware\AllowOriginMiddleware::class,
+    \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
+    \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
+    \app\adminapi\middleware\AdminLogMiddleware::class
+])->option(['mark' => 'teaching', 'mark_name' => '知识分享']);

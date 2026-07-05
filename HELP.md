@@ -1,4 +1,4 @@
-# 洗眉机小程序 — 新设备从零启动指南
+# 知识分享小程序 — 新设备从零启动指南
 
 ## 前置环境
 
@@ -64,7 +64,7 @@ docker exec -i crmeb_mysql mysql -uroot -p123456 crmeb \
   --init-command="SET SESSION sql_mode='NO_ENGINE_SUBSTITUTION';" \
   < ../crmeb/public/install/crmeb.sql
 
-# 3. 导入洗眉机自定义表 + 隐藏商城菜单
+# 3. 导入知识分享自定义表 + 隐藏商城菜单
 docker exec -i crmeb_mysql mysql -uroot -p123456 crmeb \
   --default-character-set=utf8mb4 \
   < ../crmeb/sql/migration_teaching.sql
@@ -81,7 +81,7 @@ docker exec -i crmeb_mysql mysql -uroot -p123456 crmeb \
 
 `hide_shop_menus.sql` 做了：
 - 隐藏商品/订单/分销/营销/财务/客服/装修等 9 个商城菜单
-- 添加「洗眉机」顶级菜单 + 5 个子项
+- 添加「知识分享」顶级菜单 + 5 个子项
 
 ---
 

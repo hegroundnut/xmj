@@ -3,7 +3,7 @@
 		<!-- 自定义导航栏 -->
 		<view class="custom-nav" :style="{ paddingTop: statusBarHeight + 'px' }">
 			<view class="nav-content">
-				<text class="nav-title">洗眉机教学</text>
+				<text class="nav-title">知识分享教学</text>
 			</view>
 		</view>
 
@@ -102,7 +102,7 @@
 		</view>
 
 		<view class="footer">
-			<text class="footer-text">— 洗眉机教学平台 —</text>
+			<text class="footer-text">— 知识分享教学平台 —</text>
 		</view>
 	</view>
 </template>

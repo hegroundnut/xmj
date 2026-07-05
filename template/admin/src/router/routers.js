@@ -47,10 +47,10 @@ const frameIn = [
   {
     path: '/',
     meta: {
-      title: '洗眉机',
+      title: '知识分享',
     },
     redirect: {
-      name: 'teaching_productInfo',
+      name: 'moment_momentList',
     },
     component: LayoutMain,
     children: [
@@ -110,10 +110,10 @@ const frameIn = [
   {
     path: routePre,
     meta: {
-      title: '洗眉机',
+      title: '知识分享',
     },
     redirect: {
-      name: 'teaching_productInfo',
+      name: 'moment_momentList',
     },
     component: LayoutMain,
   },

@@ -1,8 +1,8 @@
-# 洗眉机微信小程序 — 实施计划
+# 知识分享微信小程序 — 实施计划
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax.
 
-**Goal:** 基于 CRMEB v6.0.0 改造，构建独立的洗眉机业务微信小程序（4 页面 + 6 后台管理模块 + 隐藏商城 + 去品牌化）。
+**Goal:** 基于 CRMEB v6.0.0 改造，构建独立的知识分享业务微信小程序（4 页面 + 6 后台管理模块 + 隐藏商城 + 去品牌化）。
 
 **Architecture:** 复用 CRMEB ThinkPHP 6 分层架构（Model → DAO → Services → Controller → Route），UniApp 前端照搬 CRMEB 的 API 调用模式。新增代码在独立目录和文件中，原有代码不删除不修改。
 
@@ -93,7 +93,7 @@ template/admin/src/router/index.js                    (login page title)
 - [ ] **Step 1: 编写完整迁移 SQL**
 
 ```sql
--- 洗眉机小程序数据库迁移脚本
+-- 知识分享小程序数据库迁移脚本
 -- 执行: mysql -u root -p <database> < migration_teaching.sql
 
 -- 1. 产品信息表
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `eb_product_info` (
   `add_time` int(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int(11) NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机产品信息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='知识分享产品信息';
 
 -- 2. 案例表
 CREATE TABLE IF NOT EXISTS `eb_case` (
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `eb_case` (
   `add_time` int(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_status_sort` (`status`, `sort`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机案例';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='知识分享案例';
 
 -- 3. 教学课程表
 CREATE TABLE IF NOT EXISTS `eb_course` (
@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `eb_course` (
   `add_time` int(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_status_sort` (`status`, `sort`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机教学课程';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='知识分享教学课程';
 
 -- 4. 课程订单表
 CREATE TABLE IF NOT EXISTS `eb_course_order` (
@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `eb_course_order` (
   UNIQUE KEY `uk_order_sn` (`order_sn`),
   KEY `idx_uid` (`uid`),
   KEY `idx_course_id` (`course_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机课程订单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='知识分享课程订单';
 
 -- 5. 线下课程排期表
 CREATE TABLE IF NOT EXISTS `eb_offline_class` (
@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `eb_offline_class` (
   `add_time` int(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_date_status` (`class_date`, `status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机线下课程排期';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='知识分享线下课程排期';
 
 -- 6. 线下预约记录表
 CREATE TABLE IF NOT EXISTS `eb_offline_booking` (
@@ -188,7 +188,7 @@ CREATE TABLE IF NOT EXISTS `eb_offline_booking` (
   PRIMARY KEY (`id`),
   KEY `idx_uid` (`uid`),
   KEY `idx_class_id` (`class_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='洗眉机线下预约记录';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='知识分享线下预约记录';
 
 -- 7. 用户表新增教学会员字段
 ALTER TABLE `eb_user` ADD COLUMN IF NOT EXISTS `is_teaching_member` tinyint(1) NOT NULL DEFAULT 0 COMMENT '教学会员:0=否 1=是';
@@ -250,7 +250,7 @@ use crmeb\basic\BaseModel;
 use crmeb\traits\ModelTrait;
 
 /**
- * 洗眉机产品信息
+ * 知识分享产品信息
  */
 class ProductInfo extends BaseModel
 {
@@ -322,7 +322,7 @@ use app\dao\BaseDao;
 use app\model\product\ProductInfo;
 
 /**
- * 洗眉机产品信息 DAO
+ * 知识分享产品信息 DAO
  */
 class ProductInfoDao extends BaseDao
 {
@@ -469,7 +469,7 @@ use app\dao\product\ProductInfoDao;
 use app\services\BaseServices;
 
 /**
- * 洗眉机产品信息服务
+ * 知识分享产品信息服务
  */
 class ProductInfoServices extends BaseServices
 {
@@ -1143,7 +1143,7 @@ class OfflineClassController
 use think\facade\Route;
 
 /**
- * 洗眉机教学路由
+ * 知识分享教学路由
  */
 
 // 产品 — 无需登录
@@ -1178,7 +1178,7 @@ Route::group('offline_class', function () {
 修改 `crmeb/app/api/route/v2.php`，在文件末尾（最后一个 `})；` 之后）添加：
 
 ```php
-// 洗眉机教学路由
+// 知识分享教学路由
 require __DIR__ . '/v2/teaching.php';
 ```
 
@@ -1682,7 +1682,7 @@ class CaseValidator extends Validate
 use think\facade\Route;
 
 /**
- * 洗眉机教学管理路由
+ * 知识分享教学管理路由
  */
 
 // 产品管理
@@ -1694,7 +1694,7 @@ Route::group('teaching_product', function () {
     \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
     \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
     \app\adminapi\middleware\AdminLogMiddleware::class
-])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
+])->option(['mark' => 'teaching', 'mark_name' => '知识分享']);
 
 // 案例管理
 Route::group('teaching_case', function () {
@@ -1707,7 +1707,7 @@ Route::group('teaching_case', function () {
     \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
     \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
     \app\adminapi\middleware\AdminLogMiddleware::class
-])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
+])->option(['mark' => 'teaching', 'mark_name' => '知识分享']);
 
 // 课程管理
 Route::group('teaching_course', function () {
@@ -1720,7 +1720,7 @@ Route::group('teaching_course', function () {
     \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
     \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
     \app\adminapi\middleware\AdminLogMiddleware::class
-])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
+])->option(['mark' => 'teaching', 'mark_name' => '知识分享']);
 
 // 线下排期管理
 Route::group('teaching_offline', function () {
@@ -1733,7 +1733,7 @@ Route::group('teaching_offline', function () {
     \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
     \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
     \app\adminapi\middleware\AdminLogMiddleware::class
-])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
+])->option(['mark' => 'teaching', 'mark_name' => '知识分享']);
 
 // 预约记录
 Route::group('teaching_booking', function () {
@@ -1744,7 +1744,7 @@ Route::group('teaching_booking', function () {
     \app\adminapi\middleware\AdminAuthTokenMiddleware::class,
     \app\adminapi\middleware\AdminCheckRoleMiddleware::class,
     \app\adminapi\middleware\AdminLogMiddleware::class
-])->option(['mark' => 'teaching', 'mark_name' => '洗眉机']);
+])->option(['mark' => 'teaching', 'mark_name' => '知识分享']);
 
 // 用户会员管理（新增到已有用户管理下）
 Route::group('user', function () {
@@ -1757,7 +1757,7 @@ Route::group('user', function () {
 修改 `crmeb/app/adminapi/route/route.php`，在所有现有 `require` 语句之后添加：
 
 ```php
-// 洗眉机教学管理路由（需要授权）
+// 知识分享教学管理路由（需要授权）
 require __DIR__ . '/teaching.php';
 ```
 
@@ -1926,7 +1926,7 @@ export default {
   name: 'teaching',
   header: 'teaching',
   meta: {
-    title: '洗眉机',
+    title: '知识分享',
     auth: ['admin-teaching-index'],
   },
   redirect: {
@@ -2384,7 +2384,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
     </swiper>
     <!-- 标题 -->
     <view class="title-section">
-      <text class="title">{{ info.title || '洗眉机' }}</text>
+      <text class="title">{{ info.title || '知识分享' }}</text>
       <text class="desc">{{ info.desc }}</text>
     </view>
     <!-- 参数规格 -->
@@ -2773,7 +2773,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 {
   "path": "pages/teaching/product/index",
   "style": {
-    "navigationBarTitleText": "洗眉机",
+    "navigationBarTitleText": "知识分享",
     "navigationStyle": "custom",
     "navigationBarTextStyle": "black"
   }
@@ -2870,7 +2870,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 
 ```json
 // 修改 mp-weixin.appid 为实际小程序 AppID
-// 修改 name 为 "洗眉机" 或你的品牌名
+// 修改 name 为 "知识分享" 或你的品牌名
 ```
 
 - [ ] **Step 3: Admin 登录页去品牌**
@@ -2900,7 +2900,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 ```sql
 -- 插入默认产品信息
 INSERT INTO `eb_product_info` (`id`, `banner`, `title`, `desc`, `detail`, `specs`, `status`, `add_time`, `update_time`)
-VALUES (1, '[]', '洗眉机', '专业洗眉设备，安全高效', '<p>请在后台编辑图文详情</p>', '[]', 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP());
+VALUES (1, '[]', '知识分享', '专业洗眉设备，安全高效', '<p>请在后台编辑图文详情</p>', '[]', 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP());
 ```
 
 - [ ] **Step 2: Commit**

@@ -56,7 +56,7 @@ Route::group(function () {
    \app\adminapi\middleware\AdminAuthTokenMiddleware::class
 ])->option(['mark' => 'system', 'mark_name' => '系统相关']);
 
-// 洗眉机教学管理路由（需要授权）
+// 知识分享教学管理路由（需要授权）
 require __DIR__ . '/teaching.php';
 
 // 朋友圈管理路由（需要授权）

@@ -14,7 +14,7 @@ use app\dao\BaseDao;
 use app\model\product\ProductInfo;
 
 /**
- * 洗眉机产品信息 DAO
+ * 知识分享产品信息 DAO
  */
 class ProductInfoDao extends BaseDao
 {

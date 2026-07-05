@@ -15,7 +15,7 @@ use app\dao\teaching\TeachingCategoryDao;
 use app\services\BaseServices;
 
 /**
- * 洗眉机产品信息服务
+ * 知识分享产品信息服务
  */
 class ProductInfoServices extends BaseServices
 {

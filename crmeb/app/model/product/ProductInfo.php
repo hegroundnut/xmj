@@ -14,7 +14,7 @@ use crmeb\basic\BaseModel;
 use crmeb\traits\ModelTrait;
 
 /**
- * 洗眉机产品信息
+ * 知识分享产品信息
  */
 class ProductInfo extends BaseModel
 {

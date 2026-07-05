@@ -1,4 +1,4 @@
--- 隐藏 CRMEB 商城原有菜单，仅保留洗眉机所需
+-- 隐藏 CRMEB 商城原有菜单，仅保留知识分享所需
 -- is_show=0 隐藏菜单管理 / is_show_path=0 隐藏侧边栏
 -- 注意：前端侧边栏由 is_show_path 控制，不是 is_show！
 
@@ -33,12 +33,12 @@ UPDATE `eb_system_menus` SET `is_show` = 0, `is_show_path` = 0 WHERE `id` = 69; 
 UPDATE `eb_system_menus` SET `is_show` = 0, `is_show_path` = 0 WHERE `id` = 1695;  -- 开发工具
 UPDATE `eb_system_menus` SET `is_show` = 0, `is_show_path` = 0 WHERE `id` = 1064;  -- 对外接口
 
--- 5. 添加洗眉机教学菜单
+-- 5. 添加知识分享教学菜单
 -- 先删旧的（防止重复执行报错）
-DELETE FROM `eb_system_menus` WHERE `id` >= 4000 AND `id` <= 4011;
+DELETE FROM `eb_system_menus` WHERE `id` >= 4000 AND `id` <= 4013;
 -- auth_type=1 否则 searchRouteAttr 会过滤掉
 INSERT INTO `eb_system_menus` (`id`, `pid`, `menu_name`, `module`, `controller`, `action`, `api_url`, `methods`, `params`, `sort`, `is_show`, `is_show_path`, `access`, `menu_path`, `path`, `auth_type`, `header`, `is_header`, `unique_auth`, `is_del`, `mark`) VALUES
-(4000, 0, '洗眉机', 'admin', 'teaching', 'index', '', 'GET', '[]', 8, 1, 1, 1, '/teaching', '/teaching', 1, 'teaching', 0, '', 0, ''),
+(4000, 0, '知识分享', 'admin', 'teaching', 'index', '', 'GET', '[]', 8, 1, 1, 1, '/teaching', '/teaching', 1, 'teaching', 0, '', 0, ''),
 (4001, 4000, '产品管理', 'admin', 'teaching.product_info', 'index', '', 'GET', '[]', 1, 1, 1, 1, '/teaching/product_info', '/teaching/product_info', 1, '', 0, 'admin-teaching-product-info', 0, ''),
 (4002, 4000, '案例管理', 'admin', 'teaching.case_list', 'index', '', 'GET', '[]', 2, 1, 1, 1, '/teaching/case_list', '/teaching/case_list', 1, '', 0, 'admin-teaching-case-list', 0, ''),
 (4003, 4000, '课程管理', 'admin', 'teaching.course_list', 'index', '', 'GET', '[]', 3, 1, 1, 1, '/teaching/course_list', '/teaching/course_list', 1, '', 0, 'admin-teaching-course-list', 0, ''),
@@ -49,6 +49,8 @@ INSERT INTO `eb_system_menus` (`id`, `pid`, `menu_name`, `module`, `controller`,
 (4008, 4000, '会员管理', 'admin', 'teaching.member', 'index', '', 'GET', '[]', 8, 1, 1, 1, '/teaching/member', '/teaching/member', 1, '', 0, 'admin-teaching-member', 0, ''),
 (4009, 0, '朋友圈', 'admin', 'moment', 'index', '', 'GET', '[]', 9, 1, 1, 1, '/moment', '/moment', 1, 'moment', 0, '', 0, ''),
 (4010, 4009, '帖子管理', 'admin', 'moment.moment_list', 'index', '', 'GET', '[]', 1, 1, 1, 1, '/moment/moment_list', '/moment/moment_list', 1, '', 0, 'admin-moment-moment-list', 0, ''),
-(4011, 4009, '评论管理', 'admin', 'moment.comment_list', 'index', '', 'GET', '[]', 2, 1, 1, 1, '/moment/comment_list', '/moment/comment_list', 1, '', 0, 'admin-moment-comment-list', 0, '');
+(4011, 4009, '评论管理', 'admin', 'moment.comment_list', 'index', '', 'GET', '[]', 2, 1, 1, 1, '/moment/comment_list', '/moment/comment_list', 1, '', 0, 'admin-moment-comment-list', 0, ''),
+(4012, 4000, '图片素材', 'admin', 'teaching.image_material', 'index', '', 'GET', '[]', 9, 1, 1, 1, '/teaching/image_material', '/teaching/image_material', 1, '', 0, 'admin-teaching-image-material', 0, ''),
+(4013, 4000, '视频素材', 'admin', 'teaching.video_material', 'index', '', 'GET', '[]', 10, 1, 1, 1, '/teaching/video_material', '/teaching/video_material', 1, '', 0, 'admin-teaching-video-material', 0, '');
 
--- 结果：后台侧边栏显示 用户 / 应用(小程序) / 洗眉机(8子项) / 朋友圈(2子项) / 设置 / 维护
+-- 结果：后台侧边栏显示 用户 / 应用(小程序) / 知识分享(10子项) / 朋友圈(2子项) / 设置 / 维护

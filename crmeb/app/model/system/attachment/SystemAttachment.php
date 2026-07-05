@@ -80,4 +80,14 @@ class SystemAttachment extends BaseModel
     {
         if ($value !== '') $query->where('type', $value);
     }
+
+    /**
+     * att_type搜索器（MIME类型）
+     * @param Model $query
+     * @param $value
+     */
+    public function searchAttTypeAttr($query, $value)
+    {
+        if ($value != '') $query->where('att_type', 'LIKE', "$value%");
+    }
 }

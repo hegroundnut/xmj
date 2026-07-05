@@ -1,7 +1,7 @@
 {
   "miniprogramRoot": "./",
   "projectname": "wash-eyebrow",
-  "description": "洗眉机",
+  "description": "知识分享",
   "appid": "wx3bebb7300327492c",
   "setting": {
     "urlCheck": false,

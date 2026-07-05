@@ -1,5 +1,5 @@
 -- ============================================================
--- CRMEB 洗眉机小程序 - 全表示例数据 (Docker 实际版本)
+-- CRMEB 知识分享小程序 - 全表示例数据 (Docker 实际版本)
 -- 执行: docker exec -i crmeb_mysql mysql -u crmeb -p123456 crmeb
 -- 使用 INSERT IGNORE 避免重复执行报错
 -- ============================================================
@@ -8,12 +8,12 @@ SET NAMES utf8mb4;
 SET time_zone = '+08:00';
 
 -- ============================================================
--- 第一部分：洗眉机教学模块
+-- 第一部分：知识分享教学模块
 -- ============================================================
 
 -- 产品信息
 INSERT IGNORE INTO `eb_product_info` (`id`, `banner`, `title`, `desc`, `detail`, `specs`, `video_url`, `status`, `category_id`, `is_home`, `add_time`, `update_time`) VALUES
-(1, '["/statics/teaching/banner1.png","/statics/teaching/banner2.png"]', '智能洗眉机 XM-2000', '专业洗眉设备，安全高效', '<p>XM-2000智能洗眉机采用最新激光技术，精准去除纹眉。</p>', '[{"name":"型号","value":"XM-2000"},{"name":"功率","value":"500W"}]', '', 1, 21, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
+(1, '["/statics/teaching/banner1.png","/statics/teaching/banner2.png"]', '智能知识分享 XM-2000', '专业洗眉设备，安全高效', '<p>XM-2000智能知识分享采用最新激光技术，精准去除纹眉。</p>', '[{"name":"型号","value":"XM-2000"},{"name":"功率","value":"500W"}]', '', 1, 21, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
 (2, '["/statics/teaching/banner3.png"]', '便携洗眉笔 XM-Mini', '随身携带，随时随地轻松洗眉', '<p>便携式洗眉笔，适合外出使用。</p>', '[{"name":"型号","value":"XM-Mini"},{"name":"重量","value":"0.5kg"}]', '', 1, 24, 0, UNIX_TIMESTAMP(), UNIX_TIMESTAMP());
 
 -- 案例
@@ -27,7 +27,7 @@ INSERT IGNORE INTO `eb_case` (`id`, `title`, `type`, `category_id`, `cover`, `me
 
 -- 教学课程
 INSERT IGNORE INTO `eb_course` (`id`, `title`, `category_id`, `cover`, `desc`, `video_url`, `price`, `is_free_for_member`, `sort`, `status`, `add_time`) VALUES
-(1, '洗眉机基础操作教程', 13, '/statics/teaching/c1.png', '从零开始学习洗眉机操作流程', '/statics/teaching/v1.mp4', 9.90, 1, 1, 1, UNIX_TIMESTAMP()),
+(1, '知识分享基础操作教程', 13, '/statics/teaching/c1.png', '从零开始学习知识分享操作流程', '/statics/teaching/v1.mp4', 9.90, 1, 1, 1, UNIX_TIMESTAMP()),
 (2, '色素识别与参数调整', 12, '/statics/teaching/c2.png', '不同色素类型的识别与参数调整技巧', '/statics/teaching/v2.mp4', 19.90, 1, 2, 1, UNIX_TIMESTAMP()),
 (3, '洗眉后护理与修复', 14, '/statics/teaching/c3.png', '洗眉后皮肤护理与并发症预防', '/statics/teaching/v3.mp4', 9.90, 1, 3, 1, UNIX_TIMESTAMP()),
 (4, '高级洗眉技术进阶', 12, '/statics/teaching/c4.png', '复杂纹眉、多层纹眉处理方案', '/statics/teaching/v4.mp4', 29.90, 0, 4, 1, UNIX_TIMESTAMP()),
@@ -62,7 +62,7 @@ INSERT IGNORE INTO `eb_case_comment` (`id`, `case_id`, `uid`, `nickname`, `avata
 -- 首页配置
 INSERT IGNORE INTO `eb_teaching_home_config` (`id`, `name`, `value`, `add_time`, `update_time`) VALUES
 (1, 'banner', '[{"image":"/statics/teaching/hb1.png","link":""}]', UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
-(2, 'notice', '欢迎使用洗眉机教学平台！新用户注册即送教学会员体验。', UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
+(2, 'notice', '欢迎使用知识分享教学平台！新用户注册即送教学会员体验。', UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
 (3, 'hot_courses', '[1,2,3]', UNIX_TIMESTAMP(), UNIX_TIMESTAMP()),
 (4, 'contact_phone', '400-888-8888', UNIX_TIMESTAMP(), UNIX_TIMESTAMP());
 
@@ -129,9 +129,9 @@ INSERT IGNORE INTO `eb_wechat_user` (`id`, `uid`, `openid`, `nickname`, `headimg
 -- 第三部分：商品数据
 -- ============================================================
 
--- 商品(洗眉机相关) - 已有4条商城默认商品，补充洗眉相关
+-- 商品(知识分享相关) - 已有4条商城默认商品，补充洗眉相关
 INSERT IGNORE INTO `eb_store_product` (`id`, `image`, `slider_image`, `store_name`, `store_info`, `keyword`, `cate_id`, `price`, `vip_price`, `ot_price`, `unit_name`, `sort`, `sales`, `stock`, `is_show`, `is_hot`, `is_best`, `is_new`, `give_integral`, `cost`, `add_time`, `temp_id`, `spec_type`, `is_vip`, `is_postage`, `freight`, `logistics`) VALUES
-(5, '/statics/product/ximj2000.png', '["/statics/product/ximj2000_1.png"]', 'XM-2000 智能洗眉机', '进口激光器，智能识别色素，安全高效洗眉', '洗眉机,激光洗眉', '24,23', 12800.00, 11800.00, 15800.00, '台', 100, 58, 200, 1, 1, 1, 1, 500, 8800.00, UNIX_TIMESTAMP(), 1, 0, 1, 0, 0, '1,2'),
+(5, '/statics/product/ximj2000.png', '["/statics/product/ximj2000_1.png"]', 'XM-2000 智能知识分享', '进口激光器，智能识别色素，安全高效洗眉', '知识分享,激光洗眉', '24,23', 12800.00, 11800.00, 15800.00, '台', 100, 58, 200, 1, 1, 1, 1, 500, 8800.00, UNIX_TIMESTAMP(), 1, 0, 1, 0, 0, '1,2'),
 (6, '/statics/product/ximjmini.png', '["/statics/product/ximjmini_1.png"]', 'XM-Mini 便携洗眉笔', '充电式设计，小巧便携，精准操作', '洗眉笔,便携', '24', 2980.00, 2680.00, 3980.00, '支', 90, 126, 500, 1, 1, 0, 1, 100, 1800.00, UNIX_TIMESTAMP(), 1, 0, 1, 0, 0, '1,2'),
 (7, '/statics/product/repair.png', '[]', '洗眉专用修复精华液', '洗眉后修复护理专用，加速皮肤愈合', '修复液,洗眉护理', '23,24', 198.00, 168.00, 258.00, '瓶', 80, 520, 999, 1, 0, 0, 0, 20, 88.00, UNIX_TIMESTAMP(), 1, 0, 1, 0, 0, '1,2');
 
@@ -158,7 +158,7 @@ INSERT IGNORE INTO `eb_store_product_reply` (`id`, `uid`, `oid`, `product_id`, `
 
 -- 商品描述
 INSERT IGNORE INTO `eb_store_product_description` (`product_id`, `description`, `type`) VALUES
-(5, '<h2>XM-2000 智能洗眉机</h2><p>2025年全新旗舰产品，进口激光器，智能色素识别。</p><ul><li>进口Q开关激光器</li><li>触摸屏操作界面</li><li>双冷却系统</li><li>多种治疗头可选</li></ul>', 0),
+(5, '<h2>XM-2000 智能知识分享</h2><p>2025年全新旗舰产品，进口激光器，智能色素识别。</p><ul><li>进口Q开关激光器</li><li>触摸屏操作界面</li><li>双冷却系统</li><li>多种治疗头可选</li></ul>', 0),
 (6, '<h2>XM-Mini 便携洗眉笔</h2><p>轻巧便携，充电式设计，续航4小时。</p>', 0),
 (7, '<h2>洗眉专用修复精华液</h2><p>含EGF表皮生长因子，加速皮肤屏障修复。</p>', 0);
 
@@ -187,8 +187,8 @@ INSERT IGNORE INTO `eb_store_order` (`id`, `order_id`, `uid`, `real_name`, `user
 
 -- 订单购物车详情
 INSERT IGNORE INTO `eb_store_order_cart_info` (`id`, `oid`, `uid`, `cart_id`, `product_id`, `cart_num`, `cart_info`, `unique`) VALUES
-(1, 1, 2, '101', 5, 1, '{"productInfo":{"store_name":"XM-2000 智能洗眉机","price":"11800.00"}}', ''),
-(2, 2, 3, '102', 5, 1, '{"productInfo":{"store_name":"XM-2000 智能洗眉机","price":"12800.00"}}', ''),
+(1, 1, 2, '101', 5, 1, '{"productInfo":{"store_name":"XM-2000 智能知识分享","price":"11800.00"}}', ''),
+(2, 2, 3, '102', 5, 1, '{"productInfo":{"store_name":"XM-2000 智能知识分享","price":"12800.00"}}', ''),
 (3, 3, 4, '105', 6, 1, '{"productInfo":{"store_name":"XM-Mini 便携洗眉笔","price":"2680.00"}}', ''),
 (4, 4, 2, '108', 7, 2, '{"productInfo":{"store_name":"洗眉修复精华液","price":"168.00"}}', '');
 
@@ -213,7 +213,7 @@ INSERT IGNORE INTO `eb_store_order_status` (`oid`, `change_type`, `change_messag
 -- 优惠券
 INSERT IGNORE INTO `eb_store_coupon_issue` (`id`, `cid`, `coupon_title`, `start_time`, `end_time`, `total_count`, `remain_count`, `is_permanent`, `status`, `is_del`, `add_time`, `coupon_price`, `use_min_price`, `type`) VALUES
 (1, 1, '新人专享券 - 满500减50', UNIX_TIMESTAMP(), UNIX_TIMESTAMP() + 2592000, 1000, 980, 0, 1, 0, UNIX_TIMESTAMP(), 50.00, 500.00, 0),
-(2, 2, '洗眉机专属券 - 满5000减500', UNIX_TIMESTAMP(), UNIX_TIMESTAMP() + 2592000, 500, 490, 0, 1, 0, UNIX_TIMESTAMP(), 500.00, 5000.00, 0),
+(2, 2, '知识分享专属券 - 满5000减500', UNIX_TIMESTAMP(), UNIX_TIMESTAMP() + 2592000, 500, 490, 0, 1, 0, UNIX_TIMESTAMP(), 500.00, 5000.00, 0),
 (3, 3, '会员专享券 - 满200减20', UNIX_TIMESTAMP(), UNIX_TIMESTAMP() + 2592000, 2000, 1950, 0, 1, 0, UNIX_TIMESTAMP(), 20.00, 200.00, 0);
 
 -- 秒杀
@@ -304,8 +304,8 @@ INSERT IGNORE INTO `eb_user_extract` (`id`, `uid`, `real_name`, `extract_type`, 
 -- ============================================================
 
 INSERT IGNORE INTO `eb_message_system` (`id`, `mark`, `uid`, `title`, `content`, `look`, `type`, `add_time`) VALUES
-(1, 'sys_notice', 0, '系统公告', '洗眉机教学平台V2.0即将上线，新增AI智能色素分析功能！', 0, 0, UNIX_TIMESTAMP()),
-(2, 'activity', 0, '活动通知', '618年中大促，洗眉机最高立减2000元，课程会员5折！', 0, 0, UNIX_TIMESTAMP());
+(1, 'sys_notice', 0, '系统公告', '知识分享教学平台V2.0即将上线，新增AI智能色素分析功能！', 0, 0, UNIX_TIMESTAMP()),
+(2, 'activity', 0, '活动通知', '618年中大促，知识分享最高立减2000元，课程会员5折！', 0, 0, UNIX_TIMESTAMP());
 
 INSERT IGNORE INTO `eb_user_notice` (`id`, `uid`, `type`, `user`, `title`, `content`, `add_time`, `is_send`) VALUES
 (1, 2, 0, '系统', '订单发货通知', '您的订单已发货，快递单号：SF1234567890', UNIX_TIMESTAMP() - 86400, 1),
@@ -322,13 +322,13 @@ INSERT IGNORE INTO `eb_store_service` (`id`, `uid`, `nickname`, `avatar`, `phone
 (2, 0, '客服小智', '/statics/avatar/s2.png', '020-88888889', 1, 1, UNIX_TIMESTAMP());
 
 INSERT IGNORE INTO `eb_store_service_speechcraft` (`id`, `kefu_id`, `cate_id`, `title`, `message`, `sort`, `add_time`) VALUES
-(1, 0, 0, '欢迎语', '您好，欢迎咨询洗眉机教学平台！请问有什么可以帮您？', 1, UNIX_TIMESTAMP()),
+(1, 0, 0, '欢迎语', '您好，欢迎咨询知识分享教学平台！请问有什么可以帮您？', 1, UNIX_TIMESTAMP()),
 (2, 0, 0, '课程咨询', '线上课程试听仅需9.9元，会员免费学习全部课程。', 2, UNIX_TIMESTAMP()),
-(3, 0, 0, '产品咨询', 'XM-2000是旗舰洗眉机，采用进口激光器，一年保修。', 3, UNIX_TIMESTAMP()),
+(3, 0, 0, '产品咨询', 'XM-2000是旗舰知识分享，采用进口激光器，一年保修。', 3, UNIX_TIMESTAMP()),
 (4, 0, 0, '售后咨询', '设备问题请拨打400-888-8888，24小时内处理。', 4, UNIX_TIMESTAMP());
 
 INSERT IGNORE INTO `eb_store_service_log` (`id`, `uid`, `to_uid`, `msn`, `add_time`, `type`) VALUES
-(1, 2, 1, '你好，我想咨询洗眉机的使用培训', UNIX_TIMESTAMP() - 86400, 1),
+(1, 2, 1, '你好，我想咨询知识分享的使用培训', UNIX_TIMESTAMP() - 86400, 1),
 (2, 2, 1, '线下的培训班怎么报名？', UNIX_TIMESTAMP() - 86400, 1);
 
 INSERT IGNORE INTO `eb_store_service_feedback` (`id`, `uid`, `rela_name`, `phone`, `content`, `status`, `add_time`) VALUES

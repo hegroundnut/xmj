@@ -1,4 +1,4 @@
-<navbar title="洗眉机"/>
+<navbar title="知识分享"/>
 <view class="home-page" style="padding-top: {{navHeight}}px;">
   <loading wx:if="{{loading}}" show="{{loading}}"/>
   <view wx:elif="{{error}}" class="error-box" bindtap="loadData">加载失败，点击重试</view>

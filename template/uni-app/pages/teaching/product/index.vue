@@ -16,7 +16,7 @@
 
 		<!-- 产品信息卡片 -->
 		<view class="info-card">
-			<text class="product-title">{{ info.title || '洗眉机' }}</text>
+			<text class="product-title">{{ info.title || '知识分享' }}</text>
 			<text class="product-desc">{{ info.desc }}</text>
 		</view>
 
