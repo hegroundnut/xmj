@@ -1,4 +1,4 @@
-const { momentApi } = require('../../utils/api/index')
+const { momentApi, userApi } = require('../../utils/api/index')
 
 Page({
   data: {
@@ -72,16 +72,32 @@ Page({
       return wx.showToast({ title: '请输入内容或上传图片/视频', icon: 'none' })
     }
     this.setData({ submitting: true })
-    momentApi.createMoment({
-      content: content.trim(),
-      images: images.length > 0 ? JSON.stringify(images) : undefined,
-      video_url: videoPath || undefined
+    wx.showLoading({ title: '发布中...' })
+    // 先把本地图片上传到服务器（服务器会压缩存储），拿到 URL 后再发布
+    this.uploadImages(images).then(urls => {
+      return momentApi.createMoment({
+        content: content.trim(),
+        images: urls.length > 0 ? JSON.stringify(urls) : undefined,
+        video_url: videoPath || undefined
+      })
     }).then(() => {
+      wx.hideLoading()
       wx.showToast({ title: '发布成功', icon: 'success' })
       setTimeout(() => wx.navigateBack(), 1500)
     }).catch(err => {
-      wx.showToast({ title: err.msg || '发布失败', icon: 'none' })
+      wx.hideLoading()
+      wx.showToast({ title: (err && err.msg) || '发布失败', icon: 'none' })
     }).finally(() => this.setData({ submitting: false }))
+  },
+
+  uploadImages(images) {
+    if (!images || images.length === 0) return Promise.resolve([])
+    // 已经是网络地址的直接保留，本地临时路径逐个上传
+    const tasks = images.map(path => {
+      if (/^https?:\/\//.test(path)) return Promise.resolve(path)
+      return userApi.uploadImage(path).then(res => (res.data && res.data.url) || '')
+    })
+    return Promise.all(tasks).then(urls => urls.filter(u => !!u))
   },
 
   onCancel() {

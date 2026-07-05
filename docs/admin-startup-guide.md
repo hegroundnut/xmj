@@ -126,7 +126,7 @@ docker exec crmeb_php sh -c "cp -r /var/www_mount/public/. /var/www_native/publi
 └── 洗眉机
     ├── 产品管理        ← 支持多产品CRUD + 首页显示开关 + 分类筛选/管理
     ├── 案例管理        ← 支持分类筛选 + 分类管理弹窗 + 精选开关（首页展示）
-    ├── 课程管理        ← 支持分类筛选 + 分类管理弹窗 + 可看等级选择（普通会员/超级会员）
+    ├── 课程管理        ← 支持分类筛选 + 分类管理弹窗 + 可看等级选择 + 视频上传到COS（或手动填写视频链接）
     ├── 线下排期
     ├── 预约记录
     ├── 评论管理
@@ -185,3 +185,45 @@ docker exec -it crmeb_php bash
 ### 会员管理页报错
 - 如果出现 `getModel()` 错误,确认 MemberController.php 已更新
 - 最新版已改用 `User::where()` 直接查询
+
+### 课程视频上传报错 "COS 未配置"
+- 说明服务器 `crmeb/.env` 未填写腾讯云 COS 配置，见「九、腾讯云 COS 视频存储配置」
+- 也可暂不配置 COS，直接在课程表单「视频链接」中手动填写外部视频地址
+
+## 九、腾讯云 COS 视频存储配置
+
+课程视频上传到腾讯云 COS（对象存储），不使用 CDN。管理员在「课程管理」表单中点击「上传视频到COS」即可，成功后自动回填视频链接；小程序端播放时若 COS 视频失效会提示「视频失效，请联系管理员」。
+
+### 9.1 需要在腾讯云控制台准备的信息
+
+| 配置项 | 说明 | 获取位置 |
+| --- | --- | --- |
+| SecretId | API 密钥 SecretId | 访问管理 → API密钥管理（https://console.cloud.tencent.com/cam/capi） |
+| SecretKey | API 密钥 SecretKey | 同上 |
+| APPID | 账号 APPID（纯数字） | 账号信息 / 存储桶概览 |
+| BUCKET | 存储桶名称，格式 `名称-APPID`（如 `xmj-video-1250000000`） | 对象存储 → 存储桶列表 |
+| REGION | 存储桶所在地域（如 `ap-shanghai`） | 存储桶基本信息 |
+| DOMAIN | 存储桶访问域名（如 `https://xmj-video-1250000000.cos.ap-shanghai.myqcloud.com`） | 存储桶 → 概览 → 访问域名 |
+
+另外需在存储桶中做两项设置：
+1. **权限设置为「公有读私有写」**（否则小程序无法直接播放视频 URL）。
+2. **配置跨域访问 CORS**：来源 Origin 填 `*`（或小程序/后台域名），允许 `PUT/POST/GET` 方法，用于后台直传。
+
+### 9.2 在 crmeb/.env 中填写
+
+```ini
+[COS]
+SECRET_ID  = 你的SecretId
+SECRET_KEY = 你的SecretKey
+APPID      = 1250000000
+BUCKET     = xmj-video-1250000000
+REGION     = ap-shanghai
+DOMAIN     = https://xmj-video-1250000000.cos.ap-shanghai.myqcloud.com
+```
+
+填写后重启 PHP 容器：`docker restart crmeb_php`。
+
+## 十、图片压缩说明
+
+- 用户上传到朋友圈的图片、后台管理员上传的图片统一存储在服务器本地（`public/uploads/`），上传时由服务端自动压缩：等比缩放至最长边 ≤ 1600px、JPEG 质量 75%，仅处理 jpg/jpeg/png。
+- 该逻辑在 `crmeb/crmeb/services/upload/storage/Local.php` 的 `compressImage()` 中实现，对所有走本地存储的图片生效，无需额外配置。

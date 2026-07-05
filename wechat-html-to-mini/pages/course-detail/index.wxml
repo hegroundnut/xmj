@@ -10,6 +10,27 @@
     </view>
   </view>
 
+  <!-- Video player overlay -->
+  <view class="video-modal" wx:if="{{showVideo}}">
+    <view class="video-close" bindtap="onCloseVideo"><text>✕</text></view>
+    <video wx:if="{{!videoError}}"
+      class="video-player"
+      src="{{course.video_url}}"
+      controls
+      autoplay
+      show-fullscreen-btn
+      object-fit="contain"
+      enable-progress-gesture
+      binderror="onVideoError"
+    ></video>
+    <view class="video-error" wx:else>
+      <text class="video-error-icon">⚠</text>
+      <text class="video-error-title">视频暂时无法播放</text>
+      <text class="video-error-desc">视频失效，请联系管理员</text>
+      <view class="video-error-btn" bindtap="onCloseVideo"><text>知道了</text></view>
+    </view>
+  </view>
+
   <!-- Nav bar (over hero) -->
   <view class="nav-bar" style="padding-top: {{statusBarHeight + 10}}px;" wx:if="{{course}}">
     <view class="nav-back" bindtap="onBack">

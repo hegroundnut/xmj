@@ -157,6 +157,8 @@ class Local extends BaseUpload
             return $this->setError('Upload failure');
         }
         $filePath = Filesystem::disk($disk)->path($fileName);
+        // 图片压缩存储（由服务器自身处理，减小体积）
+        $this->compressImage($filePath, $fileHandle->getOriginalMime());
         $this->fileInfo->uploadInfo = new File($filePath);
         $this->fileInfo->realName = $fileHandle->getOriginalName();
         $this->fileInfo->fileName = $this->fileInfo->uploadInfo->getFilename();
@@ -169,6 +171,33 @@ class Local extends BaseUpload
             }
         }
         return $this->fileInfo;
+    }
+
+    /**
+     * 图片压缩（等比缩放 + 降低质量），仅处理常见图片类型
+     * @param string $filePath 图片物理绝对路径
+     * @param string $mime 文件 mime
+     * @param int $maxSize 最长边像素上限
+     * @param int $quality 保存质量 1-100
+     * @return void
+     */
+    protected function compressImage(string $filePath, string $mime, int $maxSize = 1600, int $quality = 75)
+    {
+        $allow = ['image/jpg', 'image/jpeg', 'image/png'];
+        if (!in_array($mime, $allow) || !is_file($filePath)) {
+            return;
+        }
+        try {
+            $Image = Image::open($filePath);
+            $width = $Image->width();
+            $height = $Image->height();
+            if ($width > $maxSize || $height > $maxSize) {
+                $Image->thumb($maxSize, $maxSize, Image::THUMB_SCALING);
+            }
+            $Image->save($filePath, null, $quality);
+        } catch (\Throwable $e) {
+            // 压缩失败时保留原图，不影响上传
+        }
     }
 
     /**

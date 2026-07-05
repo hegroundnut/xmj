@@ -47,6 +47,7 @@ Route::group('teaching_course', function () {
     Route::post('save', 'v1.teaching.CourseController/save')->option(['real_name' => '新增课程']);
     Route::put('update/:id', 'v1.teaching.CourseController/update')->option(['real_name' => '编辑课程']);
     Route::delete('delete/:id', 'v1.teaching.CourseController/delete')->option(['real_name' => '删除课程']);
+    Route::post('upload_video', 'v1.teaching.CourseController/upload_video')->option(['real_name' => '上传课程视频']);
 })->middleware([
     \app\http\middleware\AllowOriginMiddleware::class,
     \app\adminapi\middleware\AdminAuthTokenMiddleware::class,

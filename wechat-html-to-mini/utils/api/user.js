@@ -4,4 +4,12 @@ function getUserInfo() {
   return api.get('user/info')
 }
 
-module.exports = { getUserInfo }
+function updateUserInfo(data) {
+  return api.post('user/update', data)
+}
+
+function uploadImage(filePath) {
+  return api.upload('upload/image', filePath)
+}
+
+module.exports = { getUserInfo, updateUserInfo, uploadImage }

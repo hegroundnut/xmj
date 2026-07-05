@@ -44,11 +44,39 @@ function request(url, method, data, opts) {
   })
 }
 
+function uploadFile(url, filePath, name) {
+  return new Promise((resolve, reject) => {
+    const token = store.getToken()
+    if (!token) {
+      wx.navigateTo({ url: '/subpackages/users/wechat_login/index' })
+      return reject({ msg: '未登录' })
+    }
+    wx.uploadFile({
+      url: API_BASE_URL + '/' + url,
+      filePath: filePath,
+      name: name || 'file',
+      header: { 'Authori-zation': 'Bearer ' + token },
+      success(res) {
+        let data = res.data
+        try { data = JSON.parse(res.data) } catch (e) {}
+        if (res.statusCode === 200 && data && data.status === 200) {
+          return resolve(data)
+        }
+        reject(data || res)
+      },
+      fail(err) {
+        reject(err)
+      }
+    })
+  })
+}
+
 const api = {}
 ;['get', 'post', 'put', 'delete'].forEach(method => {
   api[method] = function (url, data, opts) {
     return request(url, method.toUpperCase(), data, opts)
   }
 })
+api.upload = uploadFile
 
 module.exports = api

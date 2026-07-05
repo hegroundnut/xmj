@@ -1,0 +1,32 @@
+.page { background: #fff; min-height: 100vh; }
+
+/* Nav bar */
+.nav-bar { display: flex; align-items: center; justify-content: space-between; padding: 0 40rpx 28rpx; }
+.nav-back { width: 64rpx; height: 64rpx; border-radius: 50%; background: rgba(0,0,0,0.04); display: flex; align-items: center; justify-content: center; }
+.nav-back-icon { font-size: 44rpx; color: #1A1A1A; font-weight: 300; line-height: 1; }
+.nav-title { font-size: 30rpx; font-weight: 400; color: #1A1A1A; letter-spacing: 4rpx; }
+.nav-placeholder { width: 64rpx; }
+
+/* Cards */
+.edit-card { margin: 0 40rpx 32rpx; padding: 36rpx; border-radius: 24rpx; background: #F0EBE0; border: 2rpx solid rgba(107,118,79,0.12); position: relative; overflow: hidden; }
+.card-label { font-size: 18rpx; letter-spacing: 6rpx; color: #6B764F; text-transform: uppercase; opacity: 0.5; margin-bottom: 24rpx; display: block; }
+
+/* Avatar */
+.avatar-row { display: flex; align-items: center; gap: 24rpx; }
+.edit-avatar { width: 120rpx; height: 120rpx; border-radius: 50%; background: #F0EFED; border: 4rpx solid rgba(107,118,79,0.15); flex-shrink: 0; }
+.avatar-tip { flex: 1; display: flex; flex-direction: column; gap: 8rpx; }
+.avatar-tip-title { font-size: 28rpx; color: #3A4029; font-weight: 500; letter-spacing: 2rpx; }
+.avatar-tip-sub { font-size: 22rpx; color: rgba(107,118,79,0.5); font-weight: 300; }
+.avatar-arrow { font-size: 40rpx; color: rgba(107,118,79,0.3); }
+
+/* Form */
+.form-item { display: flex; align-items: center; gap: 24rpx; }
+.form-label { font-size: 28rpx; color: #3A4029; font-weight: 500; letter-spacing: 2rpx; width: 100rpx; }
+.form-input { flex: 1; font-size: 28rpx; color: #3A4029; padding: 16rpx 0; }
+.form-placeholder { color: rgba(107,118,79,0.4); }
+.form-hint { font-size: 22rpx; color: rgba(107,118,79,0.5); margin-top: 16rpx; display: block; }
+
+/* Submit */
+.submit-wrap { padding: 24rpx 40rpx; }
+.submit-btn { width: 100%; padding: 28rpx; background: #6B764F; color: #F0EBE0; border-radius: 48rpx; font-size: 28rpx; font-weight: 500; letter-spacing: 6rpx; text-align: center; }
+.submit-btn[disabled] { opacity: 0.6; }

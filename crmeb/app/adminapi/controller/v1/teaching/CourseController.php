@@ -12,6 +12,7 @@ namespace app\adminapi\controller\v1\teaching;
 
 use app\adminapi\controller\AuthController;
 use app\services\teaching\CourseServices;
+use app\services\other\CosVideoService;
 use app\adminapi\validate\v1\teaching\CourseValidator;
 use think\facade\App;
 
@@ -82,5 +83,23 @@ class CourseController extends AuthController
     {
         $this->services->update((int)$id, ['status' => 0]);
         return app('json')->success('删除成功');
+    }
+
+    /**
+     * 上传课程视频到腾讯云 COS，返回视频链接
+     * 与"手动填写视频链接"对齐：上传成功后前端把返回的 url 填入 video_url
+     * @return mixed
+     */
+    public function upload_video()
+    {
+        if (!CosVideoService::isEnabled()) {
+            return app('json')->fail('COS 未配置，请联系管理员在服务器 .env 中填写腾讯云 COS 信息');
+        }
+        try {
+            $res = CosVideoService::upload('file');
+        } catch (\Throwable $e) {
+            return app('json')->fail($e->getMessage());
+        }
+        return app('json')->success('上传成功', ['url' => $res['url']]);
     }
 }
