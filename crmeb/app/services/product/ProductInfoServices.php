@@ -37,7 +37,7 @@ class ProductInfoServices extends BaseServices
         $info['specs'] = json_decode($info['specs'], true) ?? [];
         if (is_array($info['banner'])) {
             foreach ($info['banner'] as $key => $url) {
-                $info['banner'][$key] = set_file_url($url);
+                $info['banner'][$key] = media_url($url);
             }
         }
         return $info;
@@ -101,7 +101,7 @@ class ProductInfoServices extends BaseServices
             $item['specs'] = json_decode($item['specs'], true) ?? [];
             if (is_array($item['banner'])) {
                 foreach ($item['banner'] as $key => $url) {
-                    $item['banner'][$key] = set_file_url($url);
+                    $item['banner'][$key] = media_url($url);
                 }
             }
         }

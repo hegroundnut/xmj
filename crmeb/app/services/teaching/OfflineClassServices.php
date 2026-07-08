@@ -31,8 +31,8 @@ class OfflineClassServices extends BaseServices
         /** @var OfflineBookingServices $bookingServices */
         $bookingServices = app()->make(OfflineBookingServices::class);
         foreach ($list as &$item) {
-            $item['cover'] = set_file_url($item['cover']);
-            $item['qrcode'] = set_file_url($item['qrcode']);
+            $item['cover'] = media_url($item['cover']);
+            $item['qrcode'] = media_url($item['qrcode']);
             $item['booked_count'] = $bookingServices->getBookedCount($item['id']);
         }
         $count = $this->dao->offlineClassCount($where);
@@ -49,8 +49,8 @@ class OfflineClassServices extends BaseServices
         $info = $this->dao->get($id);
         if ($info) {
             $info = $info->toArray();
-            $info['cover'] = set_file_url($info['cover']);
-            $info['qrcode'] = set_file_url($info['qrcode']);
+            $info['cover'] = media_url($info['cover']);
+            $info['qrcode'] = media_url($info['qrcode']);
             /** @var OfflineBookingServices $bookingServices */
             $bookingServices = app()->make(OfflineBookingServices::class);
             $info['booked_count'] = $bookingServices->getBookedCount($info['id']);
