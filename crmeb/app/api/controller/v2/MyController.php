@@ -36,8 +36,8 @@ class MyController
             $list = $dao->getFavoriteList($this->uid(), $page, $limit);
             $count = $dao->getFavoriteCount($this->uid());
             foreach ($list as &$item) {
-                if (!empty($item['cover'])) $item['cover'] = set_file_url($item['cover']);
-                if (!empty($item['media_url'])) $item['media_url'] = set_file_url($item['media_url']);
+                if (!empty($item['cover'])) $item['cover'] = media_url($item['cover']);
+                if (!empty($item['media_url'])) $item['media_url'] = media_url($item['media_url']);
                 $item['fav_time'] = date('Y-m-d H:i', $item['fav_time']);
             }
         } else {
@@ -48,7 +48,7 @@ class MyController
                 if (!empty($item['images'])) {
                     $item['images'] = json_decode($item['images'], true) ?: [];
                 }
-                if (!empty($item['user_avatar'])) $item['user_avatar'] = set_file_url($item['user_avatar']);
+                if (!empty($item['user_avatar'])) $item['user_avatar'] = media_url($item['user_avatar']);
                 $item['add_time'] = date('Y-m-d H:i', $item['add_time']);
                 $item['fav_time'] = date('Y-m-d H:i', $item['fav_time']);
             }
@@ -77,7 +77,7 @@ class MyController
                 ->column('title,cover,video_url', 'id');
             foreach ($list as &$item) {
                 $item['course_title'] = $courses[$item['course_id']]['title'] ?? '';
-                $item['course_cover'] = set_file_url($courses[$item['course_id']]['cover'] ?? '');
+                $item['course_cover'] = media_url($courses[$item['course_id']]['cover'] ?? '');
                 $item['pay_time'] = $item['pay_time'] ? date('Y-m-d H:i', $item['pay_time']) : '';
             }
         }
@@ -105,7 +105,7 @@ class MyController
             foreach ($list as &$item) {
                 $cls = $classes[$item['class_id']] ?? [];
                 $item['class_title'] = $cls['title'] ?? '';
-                $item['class_cover'] = set_file_url($cls['cover'] ?? '');
+                $item['class_cover'] = media_url($cls['cover'] ?? '');
                 $item['class_date'] = $cls['class_date'] ?? '';
                 $item['start_time'] = $cls['start_time'] ?? '';
                 $item['end_time'] = $cls['end_time'] ?? '';
@@ -189,7 +189,7 @@ class MyController
             if (!empty($item['images'])) {
                 $item['images'] = json_decode($item['images'], true) ?: [];
             }
-            if (!empty($item['user_avatar'])) $item['user_avatar'] = set_file_url($item['user_avatar']);
+            if (!empty($item['user_avatar'])) $item['user_avatar'] = media_url($item['user_avatar']);
             $item['add_time'] = date('Y-m-d H:i', $item['add_time']);
         }
         return app('json')->success(['list' => $list, 'count' => $count]);

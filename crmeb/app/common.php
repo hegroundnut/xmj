@@ -310,6 +310,53 @@ if (!function_exists('set_file_url')) {
     }
 }
 
+if (!function_exists('media_url')) {
+    /**
+     * 生成随「访问域名」自适应的资源地址：
+     * - 相对路径 → 前缀为当前请求域名（小程序请求哪台服务器就用哪台的域名）
+     * - 历史遗留的本机绝对地址（http://localhost / http://127.0.0.1）→ 剥离本机域名后按当前请求域名重建
+     * - 其它绝对地址（COS/CDN/真实域名等）→ 原样返回
+     * 解决：图片/封面在上传时把 localhost 写死进库，导致真机无法加载（改 site_url 也无效）。
+     * @param string|array $image
+     * @return string|array
+     */
+    function media_url($image)
+    {
+        if (is_array($image)) {
+            foreach ($image as &$item) {
+                $item = media_url($item);
+            }
+            unset($item);
+            return $image;
+        }
+        if (!is_string($image) || $image === '') {
+            return $image;
+        }
+        // 本机地址（localhost / 127.0.0.1，带或不带端口）统一剥离，仅保留路径
+        $normalized = preg_replace('#^https?://(localhost|127\.0\.0\.1)(:\d+)?#i', '', $image);
+        if ($normalized === $image && preg_match('#^(https?:)?//#i', $image)) {
+            // 非本机的绝对地址（COS/CDN/真实域名）保持不变
+            return $image;
+        }
+        $path = str_replace('\\', '/', (string)$normalized);
+        if ($path === '') {
+            return $path;
+        }
+        if ($path[0] !== '/') {
+            $path = '/' . $path;
+        }
+        try {
+            $domain = rtrim(request()->domain(), '/');
+        } catch (\Throwable $e) {
+            $domain = '';
+        }
+        if ($domain === '' || stripos($domain, 'localhost') !== false || strpos($domain, '127.0.0.1') !== false) {
+            $domain = rtrim((string)sys_config('site_url'), '/');
+        }
+        return $domain . $path;
+    }
+}
+
 if (!function_exists('set_http_type')) {
     /**
      * 修改 https 和 http

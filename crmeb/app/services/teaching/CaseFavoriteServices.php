@@ -36,10 +36,10 @@ class CaseFavoriteServices extends BaseServices
         $count = $this->dao->getFavoriteCount($uid);
         foreach ($list as &$item) {
             if (!empty($item['cover'])) {
-                $item['cover'] = set_file_url($item['cover']);
+                $item['cover'] = media_url($item['cover']);
             }
             if (!empty($item['media_url'])) {
-                $item['media_url'] = set_file_url($item['media_url']);
+                $item['media_url'] = media_url($item['media_url']);
             }
         }
         return ['list' => $list, 'count' => $count];

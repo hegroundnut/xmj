@@ -73,7 +73,7 @@ class CourseServices extends BaseServices
         $categories = $categoryDao->getCategoryList(2);
         $categoryMap = array_column($categories, 'name', 'id');
         foreach ($list as &$item) {
-            $item['cover'] = set_file_url($item['cover']);
+            $item['cover'] = media_url($item['cover']);
             $item['member_type'] = $memberType;
             $item['can_watch'] = $this->canWatch($memberType, (int)$item['member_level']);
             $item['member_level_text'] = $item['member_level'] == 2 ? '超级会员' : '普通会员';
@@ -98,8 +98,8 @@ class CourseServices extends BaseServices
             throw new ApiException('课程不存在或已下架');
         }
         $info = $info->toArray();
-        $info['cover'] = set_file_url($info['cover']);
-        $info['video_url'] = set_file_url($info['video_url']);
+        $info['cover'] = media_url($info['cover']);
+        $info['video_url'] = media_url($info['video_url']);
         $memberType = $this->getUserMemberType($uid);
         $info['member_type'] = $memberType;
         $info['can_watch'] = $this->canWatch($memberType, (int)$info['member_level']);

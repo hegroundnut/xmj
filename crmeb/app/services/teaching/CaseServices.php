@@ -42,8 +42,8 @@ class CaseServices extends BaseServices
         $categories = $categoryDao->getCategoryList(1);
         $categoryMap = array_column($categories, 'name', 'id');
         foreach ($list as &$item) {
-            $item['cover'] = set_file_url($item['cover']);
-            $item['media_url'] = set_file_url($item['media_url']);
+            $item['cover'] = media_url($item['cover']);
+            $item['media_url'] = media_url($item['media_url']);
             $item['add_time'] = date('Y-m-d H:i', $item['add_time']);
             $item['comment_count'] = $commentDao->commentCount((int)$item['id']);
             $item['category_name'] = $categoryMap[$item['category_id']] ?? '';

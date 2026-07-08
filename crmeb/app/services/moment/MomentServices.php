@@ -86,7 +86,7 @@ class MomentServices extends BaseServices
             foreach ($allComments as $c) {
                 $c['add_time'] = date('Y-m-d H:i', $c['add_time']);
                 if (!empty($c['user_avatar'])) {
-                    $c['user_avatar'] = set_file_url($c['user_avatar']);
+                    $c['user_avatar'] = media_url($c['user_avatar']);
                 }
                 $commentMap[$c['moment_id']][] = $c;
             }
@@ -114,13 +114,13 @@ class MomentServices extends BaseServices
         $moment = $moment->toArray();
         if (isset($moment['images']) && is_string($moment['images'])) {
             $images = json_decode($moment['images'], true);
-            $moment['images'] = is_array($images) ? array_map('set_file_url', $images) : [];
+            $moment['images'] = is_array($images) ? array_map('media_url', $images) : [];
         }
         if (!empty($moment['video_url'])) {
-            $moment['video_url'] = set_file_url($moment['video_url']);
+            $moment['video_url'] = media_url($moment['video_url']);
         }
         if (!empty($moment['user_avatar'])) {
-            $moment['user_avatar'] = set_file_url($moment['user_avatar']);
+            $moment['user_avatar'] = media_url($moment['user_avatar']);
         }
         $moment['add_time'] = date('Y-m-d H:i', $moment['add_time']);
 
@@ -135,7 +135,7 @@ class MomentServices extends BaseServices
         foreach ($comments as &$c) {
             $c['add_time'] = date('Y-m-d H:i', $c['add_time']);
             if (!empty($c['user_avatar'])) {
-                $c['user_avatar'] = set_file_url($c['user_avatar']);
+                $c['user_avatar'] = media_url($c['user_avatar']);
             }
         }
 
@@ -315,10 +315,10 @@ class MomentServices extends BaseServices
         foreach ($list as &$item) {
             if (isset($item['images']) && is_string($item['images'])) {
                 $images = json_decode($item['images'], true);
-                $item['images'] = is_array($images) ? array_map('set_file_url', $images) : [];
+                $item['images'] = is_array($images) ? array_map('media_url', $images) : [];
             }
             if (!empty($item['video_url'])) {
-                $item['video_url'] = set_file_url($item['video_url']);
+                $item['video_url'] = media_url($item['video_url']);
             }
             $item['add_time'] = date('Y-m-d H:i', $item['add_time']);
         }
@@ -334,13 +334,13 @@ class MomentServices extends BaseServices
         foreach ($list as &$item) {
             if (isset($item['images']) && is_string($item['images'])) {
                 $images = json_decode($item['images'], true);
-                $item['images'] = is_array($images) ? array_map('set_file_url', $images) : [];
+                $item['images'] = is_array($images) ? array_map('media_url', $images) : [];
             }
             if (!empty($item['video_url'])) {
-                $item['video_url'] = set_file_url($item['video_url']);
+                $item['video_url'] = media_url($item['video_url']);
             }
             if (!empty($item['user_avatar'])) {
-                $item['user_avatar'] = set_file_url($item['user_avatar']);
+                $item['user_avatar'] = media_url($item['user_avatar']);
             }
             $item['add_time'] = date('Y-m-d H:i', $item['add_time']);
         }

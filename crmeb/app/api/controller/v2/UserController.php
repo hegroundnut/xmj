@@ -37,7 +37,7 @@ class UserController
         $data = [
             'uid' => $user->uid,
             'nickname' => $user->nickname ?? '',
-            'avatar' => $user->avatar ?? '',
+            'avatar' => media_url($user->avatar ?? ''),
             'phone' => $user->phone ?? '',
             'is_teaching_member' => $user->is_teaching_member ?? 0,
             'overdue_time' => $user->overdue_time ?? 0,
