@@ -187,17 +187,55 @@ class Local extends BaseUpload
         if (!in_array($mime, $allow) || !is_file($filePath)) {
             return;
         }
+        // 依赖 GD 扩展，缺失时直接跳过，避免破坏原图
+        if (!function_exists('imagecreatefromstring') || !function_exists('getimagesize')) {
+            return;
+        }
+        // 读取原图尺寸，读不到说明不是合法图片，直接跳过
+        $size = @getimagesize($filePath);
+        if ($size === false) {
+            return;
+        }
+        [$width, $height] = $size;
+        // 先压缩到临时文件，校验产物合法后再原子替换；任何异常/损坏都保留原图，避免出现碎图
+        $tmpPath = $filePath . '.compress_tmp';
         try {
             $Image = Image::open($filePath);
-            $width = $Image->width();
-            $height = $Image->height();
             if ($width > $maxSize || $height > $maxSize) {
                 $Image->thumb($maxSize, $maxSize, Image::THUMB_SCALING);
             }
-            $Image->save($filePath, null, $quality);
+            $Image->save($tmpPath, null, $quality);
+            if ($this->isValidImage($tmpPath)) {
+                @rename($tmpPath, $filePath);
+            } else {
+                @unlink($tmpPath);
+            }
         } catch (\Throwable $e) {
             // 压缩失败时保留原图，不影响上传
+            if (is_file($tmpPath)) {
+                @unlink($tmpPath);
+            }
         }
+    }
+
+    /**
+     * 校验图片文件是否完整可解析（防止压缩产物被截断/损坏导致碎图）
+     * @param string $filePath
+     * @return bool
+     */
+    protected function isValidImage(string $filePath): bool
+    {
+        if (!is_file($filePath) || filesize($filePath) <= 0) {
+            return false;
+        }
+        if (@getimagesize($filePath) === false) {
+            return false;
+        }
+        $content = @file_get_contents($filePath);
+        if ($content === false || $content === '') {
+            return false;
+        }
+        return @imagecreatefromstring($content) !== false;
     }
 
     /**

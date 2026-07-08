@@ -51,8 +51,11 @@ function uploadFile(url, filePath, name) {
       wx.navigateTo({ url: '/subpackages/users/wechat_login/index' })
       return reject({ msg: '未登录' })
     }
+    // 部分服务器/代理会在 multipart 上传请求中丢弃自定义鉴权头，
+    // 同时通过 header 和 query 参数携带 token，双保险避免误报“登录已过期”
+    const sep = url.indexOf('?') === -1 ? '?' : '&'
     wx.uploadFile({
-      url: API_BASE_URL + '/' + url,
+      url: API_BASE_URL + '/' + url + sep + 'token=' + encodeURIComponent(token),
       filePath: filePath,
       name: name || 'file',
       header: { 'Authori-zation': 'Bearer ' + token },

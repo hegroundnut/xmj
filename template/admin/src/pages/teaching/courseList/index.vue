@@ -161,7 +161,7 @@ export default {
       categoryDialogVisible: false,
       newCategoryName: '',
       videoUploading: false,
-      videoUploadUrl: Setting.apiBaseURL + '/teaching_course/upload_video',
+      videoUploadUrl: Setting.apiBaseURL + '/teaching_course/upload_video?token=' + encodeURIComponent(getCookies('token') || ''),
       videoUploadHeaders: { 'Authori-zation': 'Bearer ' + getCookies('token') },
     };
   },
@@ -218,8 +218,10 @@ export default {
         this.$message.error('只能上传视频文件');
         return false;
       }
-      // 每次上传前刷新 token，避免过期
-      this.videoUploadHeaders = { 'Authori-zation': 'Bearer ' + getCookies('token') };
+      // 每次上传前刷新 token（header + query 双保险，避免代理丢弃自定义鉴权头）
+      const t = getCookies('token') || '';
+      this.videoUploadHeaders = { 'Authori-zation': 'Bearer ' + t };
+      this.videoUploadUrl = Setting.apiBaseURL + '/teaching_course/upload_video?token=' + encodeURIComponent(t);
       this.videoUploading = true;
       return true;
     },

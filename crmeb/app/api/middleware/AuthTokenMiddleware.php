@@ -40,6 +40,8 @@ class AuthTokenMiddleware implements MiddlewareInterface
         $authInfo = null;
         $token = trim(ltrim($request->header('Authori-zation'), 'Bearer'));
         if (!$token) $token = trim(ltrim($request->header('Authorization'), 'Bearer'));//正式版，删除此行，某些服务器无法获取到token调整为 Authori-zation
+        //兜底：部分服务器/代理会在 multipart 文件上传请求中丢弃自定义鉴权头，允许通过 query 参数 token 传递
+        if (!$token) $token = trim(ltrim((string)$request->param('token'), 'Bearer'));
         try {
             /** @var UserAuthServices $service */
             $service = app()->make(UserAuthServices::class);
