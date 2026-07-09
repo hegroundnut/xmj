@@ -38,9 +38,17 @@ class AdminAuthTokenMiddleware implements MiddlewareInterface
      */
     public function handle(Request $request, \Closure $next)
     {
-        $token = trim(ltrim($request->header(Config::get('cookie.token_name', 'Authori-zation')), 'Bearer'));
+        $raw = trim($request->header(Config::get('cookie.token_name', 'Authori-zation')));
+        // 安全剥离 Bearer 前缀（不用 ltrim 字符集方式，避免 JWT 头部的 e 被误删）
+        $token = preg_replace('#^Bearer\s+#i', '', $raw);
         if (!$token) {
-            $token = trim(ltrim($request->get('token')));
+            $token = trim((string)$request->get('token'));
+        }
+        // 兜底：部分代理在 multipart 文件上传时丢弃自定义 Header，
+        // 允许通过 POST body 或 query 参数 token 传递
+        if (!$token) {
+            $raw = trim((string)$request->param('token'));
+            $token = preg_replace('#^Bearer\s+#i', '', $raw);
         }
         /** @var AdminAuthServices $service */
         $service = app()->make(AdminAuthServices::class);

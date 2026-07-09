@@ -291,22 +291,9 @@ if (!function_exists('set_file_url')) {
      */
     function set_file_url($image, $siteUrl = '')
     {
-        if (!strlen(trim($siteUrl))) $siteUrl = sys_config('site_url');
-        if (!$image) return $image;
-        if (is_array($image)) {
-            foreach ($image as &$item) {
-                $domainTop1 = substr($item, 0, 4);
-                $domainTop2 = substr($item, 0, 2);
-                if ($domainTop1 != 'http' && $domainTop2 != '//')
-                    $item = $siteUrl . str_replace('\\', '/', $item);
-            }
-        } else {
-            $domainTop1 = substr($image, 0, 4);
-            $domainTop2 = substr($image, 0, 2);
-            if ($domainTop1 != 'http' && $domainTop2 != '//')
-                $image = $siteUrl . str_replace('\\', '/', $image);
-        }
-        return $image;
+        // 委托 media_url()：统一按「当前访问域名」拼 URL，解决管理后台/mobile/小程序
+        // 在不同域名下图片 URL 不匹配（写死 site_url 或 localhost）导致的碎图问题
+        return media_url($image);
     }
 }
 

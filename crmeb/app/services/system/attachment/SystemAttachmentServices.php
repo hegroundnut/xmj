@@ -63,13 +63,10 @@ class SystemAttachmentServices extends BaseServices
     {
         [$page, $limit] = $this->getPageValue();
         $list = $this->dao->getList($where, $page, $limit);
-        $site_url = sys_config('site_url');
         foreach ($list as &$item) {
-            if ($site_url) {
-                $item['satt_dir'] = (strpos($item['satt_dir'], $site_url) !== false || strstr($item['satt_dir'], 'http') !== false) ? $item['satt_dir'] : $site_url . $item['satt_dir'];
-                $item['att_dir'] = (strpos($item['att_dir'], $site_url) !== false || strstr($item['att_dir'], 'http') !== false) ? $item['satt_dir'] : $site_url . $item['att_dir'];
-                $item['time'] = date('Y-m-d H:i:s', $item['time']);
-            }
+            $item['satt_dir'] = media_url($item['satt_dir']);
+            $item['att_dir'] = media_url($item['att_dir']);
+            $item['time'] = date('Y-m-d H:i:s', $item['time']);
         }
         $where['module_type'] = 1;
         $count = $this->dao->count($where);
@@ -254,39 +251,55 @@ class SystemAttachmentServices extends BaseServices
      */
     public function videoUpload($data, $file)
     {
-        $pathinfo = pathinfo($data['filename']);
-        if (isset($pathinfo['extension']) && !in_array($pathinfo['extension'], ['avi', 'mp4', 'wmv', 'rm', 'mpg', 'mpeg', 'mov', 'flv', 'swf'])) {
+        // 从 $_FILES 获取文件名（兼容前端不传 filename 字段的情况）
+        $originalName = $data['filename'] ?: ($file['name'] ?? 'video.mp4');
+        $pathinfo = pathinfo($originalName);
+        if (isset($pathinfo['extension']) && !in_array(strtolower($pathinfo['extension']), ['avi', 'mp4', 'wmv', 'rm', 'mpg', 'mpeg', 'mov', 'flv', 'swf', 'webm'])) {
             throw new AdminException('格式错误');
         }
         $data['chunkNumber'] = (int)$data['chunkNumber'];
+        $data['totalChunks'] = (int)$data['totalChunks'];
         $public_dir = app()->getRootPath() . 'public';
         $dir = '/uploads/attach/' . date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR . date('d');
         $all_dir = $public_dir . $dir;
         if (!is_dir($all_dir)) mkdir($all_dir, 0777, true);
-        $filename = $all_dir . '/' . $data['filename'] . '__' . $data['chunkNumber'];
-        move_uploaded_file($file['tmp_name'], $filename);
+        // 生成唯一保存文件名
+        $saveName = md5($originalName . microtime(true)) . '.' . ($pathinfo['extension'] ?: 'mp4');
         $res['code'] = 0;
         $res['msg'] = 'error';
         $res['file_path'] = '';
+        // 非分片上传（totalChunks=0）：直接保存文件
+        if ($data['totalChunks'] <= 0) {
+            $destPath = $all_dir . '/' . $saveName;
+            move_uploaded_file($file['tmp_name'], $destPath);
+            if (file_exists($destPath)) {
+                $res['code'] = 2;
+                $res['msg'] = 'success';
+                $res['file_path'] = sys_config('site_url') . $dir . '/' . $saveName;
+            }
+            return $res;
+        }
+        // 分片上传
+        $chunkFile = $all_dir . '/' . $saveName . '__' . $data['chunkNumber'];
+        move_uploaded_file($file['tmp_name'], $chunkFile);
         if ($data['chunkNumber'] == $data['totalChunks']) {
             $blob = '';
             for ($i = 1; $i <= $data['totalChunks']; $i++) {
-                $blob .= file_get_contents($all_dir . '/' . $data['filename'] . '__' . $i);
+                $blob .= file_get_contents($all_dir . '/' . $saveName . '__' . $i);
             }
-            file_put_contents($all_dir . '/' . $data['filename'], $blob);
+            file_put_contents($all_dir . '/' . $saveName, $blob);
             for ($i = 1; $i <= $data['totalChunks']; $i++) {
-                @unlink($all_dir . '/' . $data['filename'] . '__' . $i);
+                @unlink($all_dir . '/' . $saveName . '__' . $i);
             }
-            if (file_exists($all_dir . '/' . $data['filename'])) {
+            if (file_exists($all_dir . '/' . $saveName)) {
                 $res['code'] = 2;
                 $res['msg'] = 'success';
-                $res['file_path'] = sys_config('site_url') . $dir . '/' . $data['filename'];
+                $res['file_path'] = sys_config('site_url') . $dir . '/' . $saveName;
             }
         } else {
-            if (file_exists($all_dir . '/' . $data['filename'] . '__' . $data['chunkNumber'])) {
+            if (file_exists($chunkFile)) {
                 $res['code'] = 1;
                 $res['msg'] = 'waiting';
-                $res['file_path'] = '';
             }
         }
         return $res;

@@ -60,7 +60,7 @@ class MaterialController extends AuthController
             ['pid', 0],
             ['file', 'file'],
         ], true);
-        $res = $this->service->upload((int)$pid, $file, 0, 0);
+        $res = $this->service->upload((int)$pid, $file, 0, 0, '');
         return app('json')->success('上传成功', ['src' => $res]);
     }
 
@@ -73,6 +73,8 @@ class MaterialController extends AuthController
         [$ids] = $this->request->postMore([
             ['ids', []]
         ], true);
+        // 兼容前端双重嵌套 {ids: {ids: [...]}} 的入参
+        $ids = $this->normalizeIds($ids);
         if (empty($ids)) {
             return app('json')->fail('请选择要删除的图片');
         }
@@ -178,6 +180,8 @@ class MaterialController extends AuthController
         [$ids] = $this->request->postMore([
             ['ids', []]
         ], true);
+        // 兼容前端双重嵌套 {ids: {ids: [...]}} 的入参
+        $ids = $this->normalizeIds($ids);
         if (empty($ids)) {
             return app('json')->fail('请选择要删除的视频');
         }
@@ -198,5 +202,31 @@ class MaterialController extends AuthController
         }
         $this->service->update($id, ['real_name' => $realName]);
         return app('json')->success('修改成功');
+    }
+
+    /**
+     * 归一化 IDs 入参：兼容前端双重嵌套 {ids: {ids: [...]}} 与正常 {ids: [...]} 两种格式
+     * @param mixed $ids
+     * @return array
+     */
+    protected function normalizeIds($ids): array
+    {
+        // 已经是数字索引数组（正常格式）
+        if (is_array($ids) && !empty($ids) && isset($ids[0])) {
+            return $ids;
+        }
+        // 双重嵌套：{ids: {ids: [...]}}
+        if (is_array($ids) && isset($ids['ids'])) {
+            return $this->normalizeIds($ids['ids']);
+        }
+        // 关联数组形式 ['0' => 1, '1' => 2, ...]
+        if (is_array($ids) && !empty($ids)) {
+            return array_values($ids);
+        }
+        // 单个 ID 字符串
+        if (is_string($ids) && $ids !== '') {
+            return [$ids];
+        }
+        return [];
     }
 }
