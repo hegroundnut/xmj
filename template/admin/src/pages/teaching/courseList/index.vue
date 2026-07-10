@@ -73,28 +73,19 @@
         <el-form-item label="描述">
           <el-input v-model="courseForm.desc" type="textarea" :rows="3" placeholder="课程描述" />
         </el-form-item>
-        <el-form-item label="视频链接">
-          <el-input v-model="courseForm.video_url" placeholder="视频链接（可手动填写，或点击右侧上传到COS）">
-            <el-upload
-              slot="append"
-              :action="videoUploadUrl"
-              :headers="videoUploadHeaders"
-              name="file"
-              accept="video/*"
-              :show-file-list="false"
-              :before-upload="beforeVideoUpload"
-              :on-success="onVideoUploadSuccess"
-              :on-error="onVideoUploadError"
-            >
-              <el-button :loading="videoUploading">{{ videoUploading ? '上传中...' : '上传视频到COS' }}</el-button>
-            </el-upload>
-          </el-input>
+        <el-form-item label="视频">
+          <el-input v-model="courseForm.video_url" placeholder="视频链接（可手动填写，或点击右侧选择已有视频）" />
+          <el-button type="primary" size="small" style="margin-left:8px" @click="videoModal = true">选择视频</el-button>
           <div style="font-size:12px;color:#999;margin-top:4px">
-            上传视频将直接存储到腾讯云 COS（需先在服务器 .env 配置 COS 信息）；也可直接粘贴外部视频链接。
+            可从视频素材库选择已上传的COS视频，也可直接粘贴外部视频链接。
           </div>
           <div v-if="courseForm.video_url" style="margin-top:8px">
-            <video :src="courseForm.video_url" style="width:220px;max-height:140px;border-radius:4px" controls></video>
+            <p style="font-size:12px;color:#409eff;word-break:break-all">{{ courseForm.video_url }}</p>
+            <video :src="courseForm.video_url" style="width:220px;max-height:140px;border-radius:4px;margin-top:4px" controls></video>
           </div>
+          <el-dialog :visible.sync="videoModal" width="950px" title="选择视频" :close-on-click-modal="false" append-to-body>
+            <uploadVideo :isChoice="'one'" @getVideo="getCourseVideo" v-if="videoModal" />
+          </el-dialog>
         </el-form-item>
         <el-form-item label="排序">
           <el-input-number v-model="courseForm.sort" :min="0" />
@@ -135,12 +126,11 @@
 <script>
 import { getCourseList, saveCourse, updateCourse, deleteCourse, getCategoryList, saveCategory, deleteCategory } from '@/api/teaching';
 import uploadPictures from '@/components/uploadPictures';
-import Setting from '@/setting';
-import { getCookies } from '@/libs/util';
+import uploadVideo from '@/components/uploadVideo2';
 
 export default {
   name: 'TeachingCourseList',
-  components: { uploadPictures },
+  components: { uploadPictures, uploadVideo },
   data() {
     return {
       list: [],
@@ -160,9 +150,7 @@ export default {
       categoryList: [],
       categoryDialogVisible: false,
       newCategoryName: '',
-      videoUploading: false,
-      videoUploadUrl: Setting.apiBaseURL + '/teaching_course/upload_video?token=' + encodeURIComponent(getCookies('token') || ''),
-      videoUploadHeaders: { 'Authori-zation': 'Bearer ' + getCookies('token') },
+      videoModal: false,
     };
   },
   created() {
@@ -212,31 +200,9 @@ export default {
       this.courseForm.cover = pc.att_dir;
       this.coverModal = false;
     },
-    beforeVideoUpload(file) {
-      const isVideo = file.type.indexOf('video/') === 0;
-      if (!isVideo) {
-        this.$message.error('只能上传视频文件');
-        return false;
-      }
-      // 每次上传前刷新 token（header + query 双保险，避免代理丢弃自定义鉴权头）
-      const t = getCookies('token') || '';
-      this.videoUploadHeaders = { 'Authori-zation': 'Bearer ' + t };
-      this.videoUploadUrl = Setting.apiBaseURL + '/teaching_course/upload_video?token=' + encodeURIComponent(t);
-      this.videoUploading = true;
-      return true;
-    },
-    onVideoUploadSuccess(res) {
-      this.videoUploading = false;
-      if (res && res.status === 200) {
-        this.courseForm.video_url = (res.data && res.data.url) || '';
-        this.$message.success('视频上传成功');
-      } else {
-        this.$message.error((res && res.msg) || '视频上传失败');
-      }
-    },
-    onVideoUploadError() {
-      this.videoUploading = false;
-      this.$message.error('视频上传失败，请检查 COS 配置或稍后重试');
+    getCourseVideo(url) {
+      this.courseForm.video_url = url;
+      this.videoModal = false;
     },
     async handleSubmit() {
       this.submitLoading = true;

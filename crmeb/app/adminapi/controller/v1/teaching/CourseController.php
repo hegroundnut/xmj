@@ -87,7 +87,7 @@ class CourseController extends AuthController
 
     /**
      * 上传课程视频到腾讯云 COS，返回视频链接
-     * 与"手动填写视频链接"对齐：上传成功后前端把返回的 url 填入 video_url
+     * 同时写入素材库，使其在"视频素材"界面可见
      * @return mixed
      */
     public function upload_video()
@@ -95,10 +95,33 @@ class CourseController extends AuthController
         if (!CosVideoService::isEnabled()) {
             return app('json')->fail('COS 未配置，请联系管理员在服务器 .env 中填写腾讯云 COS 信息');
         }
+        [$pid] = $this->request->postMore([
+            ['pid', 0],
+        ], true);
         try {
             $res = CosVideoService::upload('file');
         } catch (\Throwable $e) {
             return app('json')->fail($e->getMessage());
+        }
+        // 同步写入素材库，使 COS 视频出现在"视频素材"列表
+        try {
+            /** @var \app\services\system\attachment\SystemAttachmentServices $attachmentService */
+            $attachmentService = app()->make(\app\services\system\attachment\SystemAttachmentServices::class);
+            $attachmentService->attachmentAdd(
+                basename($res['url']),
+                0,
+                'video/mp4',
+                $res['url'],
+                $res['url'],
+                (int)$pid,
+                (int)sys_config('upload_type', 1),
+                time(),
+                1,
+                1,
+                basename($res['url'])
+            );
+        } catch (\Throwable $e) {
+            // 素材库写入失败不影响主流程
         }
         return app('json')->success('上传成功', ['url' => $res['url']]);
     }

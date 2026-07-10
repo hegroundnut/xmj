@@ -12,6 +12,7 @@ namespace app\adminapi\controller\v1\teaching;
 
 use app\adminapi\controller\AuthController;
 use app\services\system\attachment\SystemAttachmentServices;
+use app\services\other\CosVideoService;
 use think\facade\App;
 
 /**
@@ -126,22 +127,37 @@ class MaterialController extends AuthController
     }
 
     /**
-     * 上传视频（分片上传）
+     * 上传视频到腾讯云 COS，并写入素材库
      * @return mixed
      */
     public function uploadVideo()
     {
-        $data = $this->request->postMore([
-            ['chunkNumber', 0],
-            ['currentChunkSize', 0],
-            ['chunkSize', 0],
-            ['totalChunks', 0],
-            ['file', 'file'],
-            ['md5', ''],
-            ['filename', ''],
-        ]);
-        $res = $this->service->videoUpload($data, $_FILES['file']);
-        return app('json')->success($res);
+        if (!CosVideoService::isEnabled()) {
+            return app('json')->fail('COS 未配置，请联系管理员在服务器 .env 中填写腾讯云 COS 信息');
+        }
+        [$pid] = $this->request->postMore([
+            ['pid', 0],
+        ], true);
+        try {
+            $res = CosVideoService::upload('file');
+        } catch (\Throwable $e) {
+            return app('json')->fail($e->getMessage());
+        }
+        // 写入 system_attachment 表，使其出现在视频素材列表
+        $this->service->attachmentAdd(
+            basename($res['url']),                           // name
+            0,                                                // att_size (COS 不记录大小)
+            'video/mp4',                                      // att_type
+            $res['url'],                                      // att_dir
+            $res['url'],                                      // satt_dir
+            (int)$pid,                                        // pid
+            (int)sys_config('upload_type', 1),               // image_type
+            time(),                                           // time
+            1,                                                // module_type
+            1,                                                // type
+            basename($res['url'])                             // real_name
+        );
+        return app('json')->success('上传成功', ['url' => $res['url']]);
     }
 
     /**
