@@ -162,7 +162,8 @@
         <text class="modal-label">ALI LAOXI MEMBER</text>
         <text class="modal-title">扫码添加阿利老西</text>
         <view class="modal-qr">
-          <image src="{{product.qr_code || '/static/images/qr_placeholder.png'}}" mode="aspectFit" class="modal-qr-img"/>
+          <image src="{{product.qr_code || qrCode}}" mode="aspectFit" class="modal-qr-img" wx:if="{{product.qr_code || qrCode}}"/>
+	          <text class="modal-qr-loading" wx:else>加载中…</text>
         </view>
         <text class="modal-desc">打开微信扫描二维码，添加<text class="modal-strong">阿利老西</text>\n即可咨询产品详情并下单</text>
         <text class="modal-hint">长按识别二维码 · 添加微信好友</text>

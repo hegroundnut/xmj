@@ -33,21 +33,28 @@
       </view>
     </view>
 
-    <!-- Products row -->
-    <view class="products-row" wx:if="{{products.length}}">
-      <view class="prod-card" wx:for="{{products}}" wx:key="id" bindtap="onProductTap" data-id="{{item.id}}">
-        <view class="prod-thumb">
-          <image src="{{item.image || item.thumb || ''}}" mode="aspectFill" class="prod-thumb-img"/>
+    <!-- Products section -->
+    <view class="section" wx:if="{{products.length}}">
+      <view class="section-header">
+        <view class="section-title-group">
+          <text class="section-title">产品中心</text>
+          <text class="section-title-en">PRODUCTS</text>
         </view>
-        <view class="prod-info">
-          <text class="prod-name">{{item.name || item.title}}</text>
-          <text class="prod-sub">{{item.subtitle || item.desc || ''}}</text>
+        <text class="section-more" bindtap="onMoreProducts">查看全部 ›</text>
+      </view>
+      <scroll-view scroll-x class="products-scroll">
+        <view class="products-inner">
+          <view class="prod-card" wx:for="{{products}}" wx:key="id" bindtap="onProductTap" data-id="{{item.id}}">
+            <view class="prod-thumb">
+              <image src="{{item.image || item.thumb || ''}}" mode="aspectFill" class="prod-thumb-img"/>
+            </view>
+            <view class="prod-info">
+              <text class="prod-name">{{item.name || item.title}}</text>
+              <text class="prod-sub">{{item.subtitle || item.desc || ''}}</text>
+            </view>
+          </view>
         </view>
-      </view>
-      <view class="more-btn" bindtap="onMoreProducts">
-        <view class="more-icon"><text class="more-arrow">→</text></view>
-        <text class="more-label">更多\n产品</text>
-      </view>
+      </scroll-view>
     </view>
 
     <!-- Cases section -->
@@ -92,9 +99,9 @@
           </view>
           <view class="course-info">
             <text class="course-name">{{item.name || item.title}}</text>
-            <text class="course-teacher">{{item.teacher || '王美学老师'}} · {{item.lessons || 12}}课时</text>
+            <text class="course-desc">{{item.desc || item.description || ''}}</text>
             <view class="course-price-row">
-              <text class="course-meta">{{item.students || item.enroll_count || 0}}人已学</text>
+              <text class="course-level-tag {{item.member_level === 2 ? 'super' : 'regular'}}">{{item.member_level_text || (item.member_level === 2 ? '超级会员' : '普通会员')}}</text>
               <view class="course-add" bindtap="onCourseTap" data-id="{{item.id}}">学习</view>
             </view>
           </view>

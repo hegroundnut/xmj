@@ -4,7 +4,7 @@ const { logout } = require('../../utils/auth')
 
 Page({
   data: {
-    userInfo: null,
+    userInfo: {},
     isLogin: false,
     isMember: false,
     isSuperMember: false,
@@ -26,8 +26,13 @@ Page({
     homeApi.getHomeConfig().then(res => {
       const config = res.data || {}
       const qrCode = (config.contact && config.contact.qrcode) || ''
-      if (qrCode) this.setData({ qrCode })
-    }).catch(() => {})
+      if (qrCode) {
+        this.setData({ qrCode })
+        console.log('[my] qrCode loaded:', qrCode)
+      }
+    }).catch(err => {
+      console.error('[my] loadQrCode failed:', err)
+    })
   },
 
   onShow() {
@@ -35,7 +40,7 @@ Page({
     this.setData({
       isLogin: app.globalData.isLogin,
       isMember: app.globalData.isMember,
-      userInfo: app.globalData.userInfo || null
+      userInfo: app.globalData.userInfo || {}
     })
     if (app.globalData.isLogin) {
       myApi.getUserInfo().then(res => {
@@ -89,7 +94,7 @@ Page({
       success: res => {
         if (res.confirm) {
           logout()
-          this.setData({ isLogin: false, isMember: false, isSuperMember: false, memberType: 'none', userInfo: null })
+          this.setData({ isLogin: false, isMember: false, isSuperMember: false, memberType: 'none', userInfo: {} })
         }
       }
     })
@@ -97,6 +102,9 @@ Page({
 
   onOpenQR() {
     this.setData({ showQR: true })
+    if (!this.data.qrCode) {
+      this.loadQrCode()
+    }
   },
 
   onCloseQR() {

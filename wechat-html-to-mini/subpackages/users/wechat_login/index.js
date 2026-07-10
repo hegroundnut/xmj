@@ -1,6 +1,6 @@
 const { wxLogin } = require('../../../utils/auth')
 const { store } = require('../../../store/app')
-const { caseApi } = require('../../../utils/api/index')
+const { LOGIN_SLIDES } = require('../../../utils/config')
 
 Page({
   data: {
@@ -9,21 +9,21 @@ Page({
     currentSlide: 0,
     slides: [
       {
-        image: '',
+        image: LOGIN_SLIDES[0] || '',
         number: '01',
         label: 'PROFESSIONAL',
-        title: '专业洗眉',
+        title: '专业清洗',
         enTitle: 'BROW WASHING'
       },
       {
-        image: '',
+        image: LOGIN_SLIDES[1] || '',
         number: '02',
         label: 'MASTER CLASS',
         title: '匠心教学',
         enTitle: 'MASTER CLASS'
       },
       {
-        image: '',
+        image: LOGIN_SLIDES[2] || '',
         number: '03',
         label: 'STUDIO',
         title: '阿利老西',
@@ -32,24 +32,7 @@ Page({
     ]
   },
 
-  onLoad() {
-    this.loadSlides()
-  },
-
-  loadSlides() {
-    caseApi.getCaseList({ type: 0, page: 1, limit: 3 }).then(res => {
-      const cases = (res.data && res.data.list) || []
-      if (cases.length) {
-        const slides = this.data.slides.map((s, i) => {
-          if (cases[i] && cases[i].cover) {
-            s.image = cases[i].cover
-          }
-          return s
-        })
-        this.setData({ slides })
-      }
-    }).catch(() => {})
-  },
+  onLoad() {},
 
   onSlideChange(e) {
     this.setData({ currentSlide: e.detail.current })

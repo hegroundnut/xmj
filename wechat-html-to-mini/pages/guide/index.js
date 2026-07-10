@@ -1,6 +1,8 @@
+const { SPLASH_BG } = require('../../utils/config')
+
 Page({
   data: {
-    bgImage: '/static/images/splash_bg.png',
+    bgImage: SPLASH_BG,
     currentTime: '',
     statusBarHeight: 20
   },

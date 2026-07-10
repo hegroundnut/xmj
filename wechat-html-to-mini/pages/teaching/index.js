@@ -97,6 +97,9 @@ Page({
 
   onOpenQR() {
     this.setData({ showQR: true })
+    if (!this.data.qrCode) {
+      this.loadQrCode()
+    }
   },
 
   onCloseQR() {

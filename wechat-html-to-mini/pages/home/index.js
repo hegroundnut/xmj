@@ -30,7 +30,9 @@ Page({
     ]).then(([configRes, productRes]) => {
       const config = configRes.data || {}
       const list = (productRes.data && productRes.data.list) || productRes.data || []
-      const products = (Array.isArray(list) ? list : [list]).slice(0, 2).map(p => ({
+      const products = (Array.isArray(list) ? list : [list])
+        .filter(p => p.is_home === 1)
+        .map(p => ({
         id: p.id,
         name: p.title || p.name,
         subtitle: p.desc || p.subtitle || '',

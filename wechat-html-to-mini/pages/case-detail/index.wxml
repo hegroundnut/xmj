@@ -14,8 +14,8 @@
 
     <!-- IMAGE TYPE: Hero + Before/After -->
     <block wx:if="{{type === 1}}">
-      <view class="hero-image" bindtap="onPreviewImage" data-url="{{caseData.images[0]}}" data-urls="{{caseData.images}}">
-        <image src="{{caseData.images[0]}}" mode="aspectFill" class="hero-img" wx:if="{{caseData.images && caseData.images.length}}"/>
+      <view class="hero-image" bindtap="onPreviewImage" data-url="{{caseData.images && caseData.images[0]}}" data-urls="{{caseData.images}}">
+        <image src="{{caseData.images && caseData.images[0]}}" mode="aspectFill" class="hero-img" wx:if="{{caseData.images && caseData.images.length}}"/>
         <view class="hero-placeholder" wx:else/>
         <view class="hero-label">BEFORE / AFTER</view>
       </view>
