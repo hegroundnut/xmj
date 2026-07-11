@@ -40,6 +40,9 @@ Route::group('v2', function () {
     // 案例收藏路由
     require __DIR__ . '/v2/case_favorite.php';
 
+    // 课程收藏路由
+    require __DIR__ . '/v2/course_favorite.php';
+
     // 我的页面路由
     require __DIR__ . '/v2/my.php';
 

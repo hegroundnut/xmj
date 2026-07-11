@@ -11,6 +11,7 @@
 namespace app\services\teaching;
 
 use app\dao\teaching\CourseDao;
+use app\dao\teaching\CourseFavoriteDao;
 use app\dao\teaching\TeachingCategoryDao;
 use app\services\BaseServices;
 use app\model\user\User;
@@ -104,6 +105,13 @@ class CourseServices extends BaseServices
         $info['member_type'] = $memberType;
         $info['can_watch'] = $this->canWatch($memberType, (int)$info['member_level']);
         $info['member_level_text'] = $info['member_level'] == 2 ? '超级会员' : '普通会员';
+        // 注入当前用户的收藏状态
+        if ($uid > 0) {
+            $favDao = app()->make(CourseFavoriteDao::class);
+            $info['is_favorited'] = $favDao->isFavorited($id, $uid);
+        } else {
+            $info['is_favorited'] = false;
+        }
         return $info;
     }
 }

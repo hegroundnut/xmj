@@ -3,6 +3,7 @@ namespace app\api\controller\v2;
 
 use app\dao\moment\MomentFavoriteDao;
 use app\dao\teaching\CaseFavoriteDao;
+use app\dao\teaching\CourseFavoriteDao;
 use app\dao\teaching\CourseOrderDao;
 use app\dao\teaching\OfflineBookingDao;
 use app\dao\moment\MomentDao;
@@ -24,7 +25,7 @@ class MyController
     }
 
     /**
-     * 我的收藏聚合 — 帖子收藏 + 案例收藏
+     * 我的收藏聚合 — 帖子收藏 + 案例收藏 + 课程收藏
      */
     public function favorites()
     {
@@ -38,6 +39,15 @@ class MyController
             foreach ($list as &$item) {
                 if (!empty($item['cover'])) $item['cover'] = media_url($item['cover']);
                 if (!empty($item['media_url'])) $item['media_url'] = media_url($item['media_url']);
+                $item['fav_time'] = date('Y-m-d H:i', $item['fav_time']);
+            }
+        } elseif ($type === 'course') {
+            $dao = app()->make(CourseFavoriteDao::class);
+            $list = $dao->getFavoriteList($this->uid(), $page, $limit);
+            $count = $dao->getFavoriteCount($this->uid());
+            foreach ($list as &$item) {
+                if (!empty($item['cover'])) $item['cover'] = media_url($item['cover']);
+                if (!empty($item['video_url'])) $item['video_url'] = media_url($item['video_url']);
                 $item['fav_time'] = date('Y-m-d H:i', $item['fav_time']);
             }
         } else {
@@ -193,5 +203,42 @@ class MyController
             $item['add_time'] = date('Y-m-d H:i', $item['add_time']);
         }
         return app('json')->success(['list' => $list, 'count' => $count]);
+    }
+
+    /**
+     * 通用取消收藏（根据 type 区分帖子/案例/课程）
+     */
+    public function removeFavorite()
+    {
+        [$id, $type] = request()->postMore([
+            ['id', 0],
+            ['type', ''],
+        ], true);
+        if ((int)$id <= 0 || empty($type)) {
+            return app('json')->fail('参数错误');
+        }
+        $uid = $this->uid();
+
+        if ($type === 'moment') {
+            $dao = app()->make(MomentFavoriteDao::class);
+            $record = $dao->getModel()
+                ->where('moment_id', (int)$id)->where('uid', $uid)->find();
+        } elseif ($type === 'case') {
+            $dao = app()->make(CaseFavoriteDao::class);
+            $record = $dao->getModel()
+                ->where('case_id', (int)$id)->where('uid', $uid)->find();
+        } elseif ($type === 'course') {
+            $dao = app()->make(CourseFavoriteDao::class);
+            $record = $dao->getModel()
+                ->where('course_id', (int)$id)->where('uid', $uid)->find();
+        } else {
+            return app('json')->fail('不支持的类型');
+        }
+
+        if ($record) {
+            $dao->delete($record->id);
+            return app('json')->success('已取消收藏');
+        }
+        return app('json')->fail('未找到收藏记录');
     }
 }

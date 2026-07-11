@@ -28,4 +28,12 @@ function createOfflineBooking(data) {
   return api.post('offline_class/booking', data)
 }
 
-module.exports = { getCourseCategories, getCourseList, getCourseDetail, createCourseOrder, getOfflineClassList, getOfflineClassDetail, createOfflineBooking }
+function toggleCourseFavorite(id) {
+  return api.post('course/favorite/' + id)
+}
+
+function getCourseFavorites(params) {
+  return api.get('course/favorites', params)
+}
+
+module.exports = { getCourseCategories, getCourseList, getCourseDetail, createCourseOrder, toggleCourseFavorite, getCourseFavorites, getOfflineClassList, getOfflineClassDetail, createOfflineBooking }

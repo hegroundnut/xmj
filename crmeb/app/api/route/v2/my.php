@@ -7,4 +7,5 @@ Route::group('my', function () {
     Route::get('bookings', 'v2.MyController/bookings')->option(['real_name' => '线下预约']);
     Route::get('comments', 'v2.MyController/comments')->option(['real_name' => '我的评论']);
     Route::get('posts', 'v2.MyController/posts')->option(['real_name' => '我的发帖']);
+    Route::post('favorite/remove', 'v2.MyController/removeFavorite')->option(['real_name' => '取消收藏（通用）']);
 })->middleware(\app\api\middleware\AuthTokenMiddleware::class, false);

@@ -35,6 +35,7 @@ function getMemberPlans() {
 function removeFavorite(id, type) {
   if (type === 'moment') return api.post('moment/favorite/' + id)
   if (type === 'case') return api.post('case/favorite/' + id)
+  if (type === 'course') return api.post('course/favorite/' + id)
   return api.post('my/favorite/remove', { id: id, type: type })
 }
 

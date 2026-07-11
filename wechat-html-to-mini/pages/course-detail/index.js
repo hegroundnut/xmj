@@ -124,10 +124,16 @@ Page({
 
   onToggleFav() {
     const course = this.data.course
-    if (!course) return
-    course.is_favorited = !course.is_favorited
-    this.setData({ course })
-    wx.showToast({ title: course.is_favorited ? '已收藏' : '已取消收藏', icon: 'none' })
+    if (!course || !course.id) return
+    const { teachingApi } = require('../../utils/api/index')
+    teachingApi.toggleCourseFavorite(course.id).then(res => {
+      const action = (res.data && res.data.action) || 'unfavorited'
+      course.is_favorited = action === 'favorited'
+      this.setData({ course })
+      wx.showToast({ title: course.is_favorited ? '已收藏' : '已取消收藏', icon: 'none' })
+    }).catch(() => {
+      wx.showToast({ title: '操作失败', icon: 'none' })
+    })
   },
 
   onMember() {
