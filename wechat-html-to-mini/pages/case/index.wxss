@@ -1,6 +1,9 @@
 /* ===== Page ===== */
 .page { background: #fff; min-height: 100vh; position: relative; display: flex; flex-direction: column; }
 
+/* ===== Safe area spacer ===== */
+.nav-spacer { background: #E8DDD3; }
+
 /* ===== Page header ===== */
 .page-header { padding: 16rpx 48rpx 28rpx; background: linear-gradient(180deg, #E8DDD3 0%, #EDE4DA 40%, #F3ECE5 70%, #fff 100%); }
 .page-title { font-size: 52rpx; font-weight: 300; color: #1A1A1A; letter-spacing: 6rpx; animation: titleFadeIn 0.8s ease-out 0.6s both; }

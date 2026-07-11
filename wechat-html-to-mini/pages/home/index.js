@@ -12,10 +12,14 @@ Page({
     heroText: null,
     contact: null,
     loading: true,
-    error: false
+    error: false,
+    navHeight: 0
   },
 
   onLoad() {
+    const sys = wx.getSystemInfoSync()
+    const capsule = wx.getMenuButtonBoundingClientRect()
+    this.setData({ navHeight: capsule.bottom + (capsule.top - sys.statusBarHeight) })
     this.loadData()
   },
 

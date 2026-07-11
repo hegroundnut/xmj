@@ -13,12 +13,16 @@ Page({
     error: false,
     isMember: false,
     showQR: false,
-    qrCode: ''
+    qrCode: '',
+    navHeight: 0
   },
 
   onLoad() {
     const app = getApp()
-    this.setData({ isMember: app.globalData.isMember })
+    const sys = wx.getSystemInfoSync()
+    const capsule = wx.getMenuButtonBoundingClientRect()
+    const navHeight = capsule.bottom + (capsule.top - sys.statusBarHeight)
+    this.setData({ isMember: app.globalData.isMember, navHeight })
     this.loadData()
     this.loadQrCode()
   },

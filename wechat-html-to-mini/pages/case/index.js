@@ -12,23 +12,26 @@ Page({
     loading: true,
     error: false,
     swiperHeight: 500,
-    mediaHeight: 300
+    mediaHeight: 300,
+    navHeight: 0
   },
 
   onLoad() {
     const sys = wx.getSystemInfoSync()
+    const capsule = wx.getMenuButtonBoundingClientRect()
+    const navHeight = capsule.bottom + (capsule.top - sys.statusBarHeight)
     // rpx→px: px = rpx * screenWidth / 750
     const r2p = (rpx) => rpx * sys.screenWidth / 750
     // 估算swiper上方所有元素总高度(rpx): header(224) + tabs(108) + cat(66) + nav(48) + wrapPadding(16)
     const overheadRpx = 224 + 108 + 66 + 48 + 16
-    const overheadPx = r2p(overheadRpx)
+    const overheadPx = r2p(overheadRpx) + navHeight
     // 底部tab栏约50px + 安全区
     const bottomH = (sys.safeArea ? (sys.screenHeight - sys.safeArea.bottom) : 0) + 50
     const h = sys.windowHeight - overheadPx - bottomH - 20
     const swiperHeight = Math.max(h, 350)
     // slide内部元素(info+actions+padding)约200rpx
     const mediaHeight = Math.max(swiperHeight - r2p(200) - 10, 200)
-    this.setData({ swiperHeight, mediaHeight })
+    this.setData({ swiperHeight, mediaHeight, navHeight })
     this.loadData()
   },
 

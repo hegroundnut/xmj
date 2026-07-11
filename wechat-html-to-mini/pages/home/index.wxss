@@ -1,6 +1,9 @@
 /* ===== Page ===== */
 .page { background: #F8F7F5; min-height: 100vh; position: relative; }
 
+/* ===== Safe area spacer ===== */
+.nav-spacer-home { background: #1A1A1A; }
+
 /* ===== Hero ===== */
 .hero { margin: 0; position: relative; height: 560rpx; overflow: hidden; }
 .hero-swiper { width: 100%; height: 100%; }

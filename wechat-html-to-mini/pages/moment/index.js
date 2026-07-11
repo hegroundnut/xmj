@@ -9,12 +9,16 @@ Page({
     loading: true,
     error: false,
     isLogin: false,
-    isMember: false
+    isMember: false,
+    navHeight: 0
   },
 
   onLoad() {
     const app = getApp()
-    this.setData({ isLogin: app.globalData.isLogin, isMember: app.globalData.isMember })
+    const sys = wx.getSystemInfoSync()
+    const capsule = wx.getMenuButtonBoundingClientRect()
+    const navHeight = capsule.bottom + (capsule.top - sys.statusBarHeight)
+    this.setData({ isLogin: app.globalData.isLogin, isMember: app.globalData.isMember, navHeight })
     this.loadData()
   },
 

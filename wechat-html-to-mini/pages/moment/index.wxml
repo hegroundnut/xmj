@@ -4,6 +4,9 @@
   <view class="state-box" wx:elif="{{error && page === 1}}" bindtap="loadData"><text class="state-text">加载失败，点击重试</text></view>
 
   <block wx:if="{{!loading || list.length}}">
+    <!-- Safe area spacer for capsule button -->
+    <view class="nav-spacer" style="height: {{navHeight}}px;"/>
+
     <!-- Page header with watermark -->
     <view class="page-header">
       <view>
