@@ -14,9 +14,9 @@
       </swiper>
       <!-- Hero text overlay -->
       <view class="hero-text" wx:if="{{banners.length}}">
-        <text class="hero-brand">ALI LAOXI</text>
-        <text class="hero-title">阿利老西</text>
-        <text class="hero-sub">专业洗眉设备 · 第5代新品 <text class="en-label">NEW</text></text>
+        <text class="hero-brand">{{heroText.brand || 'ALI LAOXI'}}</text>
+        <text class="hero-title">{{heroText.title || '阿利老西'}}</text>
+        <text class="hero-sub">{{heroText.subtitle || '专业设备 · 第5代新品'}}</text>
       </view>
       <!-- Hero dots -->
       <view class="hero-dots" wx:if="{{banners.length > 1}}">
@@ -26,9 +26,9 @@
       <view class="hero-placeholder" wx:if="{{!banners.length}}">
         <view class="hero-overlay"/>
         <view class="hero-text">
-          <text class="hero-brand">ALI LAOXI</text>
-          <text class="hero-title">阿利老西</text>
-          <text class="hero-sub">专业洗眉设备 · 第5代新品 <text class="en-label">NEW</text></text>
+          <text class="hero-brand">{{heroText.brand || 'ALI LAOXI'}}</text>
+          <text class="hero-title">{{heroText.title || '阿利老西'}}</text>
+          <text class="hero-sub">{{heroText.subtitle || '专业设备 · 第5代新品'}}</text>
         </view>
       </view>
     </view>
@@ -61,21 +61,21 @@
     <view class="section" wx:if="{{cases.length}}">
       <view class="section-header">
         <view class="section-title-group">
-          <text class="section-title">精选案例</text>
+          <text class="section-title">{{casesTitle}}</text>
           <text class="section-title-en">SELECTED CASES</text>
         </view>
         <text class="section-more" bindtap="onMoreCases">查看全部 ›</text>
       </view>
       <scroll-view scroll-x class="cases-scroll">
         <view class="cases-inner">
-          <view class="case-card" wx:for="{{cases}}" wx:key="name" bindtap="onCaseTap" data-id="{{item.id}}">
+          <view class="case-card" wx:for="{{cases}}" wx:key="id" bindtap="onCaseTap" data-id="{{item.id}}">
             <view class="case-img" style="background:{{item.bg || 'linear-gradient(135deg, #C8BFB4, #A89E93)'}};">
-              <image src="{{item.thumb || ''}}" mode="aspectFill" class="case-thumb" wx:if="{{item.thumb}}"/>
+              <image src="{{item.cover || ''}}" mode="aspectFill" class="case-thumb" wx:if="{{item.cover}}"/>
             </view>
-            <text class="case-tag {{item.is_new ? 'new' : ''}}">{{item.category_name || item.tag || '对比'}}</text>
+            <text class="case-tag {{item.is_new ? 'new' : ''}}">{{item.category_name || '对比'}}</text>
             <view class="case-info">
-              <text class="case-name">{{item.name}}</text>
-              <text class="case-meta">{{item.meta}}</text>
+              <text class="case-name">{{item.title}}</text>
+              <text class="case-meta">{{item.category_name}}</text>
             </view>
           </view>
         </view>
@@ -86,7 +86,7 @@
     <view class="section" wx:if="{{courses.length}}">
       <view class="section-header">
         <view class="section-title-group">
-          <text class="section-title">热门课程</text>
+          <text class="section-title">{{coursesTitle}}</text>
           <text class="section-title-en">HOT COURSES</text>
         </view>
         <text class="section-more" bindtap="onMoreCourses">查看全部 ›</text>
@@ -94,12 +94,12 @@
       <view>
         <view class="course-item" wx:for="{{courses}}" wx:key="id" bindtap="onCourseTap" data-id="{{item.id}}">
           <view class="course-thumb" style="background:{{item.bg || '#F0EFED'}};">
-            <image src="{{item.thumb || ''}}" mode="aspectFill" class="course-thumb-img" wx:if="{{item.thumb}}"/>
-            <text class="course-badge">{{item.category_name || item.tag || '入门'}}</text>
+            <image src="{{item.cover || ''}}" mode="aspectFill" class="course-thumb-img" wx:if="{{item.cover}}"/>
+            <text class="course-badge">{{item.category_name || '入门'}}</text>
           </view>
           <view class="course-info">
-            <text class="course-name">{{item.name || item.title}}</text>
-            <text class="course-desc">{{item.desc || item.description || ''}}</text>
+            <text class="course-name">{{item.title}}</text>
+            <text class="course-desc">{{item.desc || ''}}</text>
             <view class="course-price-row">
               <text class="course-level-tag {{item.member_level === 2 ? 'super' : 'regular'}}">{{item.member_level_text || (item.member_level === 2 ? '超级会员' : '普通会员')}}</text>
               <view class="course-add" bindtap="onCourseTap" data-id="{{item.id}}">学习</view>

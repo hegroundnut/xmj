@@ -6,7 +6,10 @@ Page({
     currentSlide: 0,
     products: [],
     cases: [],
+    casesTitle: '精选案例',
     courses: [],
+    coursesTitle: '热门课程',
+    heroText: null,
     contact: null,
     loading: true,
     error: false
@@ -43,7 +46,10 @@ Page({
         banners: (config.banner && config.banner.items) || [],
         products,
         cases: (config.featured_cases && config.featured_cases.data) || [],
+        casesTitle: (config.featured_cases && config.featured_cases.title) || '精选案例',
         courses: (config.latest_courses && config.latest_courses.data) || [],
+        coursesTitle: (config.latest_courses && config.latest_courses.title) || '热门课程',
+        heroText: config.hero_text || null,
         contact: config.contact || null,
         loading: false
       })
@@ -69,7 +75,9 @@ Page({
   onCaseTap(e) {
     const id = e.currentTarget.dataset.id
     if (id) {
-      wx.navigateTo({ url: '/pages/case-detail/index?id=' + id + '&type=1' })
+      const item = this.data.cases.find(c => c.id == id)
+      const type = item ? item.type : 1
+      wx.navigateTo({ url: '/pages/case-detail/index?id=' + id + '&type=' + type })
     }
   },
 

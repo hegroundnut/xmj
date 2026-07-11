@@ -9,6 +9,7 @@ Page({
     commentText: '',
     replyTo: null,
     liked: false,
+    showVideoPlayer: false,
     loading: true,
     error: false,
     isLogin: false,
@@ -45,7 +46,7 @@ Page({
     }
 
     if (caseData) {
-      caseData.images = caseData.images || (caseData.cover ? [caseData.cover] : [])
+      caseData.images = caseData.media_url ? [caseData.media_url] : []
       caseData.tags = caseData.tags || (caseData.category_name ? [caseData.category_name] : [])
       resolveComments()
     } else {
@@ -54,7 +55,7 @@ Page({
         getApp().globalData.caseList = list
         caseData = list.find(c => c.id == id) || null
         if (caseData) {
-          caseData.images = [caseData.cover || caseData.media_url].filter(Boolean)
+          caseData.images = caseData.media_url ? [caseData.media_url] : []
           caseData.tags = caseData.category_name ? [caseData.category_name] : []
         }
         resolveComments()
@@ -104,12 +105,17 @@ Page({
 
   onConsult() { wx.showToast({ title: '请联系客服咨询', icon: 'none' }) },
 
+  onPlayVideo() {
+    this.setData({ showVideoPlayer: true })
+  },
+
   onGoLogin() { wx.navigateTo({ url: '/subpackages/users/wechat_login/index' }) },
 
   onPreviewImage(e) {
-    const { url, urls } = e.currentTarget.dataset
-    const list = urls ? JSON.parse(urls) : [url]
-    wx.previewImage({ current: url, urls: list })
+    const { url } = e.currentTarget.dataset
+    if (url) {
+      wx.previewImage({ current: url, urls: [url] })
+    }
   },
 
   onSaveAllImages() {

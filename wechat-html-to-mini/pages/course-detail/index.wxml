@@ -102,4 +102,19 @@
     </view>
     <button class="buy-btn" bindtap="onBuy">开始学习</button>
   </view>
+
+  <!-- QR Modal -->
+  <view class="modal-overlay {{showQR ? 'show' : ''}}" catchtap="onCloseQR" wx:if="{{showQR}}">
+    <view class="modal-card">
+      <view class="modal-close" bindtap="onCloseQR">✕</view>
+      <text class="modal-label">ALI LAOXI MEMBER</text>
+      <text class="modal-title">扫码添加阿利老西</text>
+      <view class="modal-qr">
+        <image src="{{qrCode}}" mode="aspectFit" class="modal-qr-img" wx:if="{{qrCode}}"/>
+        <text class="modal-qr-loading" wx:else>加载中…</text>
+      </view>
+      <text class="modal-desc">本课程需<text class="modal-strong">{{course.member_level_text || '会员'}}</text>可观看\n添加客服微信开通会员</text>
+      <text class="modal-hint">长按识别二维码 · 添加微信好友</text>
+    </view>
+  </view>
 </view>

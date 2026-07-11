@@ -100,7 +100,7 @@
         <text class="menu-text">隐私政策</text>
         <text class="menu-arrow">›</text>
       </view>
-      <view class="menu-item">
+      <view class="menu-item" bindtap="onNavAbout">
         <image src="/static/svg/menu-about.svg" class="menu-icon-img"/>
         <text class="menu-text">关于我们</text>
         <text class="menu-arrow">›</text>

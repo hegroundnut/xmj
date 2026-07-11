@@ -12,50 +12,51 @@
 
   <scroll-view scroll-y class="content-area" wx:if="{{!loading && !error && caseData}}">
 
-    <!-- IMAGE TYPE: Hero + Before/After -->
+    <!-- IMAGE TYPE: Hero -->
     <block wx:if="{{type === 1}}">
-      <view class="hero-image" bindtap="onPreviewImage" data-url="{{caseData.images && caseData.images[0]}}" data-urls="{{caseData.images}}">
-        <image src="{{caseData.images && caseData.images[0]}}" mode="aspectFill" class="hero-img" wx:if="{{caseData.images && caseData.images.length}}"/>
+      <view class="hero-image" bindtap="onPreviewImage" data-url="{{caseData.media_url}}" data-urls="{{caseData.images}}">
+        <image src="{{caseData.media_url}}" mode="aspectFill" class="hero-img" wx:if="{{caseData.media_url}}"/>
         <view class="hero-placeholder" wx:else/>
-        <view class="hero-label">BEFORE / AFTER</view>
+        <view class="hero-label">{{caseData.category_name || '案例'}}</view>
       </view>
-
-      <view class="compare-section" wx:if="{{caseData.images && caseData.images.length > 1}}">
-        <text class="section-label">治疗过程对比</text>
-        <view class="compare-grid">
-          <view class="compare-item" wx:for="{{caseData.images}}" wx:key="index" bindtap="onPreviewImage" data-url="{{item}}" data-urls="{{caseData.images}}">
-            <image src="{{item}}" mode="aspectFill" class="compare-img"/>
-            <text class="compare-badge">{{index === 0 ? '治疗前' : '第'+index+'次'}}</text>
-          </view>
-        </view>
-        <view class="save-bar">
-          <view class="save-btn" bindtap="onSaveAllImages">保存图片</view>
-        </view>
+      <view class="save-bar" wx:if="{{caseData.media_url}}">
+        <view class="save-btn" bindtap="onSaveAllImages">保存图片</view>
       </view>
     </block>
 
-    <!-- VIDEO TYPE: Video area -->
+    <!-- VIDEO TYPE: Cover with play button / Video player -->
     <block wx:if="{{type === 2}}">
       <view class="video-area">
-        <view class="video-badge">▶ 实操视频</view>
-        <view class="play-btn" bindtap="onPlayVideo">
-          <text class="play-icon">▶</text>
+        <!-- Cover + play button (before playing) -->
+        <view class="video-cover-wrap" wx:if="{{!showVideoPlayer && caseData.cover}}" bindtap="onPlayVideo">
+          <image src="{{caseData.cover}}" mode="aspectFill" class="video-cover-img"/>
+          <view class="video-play-btn">
+            <text class="video-play-icon">▶</text>
+          </view>
+          <view class="video-badge">▶ 实操视频</view>
         </view>
-        <view class="video-progress"><view class="video-progress-bar" style="width: 35%;"/></view>
-        <text class="video-time">02:15 / 06:30</text>
-        <view class="save-video-btn" bindtap="onSaveVideo">保存视频</view>
+        <!-- Video player (after tapping play) -->
+        <video wx:if="{{showVideoPlayer && caseData.media_url}}"
+          class="video-player"
+          src="{{caseData.media_url}}"
+          controls
+          autoplay="{{true}}"
+          show-fullscreen-btn
+          object-fit="contain"
+          enable-progress-gesture
+        ></video>
       </view>
 
       <view class="info-section">
         <text class="info-title">{{caseData.title}}</text>
         <view class="info-meta">
-          <text class="meta-item">👁 {{caseData.view_count || '2.8k'}} 观看</text>
-          <text class="meta-item">⏱ {{caseData.add_time || '3天前'}}</text>
+          <text class="meta-item">👁 {{caseData.comment_count || 0}} 评论</text>
+          <text class="meta-item">⏱ {{caseData.add_time || ''}}</text>
         </view>
         <view class="info-tags">
           <text class="info-tag" wx:for="{{caseData.tags || []}}" wx:key="*this">{{item}}</text>
         </view>
-        <text class="info-desc">{{caseData.description || caseData.content}}</text>
+        <text class="info-desc">{{caseData.title}}</text>
       </view>
 
       <view class="divider"/>
@@ -89,20 +90,7 @@
       </view>
     </block>
 
-    <!-- Teacher -->
-    <view class="divider" wx:if="{{type === 2}}"/>
-    <view class="teacher-section">
-      <view class="teacher-card">
-        <image src="{{caseData.teacher_avatar || '/static/images/def_avatar.png'}}" class="teacher-avatar"/>
-        <view class="teacher-info">
-          <text class="teacher-name">{{caseData.teacher_name || '王美学老师'}}</text>
-          <text class="teacher-title">{{caseData.teacher_title || '资深洗眉专家 · 10年经验'}}</text>
-        </view>
-        <text class="teacher-follow">关注</text>
-      </view>
-    </view>
-
-    <view class="divider" wx:if="{{type === 1}}"/>
+    <view class="divider"/>
 
     <!-- Comments -->
     <view class="comments-section">

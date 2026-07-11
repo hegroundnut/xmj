@@ -25,6 +25,8 @@
     { "name": "用户", "description": "用户信息" },
     { "name": "管理后台-登录", "description": "后台登录" },
     { "name": "管理后台-教学", "description": "教学模块管理" },
+    { "name": "管理后台-素材", "description": "素材管理（图片/视频素材库，含分类）" },
+    { "name": "管理后台-附件", "description": "通用附件管理（文件上传/列表/分类）" },
     { "name": "管理后台-朋友圈", "description": "朋友圈管理" }
   ],
   "paths": {
@@ -798,7 +800,7 @@
       "post": {
         "tags": ["管理后台-教学"],
         "summary": "上传课程视频到腾讯云COS",
-        "description": "表单字段 file 上传视频，直接存储到腾讯云 COS（不使用CDN），返回可播放的视频URL。需先在服务器 .env 配置 [COS] 信息，否则返回失败提示。上传成功后把返回的 url 填入课程的 video_url。",
+        "description": "表单字段 file 上传视频，直接存储到腾讯云 COS，同时写入素材库使视频在「视频素材」界面可见。需先在服务器 .env 配置 [COS] 信息，否则返回失败提示。上传成功后前端把返回的 url 填入课程的 video_url。",
         "security": [{ "adminAuth": [] }],
         "requestBody": {
           "content": {
@@ -806,7 +808,8 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "file": { "type": "string", "format": "binary", "description": "视频文件（mp4）" }
+                  "pid": { "type": "integer", "default": 0, "description": "素材分类ID，写入素材库时使用" },
+                  "file": { "type": "string", "format": "binary", "description": "视频文件" }
                 },
                 "required": ["file"]
               }
@@ -860,6 +863,28 @@
         "tags": ["管理后台-教学"],
         "summary": "新增排期",
         "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["title", "class_date", "start_time", "end_time"],
+                "properties": {
+                  "title": { "type": "string", "description": "课程标题" },
+                  "cover": { "type": "string", "description": "封面图URL" },
+                  "class_date": { "type": "string", "description": "上课日期，如 2026-07-11" },
+                  "start_time": { "type": "string", "description": "开始时间，如 09:00" },
+                  "end_time": { "type": "string", "description": "结束时间，如 12:00" },
+                  "address": { "type": "string", "description": "上课地址" },
+                  "max_people": { "type": "integer", "default": 0, "description": "最大人数，0=不限" },
+                  "qrcode": { "type": "string", "description": "二维码图片URL" },
+                  "desc": { "type": "string", "description": "课程描述" },
+                  "status": { "type": "integer", "enum": [0, 1], "default": 1, "description": "1=启用 0=禁用" }
+                }
+              }
+            }
+          }
+        },
         "responses": { "200": { "description": "成功" } }
       }
     },
@@ -1022,6 +1047,421 @@
           }
         },
         "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/adminapi/teaching_material/list": {
+      "get": {
+        "tags": ["管理后台-素材"],
+        "summary": "图片素材列表",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "pid", "in": "query", "schema": { "type": "integer", "default": 0 }, "description": "分类ID，0=全部" },
+          { "name": "real_name", "in": "query", "schema": { "type": "string" }, "description": "搜索图片名称" },
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } }
+        ],
+        "responses": { "200": { "description": "返回 { list: [{att_id, real_name, att_dir, satt_dir, size, time}], count }" } }
+      }
+    },
+    "/adminapi/teaching_material/upload_image": {
+      "post": {
+        "tags": ["管理后台-素材"],
+        "summary": "上传图片素材",
+        "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "pid": { "type": "integer", "default": 0, "description": "分类ID" },
+                  "file": { "type": "string", "format": "binary", "description": "图片文件" }
+                },
+                "required": ["file"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "上传成功，返回 { src: 图片URL }" } }
+      }
+    },
+    "/adminapi/teaching_material/delete": {
+      "post": {
+        "tags": ["管理后台-素材"],
+        "summary": "删除图片素材（支持批量）",
+        "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ids": { "type": "array", "items": { "type": "integer" }, "description": "图片att_id数组" }
+                },
+                "required": ["ids"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "删除成功" } }
+      }
+    },
+    "/adminapi/teaching_material/rename/{id}": {
+      "put": {
+        "tags": ["管理后台-素材"],
+        "summary": "重命名图片素材",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" }, "description": "图片att_id" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "real_name": { "type": "string", "description": "新名称" }
+                },
+                "required": ["real_name"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "修改成功" } }
+      }
+    },
+    "/adminapi/teaching_material/move": {
+      "put": {
+        "tags": ["管理后台-素材"],
+        "summary": "移动图片素材到其他分类",
+        "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "pid": { "type": "integer", "default": 0, "description": "目标分类ID" },
+                  "images": { "type": "string", "description": "逗号分隔的att_id列表，如 \"1,2,3\"" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "移动成功" } }
+      }
+    },
+    "/adminapi/teaching_material/video_list": {
+      "get": {
+        "tags": ["管理后台-素材"],
+        "summary": "视频素材列表",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "pid", "in": "query", "schema": { "type": "integer", "default": 0 }, "description": "分类ID" },
+          { "name": "real_name", "in": "query", "schema": { "type": "string" }, "description": "搜索视频名称" },
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20 } }
+        ],
+        "responses": { "200": { "description": "返回 { list: [{att_id, real_name, att_dir, satt_dir, size, time}], count }" } }
+      }
+    },
+    "/adminapi/teaching_material/upload_video": {
+      "post": {
+        "tags": ["管理后台-素材"],
+        "summary": "上传视频到COS并写入素材库",
+        "description": "前端通过 el-upload 上传视频文件，后端直接转存到腾讯云 COS 并写入 system_attachment 表，使视频自动出现在素材列表。需先配置 .env [COS]。",
+        "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "pid": { "type": "integer", "default": 0, "description": "素材分类ID" },
+                  "file": { "type": "string", "format": "binary", "description": "视频文件" }
+                },
+                "required": ["file"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "上传成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": { "url": { "type": "string", "description": "COS视频地址" } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/adminapi/teaching_material/video_save": {
+      "post": {
+        "tags": ["管理后台-素材"],
+        "summary": "保存云存储视频记录（仅DB，不实际上传）",
+        "description": "用于云存储客户端直传完成后，调用此接口写入 system_attachment 记录。通常由 upload_video 接口内部处理，前端一般无需直接调用。",
+        "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "pid": { "type": "integer", "default": 0, "description": "分类ID" },
+                  "video_name": { "type": "string", "description": "视频名称" },
+                  "video_path": { "type": "string", "description": "视频完整URL" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "上传成功" } }
+      }
+    },
+    "/adminapi/teaching_material/video_delete": {
+      "post": {
+        "tags": ["管理后台-素材"],
+        "summary": "删除视频素材（支持批量）",
+        "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ids": { "type": "array", "items": { "type": "integer" }, "description": "视频att_id数组" }
+                },
+                "required": ["ids"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "删除成功" } }
+      }
+    },
+    "/adminapi/teaching_material/video_rename/{id}": {
+      "put": {
+        "tags": ["管理后台-素材"],
+        "summary": "重命名视频素材",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" }, "description": "视频att_id" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "real_name": { "type": "string", "description": "新名称" }
+                },
+                "required": ["real_name"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "修改成功" } }
+      }
+    },
+    "/adminapi/file/category": {
+      "get": {
+        "tags": ["管理后台-附件"],
+        "summary": "附件分类列表（树形结构）",
+        "description": "用于 uploadPictures/uploadVideo2 组件的左侧分类树。type=0为图片分类，type=1为视频分类。",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "name", "in": "query", "schema": { "type": "string" }, "description": "搜索分类名称" },
+          { "name": "pid", "in": "query", "schema": { "type": "integer", "default": 0 }, "description": "父级ID" },
+          { "name": "all", "in": "query", "schema": { "type": "integer", "default": 0 }, "description": "1=返回所有" },
+          { "name": "type", "in": "query", "schema": { "type": "integer", "default": 0 }, "description": "0=图片分类 1=视频分类" }
+        ],
+        "responses": { "200": { "description": "返回 { list: [{id, pid, name, type, children}] } 树形结构" } }
+      },
+      "post": {
+        "tags": ["管理后台-附件"],
+        "summary": "新增附件分类",
+        "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "pid": { "type": "integer", "default": 0, "description": "父级分类ID" },
+                  "name": { "type": "string", "description": "分类名称" },
+                  "type": { "type": "integer", "default": 0, "description": "0=图片分类 1=视频分类" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "添加成功" } }
+      }
+    },
+    "/adminapi/file/category/{id}": {
+      "put": {
+        "tags": ["管理后台-附件"],
+        "summary": "编辑附件分类",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "pid": { "type": "integer", "default": 0, "description": "父级分类ID" },
+                  "name": { "type": "string", "description": "分类名称" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "修改成功" } }
+      },
+      "delete": {
+        "tags": ["管理后台-附件"],
+        "summary": "删除附件分类",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": { "200": { "description": "删除成功" } }
+      }
+    },
+    "/adminapi/file/file": {
+      "get": {
+        "tags": ["管理后台-附件"],
+        "summary": "附件文件列表",
+        "description": "用于 uploadPictures/uploadVideo2 组件的文件网格/表格。按 type 区分图片/视频。",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "pid", "in": "query", "schema": { "type": "integer", "default": 0 }, "description": "分类ID" },
+          { "name": "real_name", "in": "query", "schema": { "type": "string" }, "description": "搜索文件名" },
+          { "name": "type", "in": "query", "schema": { "type": "integer", "default": 0 }, "description": "0=图片 1=视频" },
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 18 } }
+        ],
+        "responses": { "200": { "description": "返回 { list: [{att_id, real_name, att_dir, satt_dir, att_size, time}], count }" } }
+      }
+    },
+    "/adminapi/file/upload/{upload_type}": {
+      "post": {
+        "tags": ["管理后台-附件"],
+        "summary": "上传附件（图片）",
+        "description": "upload_type可选路径参数指定存储驱动，默认为系统配置。前端通过 uploadPictures 组件调用。",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "upload_type", "in": "path", "schema": { "type": "integer", "default": 0 }, "description": "上传类型，0=使用系统默认配置" }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "pid": { "type": "integer", "default": 0, "description": "分类ID" },
+                  "file": { "type": "string", "format": "binary", "description": "图片文件" },
+                  "menu_name": { "type": "string", "description": "来源菜单名" }
+                },
+                "required": ["file"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "返回 { src: 图片URL }" } }
+      }
+    },
+    "/adminapi/file/file/delete": {
+      "post": {
+        "tags": ["管理后台-附件"],
+        "summary": "删除附件",
+        "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ids": { "type": "string", "description": "逗号分隔的att_id，如 \"1,2,3\"" }
+                },
+                "required": ["ids"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "删除成功" } }
+      }
+    },
+    "/adminapi/file/file/update/{id}": {
+      "put": {
+        "tags": ["管理后台-附件"],
+        "summary": "重命名附件",
+        "security": [{ "adminAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" }, "description": "附件att_id" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "real_name": { "type": "string", "description": "新名称" }
+                },
+                "required": ["real_name"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "修改成功" } }
+      }
+    },
+    "/adminapi/file/file/do_move": {
+      "put": {
+        "tags": ["管理后台-附件"],
+        "summary": "移动附件到其他分类",
+        "security": [{ "adminAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "pid": { "type": "integer", "default": 0, "description": "目标分类ID" },
+                  "images": { "type": "string", "description": "逗号分隔的att_id列表" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "移动成功" } }
+      }
+    },
+    "/adminapi/file/upload_type": {
+      "get": {
+        "tags": ["管理后台-附件"],
+        "summary": "获取系统上传类型配置",
+        "security": [{ "adminAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "返回 { upload_type: '1' } // 1=本地 2=七牛 3=OSS 4=COS"
+          }
+        }
       }
     },
     "/adminapi/moment/list": {

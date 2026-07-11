@@ -42,54 +42,12 @@
 
   <view class="divider"/>
 
-  <!-- Options -->
-  <view class="options-section">
-    <view class="option-item" bindtap="onChooseLocation">
-      <text class="option-icon">📍</text>
-      <text class="option-text">添加位置</text>
-      <text class="option-value">{{location || '未选择'}}</text>
-      <text class="option-arrow">›</text>
-    </view>
-    <view class="option-item">
-      <text class="option-icon">🏷</text>
-      <text class="option-text">添加话题</text>
-      <text class="option-value">{{topic || '#洗眉技巧'}}</text>
-      <text class="option-arrow">›</text>
-    </view>
-    <view class="option-item">
-      <text class="option-icon">👥</text>
-      <text class="option-text">谁可以看</text>
-      <text class="option-value">所有人</text>
-      <text class="option-arrow">›</text>
-    </view>
-  </view>
-
   <!-- Member notice -->
   <view class="member-notice" wx:if="{{!isMember}}">
     <text class="notice-icon">ℹ</text>
     <view class="notice-text">
       <text class="notice-strong">会员专属功能</text>
       <text>开通会员后可发布动态，与同行交流分享</text>
-    </view>
-  </view>
-
-  <!-- Bottom toolbar -->
-  <view class="toolbar">
-    <view class="tool-btn" bindtap="onChooseImage">
-      <text>🖼</text>
-    </view>
-    <view class="tool-btn" bindtap="onChooseVideo">
-      <text>🎬</text>
-    </view>
-    <view class="tool-divider"/>
-    <view class="tool-btn">
-      <text>😊</text>
-    </view>
-    <view class="tool-btn" bindtap="onChooseLocation">
-      <text>📍</text>
-    </view>
-    <view class="tool-btn">
-      <text>🏷</text>
     </view>
   </view>
 </view>

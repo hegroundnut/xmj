@@ -8,28 +8,51 @@ Page({
     error: false,
     isLogin: false,
     isMember: false,
+    isSuperMember: false,
+    memberType: 'none',
     showVideo: false,
     videoError: false,
+    showQR: false,
+    qrCode: '',
     statusBarHeight: 20
   },
 
   onLoad(options) {
     const app = getApp()
     const sys = wx.getSystemInfoSync()
+    const userInfo = app.globalData.userInfo || {}
     this.setData({
       isLogin: app.globalData.isLogin,
       isMember: app.globalData.isMember,
+      isSuperMember: userInfo.is_teaching_member === 1,
+      memberType: userInfo.member_type || 'none',
       statusBarHeight: sys.statusBarHeight
     })
     if (options.id) {
       this.setData({ courseId: options.id })
       this.loadData(options.id)
     }
+    this.loadQrCode()
   },
 
   onShow() {
     const app = getApp()
-    this.setData({ isLogin: app.globalData.isLogin, isMember: app.globalData.isMember })
+    const userInfo = app.globalData.userInfo || {}
+    this.setData({
+      isLogin: app.globalData.isLogin,
+      isMember: app.globalData.isMember,
+      isSuperMember: userInfo.is_teaching_member === 1,
+      memberType: userInfo.member_type || 'none'
+    })
+  },
+
+  loadQrCode() {
+    const { homeApi } = require('../../utils/api/index')
+    homeApi.getHomeConfig().then(res => {
+      const config = res.data || {}
+      const qrCode = (config.contact && config.contact.qrcode) || ''
+      if (qrCode) this.setData({ qrCode })
+    }).catch(() => {})
   },
 
   loadData(id) {
@@ -52,6 +75,15 @@ Page({
 
   onBack() { wx.navigateBack() },
 
+  // 校验当前用户是否有权限观看该课程
+  canWatch() {
+    const { course, isLogin, isSuperMember, isMember } = this.data
+    if (!course || !isLogin) return false
+    if (isSuperMember) return true  // 超级会员可看所有
+    if (course.member_level === 1 && isMember) return true  // 普通会员可看普通会员课程
+    return false
+  },
+
   // 点击播放：校验登录 + 会员权限，再打开播放器
   onPlay() {
     const { course, isLogin } = this.data
@@ -64,21 +96,22 @@ Page({
       wx.showToast({ title: '暂无视频', icon: 'none' })
       return
     }
-    if (!course.can_watch) {
-      wx.showModal({
-        title: '开通会员观看',
-        content: '本课程需' + (course.member_level_text || '会员') + '可观看，前往开通？',
-        confirmText: '去开通',
-        success: res => {
-          if (res.confirm) wx.navigateTo({ url: '/pages/member/index' })
-        }
-      })
+    if (!this.canWatch()) {
+      this.setData({ showQR: true })
       return
     }
     this.setData({ showVideo: true, videoError: false })
   },
 
   onBuy() { this.onPlay() },
+
+  onOpenQR() {
+    this.setData({ showQR: true })
+  },
+
+  onCloseQR() {
+    this.setData({ showQR: false })
+  },
 
   onCloseVideo() {
     this.setData({ showVideo: false, videoError: false })

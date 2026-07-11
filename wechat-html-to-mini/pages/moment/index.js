@@ -15,12 +15,12 @@ Page({
   onLoad() {
     const app = getApp()
     this.setData({ isLogin: app.globalData.isLogin, isMember: app.globalData.isMember })
+    this.loadData()
   },
 
   onShow() {
     const app = getApp()
     this.setData({ isLogin: app.globalData.isLogin, isMember: app.globalData.isMember })
-    if (this.data.list.length === 0) this.loadData()
   },
 
   onPullDownRefresh() {
@@ -31,7 +31,13 @@ Page({
   loadData() {
     this.setData({ loading: true, error: false })
     return momentApi.getMomentList({ page: this.data.page, limit: this.data.limit }).then(res => {
-      const newList = (res.data && res.data.list) || []
+      const newList = ((res.data && res.data.list) || []).map(item => {
+        // 修复服务器返回的无效图片URL (http://tmp/... → 空)
+        if (item.images && Array.isArray(item.images)) {
+          item.images = item.images.filter(url => url && !url.startsWith('http://tmp/'))
+        }
+        return item
+      })
       this.setData({
         list: this.data.page === 1 ? newList : [...this.data.list, ...newList],
         hasMore: newList.length >= this.data.limit,

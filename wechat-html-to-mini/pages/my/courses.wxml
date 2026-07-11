@@ -18,17 +18,17 @@
 
   <!-- Course list -->
   <view class="course-list" wx:else>
-    <view class="course-item" wx:for="{{list}}" wx:key="id" bindtap="onTap" data-id="{{item.id}}">
-      <image src="{{item.cover || item.thumb}}" mode="aspectFill" class="course-thumb" wx:if="{{item.cover || item.thumb}}"/>
-      <view class="course-thumb course-thumb-placeholder" wx:else>
-        <text>🎬</text>
+    <text class="section-count">共 {{list.length}} 门课程</text>
+    <view class="fav-card" wx:for="{{list}}" wx:key="id" bindtap="onTap" data-id="{{item.id}}">
+      <view class="fav-thumb">
+        <text class="thumb-icon" wx:if="{{!item.cover && !item.thumb}}">🎬</text>
+        <image src="{{item.cover || item.thumb}}" mode="aspectFill" class="thumb-img" wx:else/>
       </view>
-      <view class="course-info">
-        <text class="course-name">{{item.title || item.name || '课程'}}</text>
-        <text class="course-desc">{{item.description || item.desc || ''}}</text>
-        <view class="course-meta">
-          <text class="meta-item">📹 {{item.lesson_count || '0'}}课时</text>
-          <text class="meta-item">👤 {{item.student_count || '0'}}人已学</text>
+      <view class="fav-body">
+        <text class="fav-title">{{item.title || item.name || '课程'}}</text>
+        <view class="fav-meta">
+          <text class="fav-tag">课程</text>
+          <text class="fav-date">{{item.add_time || ''}}</text>
         </view>
       </view>
       <text class="course-arrow">›</text>

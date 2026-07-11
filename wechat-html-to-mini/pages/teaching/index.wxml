@@ -54,12 +54,12 @@
       <view class="course-card" wx:for="{{filteredCourses}}" wx:key="id"
         bindtap="onCourseTap" data-id="{{item.id}}">
         <view class="course-thumb" style="background:{{item.bg || '#F0EFED'}};">
-          <image src="{{item.thumb || item.image || ''}}" mode="aspectFill" class="course-thumb-img" wx:if="{{item.thumb || item.image}}"/>
+          <image src="{{item.cover || ''}}" mode="aspectFill" class="course-thumb-img" wx:if="{{item.cover}}"/>
           <text class="course-tag">{{item.category_name || '入门'}}</text>
         </view>
         <view class="course-info">
-          <text class="course-name">{{item.name || item.title}}</text>
-          <text class="course-desc">{{item.desc || item.description || ''}}</text>
+          <text class="course-name">{{item.title}}</text>
+          <text class="course-desc">{{item.desc || ''}}</text>
           <view class="course-bottom">
             <text class="course-level-tag {{item.member_level === 2 ? 'super' : 'regular'}}">{{item.member_level_text || (item.member_level === 2 ? '超级会员' : '普通会员')}}</text>
             <view class="course-buy" catchtap="onBuyCourse" data-id="{{item.id}}">学习</view>

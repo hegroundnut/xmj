@@ -83,6 +83,22 @@
 .state-box { display: flex; align-items: center; justify-content: center; height: 100vh; }
 .state-text { font-size: 28rpx; color: rgba(0,0,0,0.3); font-weight: 300; }
 
+/* ===== QR Modal ===== */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; display: none; align-items: center; justify-content: center; }
+.modal-overlay.show { display: flex; animation: modalFadeIn 0.3s ease; }
+@keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal-card { background: #fff; border-radius: 32rpx; padding: 56rpx 48rpx 48rpx; width: 560rpx; text-align: center; position: relative; animation: modalSlideUp 0.35s ease; }
+@keyframes modalSlideUp { from { opacity: 0; transform: translateY(40rpx); } to { opacity: 1; transform: translateY(0); } }
+.modal-close { position: absolute; top: 24rpx; right: 28rpx; width: 48rpx; height: 48rpx; border-radius: 50%; background: rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; font-size: 26rpx; color: rgba(0,0,0,0.3); line-height: 1; }
+.modal-label { font-size: 18rpx; letter-spacing: 6rpx; color: #6B764F; text-transform: uppercase; opacity: 0.5; margin-bottom: 12rpx; display: block; }
+.modal-title { font-size: 30rpx; font-weight: 600; color: #1A1A1A; margin-bottom: 28rpx; letter-spacing: 2rpx; display: block; }
+.modal-qr { width: 320rpx; height: 320rpx; margin: 0 auto 28rpx; border-radius: 20rpx; border: 2rpx solid rgba(0,0,0,0.06); overflow: hidden; background: #FAFAF8; }
+.modal-qr-img { width: 100%; height: 100%; }
+.modal-qr-loading { font-size: 24rpx; color: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; height: 100%; }
+.modal-desc { font-size: 22rpx; color: rgba(0,0,0,0.4); line-height: 1.6; letter-spacing: 0.6rpx; font-weight: 300; white-space: pre-line; display: block; }
+.modal-strong { color: #6B764F; font-weight: 500; }
+.modal-hint { margin-top: 20rpx; font-size: 20rpx; color: rgba(0,0,0,0.25); letter-spacing: 1rpx; display: block; }
+
 /* ===== Video modal ===== */
 .video-modal { position: fixed; inset: 0; background: #000; z-index: 999; display: flex; align-items: center; justify-content: center; }
 .video-close { position: absolute; top: 40rpx; right: 40rpx; width: 64rpx; height: 64rpx; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 32rpx; z-index: 1000; }

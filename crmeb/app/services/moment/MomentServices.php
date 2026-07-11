@@ -107,7 +107,7 @@ class MomentServices extends BaseServices
      */
     public function getDetail($id, $uid = 0)
     {
-        $moment = $this->dao->get($id);
+        $moment = $this->dao->getModel()->with(['user'])->find($id);
         if (!$moment || $moment['status'] == 0) {
             throw new ApiException('帖子不存在或已删除');
         }

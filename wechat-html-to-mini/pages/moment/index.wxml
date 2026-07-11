@@ -20,13 +20,13 @@
     <view class="post" wx:for="{{list}}" wx:key="id" wx:for-index="index" style="{{item.is_member_only ? 'opacity:0.6;' : ''}}">
       <view class="post-header" bindtap="onContentTap" data-id="{{item.id}}">
         <view class="avatar" style="background:linear-gradient(135deg, #E8E6E3, #D5D3D0);">
-          <image src="{{item.user_avatar || ''}}" mode="aspectFill" class="avatar-img" wx:if="{{item.user_avatar}}"/>
+          <image src="{{item.user_avatar || item.avatar || ''}}" mode="aspectFill" class="avatar-img" wx:if="{{item.user_avatar || item.avatar}}"/>
         </view>
         <view class="post-user">
-          <text class="post-name">{{item.user_name || item.user_nickname || '用户'}}
+          <text class="post-name">{{item.user_nickname || item.nickname || item.user_name || '用户'}}
             <text class="badge-cert" wx:if="{{item.is_certified}}">认证美业师</text>
           </text>
-          <text class="post-meta">{{item.time || item.add_time}} · {{item.location || ''}}</text>
+          <text class="post-meta">{{item.add_time || item.time}} · {{item.location || ''}}</text>
         </view>
       </view>
       <text class="post-text" bindtap="onContentTap" data-id="{{item.id}}">{{item.content}}</text>

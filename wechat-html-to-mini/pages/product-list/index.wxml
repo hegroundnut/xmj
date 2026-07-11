@@ -35,7 +35,8 @@
       <view class="prod-card" wx:for="{{filteredProducts}}" wx:key="id"
         bindtap="onProductTap" data-id="{{item.id}}">
         <view class="card-thumb">
-          <image src="{{item.image || item.thumb || '/static/images/product_default.png'}}" mode="aspectFill" class="thumb-img"/>
+          <image src="{{item.image || ''}}" mode="aspectFill" class="thumb-img" wx:if="{{item.image}}"/>
+          <view class="card-thumb-placeholder" wx:else><text>📦</text></view>
           <text class="thumb-tag hot" wx:if="{{item.is_hot || item.tag === '热销'}}">热销</text>
           <text class="thumb-tag" wx:elif="{{item.tag}}">{{item.tag}}</text>
         </view>

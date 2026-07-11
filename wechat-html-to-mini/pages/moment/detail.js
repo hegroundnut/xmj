@@ -37,7 +37,13 @@ Page({
     this.setData({ loading: true, error: false })
     momentApi.getMomentDetail(id).then(res => {
       const data = res.data || null
-      if (data && !data.comments) data.comments = []
+      if (data) {
+        if (!data.comments) data.comments = []
+        // 修复服务器返回的无效图片URL
+        if (data.images && Array.isArray(data.images)) {
+          data.images = data.images.filter(url => url && !url.startsWith('http://tmp/'))
+        }
+      }
       const len = data && data.comments ? data.comments.length : 0
       this.setData({
         moment: data,

@@ -65,6 +65,10 @@ Page({
     wx.navigateTo({ url: '/pages/member/index' })
   },
 
+  onNavAbout() {
+    wx.navigateTo({ url: '/subpackages/users/privacy/index?type=about' })
+  },
+
   onEditProfile() {
     if (!this.data.isLogin) {
       wx.navigateTo({ url: '/subpackages/users/wechat_login/index' })

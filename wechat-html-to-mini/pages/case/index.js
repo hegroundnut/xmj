@@ -40,8 +40,8 @@ Page({
   filterList() {
     const { activeType, activeCat, allCases } = this.data
     let list = allCases
-    if (activeType === 'photo') list = list.filter(c => !c.is_video)
-    if (activeType === 'video') list = list.filter(c => c.is_video)
+    if (activeType === 'photo') list = list.filter(c => c.type === 1)
+    if (activeType === 'video') list = list.filter(c => c.type === 2)
     if (activeCat !== '全部') list = list.filter(c => c.category_name === activeCat)
     this.setData({ list, currentSlide: 0 })
   },
@@ -67,7 +67,7 @@ Page({
   onCaseTap(e) {
     const id = e.currentTarget.dataset.id
     const item = this.data.list.find(c => c.id == id)
-    const type = item && item.is_video ? 2 : 1
+    const type = item ? item.type : 1
     wx.navigateTo({ url: '/pages/case-detail/index?id=' + id + '&type=' + type })
   },
 

@@ -24,7 +24,16 @@ Page({
       publicApi.getProductList({})
     ]).then(([catRes, prodRes]) => {
       const cats = (catRes.data || []).map(c => c.name)
-      const products = (prodRes.data && prodRes.data.list) || prodRes.data || []
+      const rawList = (prodRes.data && prodRes.data.list) || prodRes.data || []
+      const products = (Array.isArray(rawList) ? rawList : [rawList]).map(p => ({
+        id: p.id,
+        name: p.title || p.name,
+        subtitle: p.desc || p.subtitle || '',
+        image: (p.banner && p.banner[0]) || p.image || p.thumb || '',
+        is_hot: p.is_hot,
+        tag: p.tag,
+        category_name: p.category_name
+      }))
       this.setData({
         categories: ['全部', ...cats],
         products: products,

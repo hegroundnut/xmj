@@ -5,8 +5,6 @@ Page({
     content: '',
     images: [],
     videoPath: '',
-    location: '',
-    topic: '#洗眉技巧',
     submitting: false,
     isLogin: false,
     isMember: false,
@@ -58,14 +56,6 @@ Page({
     this.setData({ videoPath: '' })
   },
 
-  onChooseLocation() {
-    wx.chooseLocation({
-      success: res => {
-        this.setData({ location: res.name || res.address })
-      }
-    })
-  },
-
   onSubmit() {
     const { content, images, videoPath } = this.data
     if (!content.trim() && images.length === 0 && !videoPath) {
@@ -92,9 +82,14 @@ Page({
 
   uploadImages(images) {
     if (!images || images.length === 0) return Promise.resolve([])
-    // 已经是网络地址的直接保留，本地临时路径逐个上传
     const tasks = images.map(path => {
+      // 微信小程序临时文件路径（http://tmp/... 或 wxfile://tmp_...），必须上传到服务器
+      if (/^(http:\/\/tmp\/|wxfile:\/\/)/.test(path)) {
+        return userApi.uploadImage(path).then(res => (res.data && res.data.url) || '')
+      }
+      // 已经是正常网络地址（以 http:// 或 https:// 开头，且不是 tmp 临时文件）的直接保留
       if (/^https?:\/\//.test(path)) return Promise.resolve(path)
+      // 未知路径，尝试上传
       return userApi.uploadImage(path).then(res => (res.data && res.data.url) || '')
     })
     return Promise.all(tasks).then(urls => urls.filter(u => !!u))

@@ -1,5 +1,26 @@
 <view class="privacy-page">
-  <rich-text nodes="{{content}}" wx:if="{{content}}"/>
-  <loading show="{{!content && !error}}" text="加载中..."/>
-  <view class="error" wx:if="{{error}}" bindtap="loadData">加载失败，点击重试</view>
+  <!-- Nav bar -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight + 10}}px;">
+    <view class="nav-back" bindtap="onBack">
+      <text class="nav-back-icon">‹</text>
+    </view>
+    <text class="nav-title">{{title}}</text>
+    <view class="nav-right"/>
+  </view>
+
+  <!-- Loading -->
+  <view class="state-box" wx:if="{{loading}}">
+    <text class="state-text">加载中...</text>
+  </view>
+
+  <!-- Error -->
+  <view class="error" wx:elif="{{error}}" bindtap="loadData">
+    <text>加载失败，点击重试</text>
+  </view>
+
+  <!-- Content -->
+  <view class="content-wrap" wx:else>
+    <rich-text nodes="{{content}}" wx:if="{{content}}"/>
+    <text wx:else>暂无内容</text>
+  </view>
 </view>
