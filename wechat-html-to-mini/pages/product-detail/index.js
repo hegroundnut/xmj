@@ -8,6 +8,7 @@ Page({
     error: false,
     currentSlide: 0,
     showQR: false,
+    qrCode: '',
     showLightbox: false,
     lightboxIndex: 0,
     statusBarHeight: 20
@@ -20,6 +21,15 @@ Page({
       this.setData({ productId: options.id })
       this.loadData(options.id)
     }
+  },
+
+  loadQrCode() {
+    const { homeApi } = require('../../utils/api/index')
+    homeApi.getHomeConfig().then(res => {
+      const config = res.data || {}
+      const qrCode = (config.contact && config.contact.qrcode) || ''
+      if (qrCode) this.setData({ qrCode })
+    }).catch(() => {})
   },
 
   loadData(id) {
@@ -57,6 +67,9 @@ Page({
 
   onOpenQR() {
     this.setData({ showQR: true })
+    if (!this.data.qrCode) {
+      this.loadQrCode()
+    }
   },
   onCloseQR() {
     this.setData({ showQR: false })
@@ -64,6 +77,9 @@ Page({
 
   onConsult() {
     this.setData({ showQR: true })
+    if (!this.data.qrCode) {
+      this.loadQrCode()
+    }
   },
 
   onCaseTap(e) {

@@ -57,7 +57,16 @@ Page({
           return (Array.isArray(list) ? list : []).map(item => ({ ...item, type: 'course', type_label: '课程' }))
         }).catch(() => [])
       ]).then(([moments, cases, courses]) => {
-        return [...moments, ...cases, ...courses]
+        // 合并并去重：同一id优先保留先出现的（帖子>案例>课程）
+        const merged = [...moments, ...cases, ...courses]
+        const seen = {}
+        const deduped = merged.filter(item => {
+          const key = item.id + '_' + (item.type || '')
+          if (seen[key]) return false
+          seen[key] = true
+          return true
+        })
+        return deduped
       })
     }
 

@@ -39,14 +39,15 @@
       </view>
     </scroll-view>
 
-    <!-- Carousel -->
-    <view class="carousel-wrap" wx:if="{{list.length}}">
+    <!-- Carousel (container always present for measurement) -->
+    <view class="carousel-wrap" wx:if="{{!loading && !error}}">
       <swiper class="carousel" bindchange="onCarouselChange" current="{{currentSlide}}"
-        previous-margin="60rpx" next-margin="60rpx">
+        previous-margin="60rpx" next-margin="60rpx" style="height:{{swiperHeight}}px;"
+        wx:if="{{list.length}}">
         <swiper-item wx:for="{{list}}" wx:key="id">
-          <view class="slide" bindtap="onCaseTap" data-id="{{item.id}}">
-            <view class="slide-media" style="background:{{item.bg || '#F0EFED'}};">
-              <image src="{{item.cover || ''}}" mode="aspectFill" class="slide-thumb" wx:if="{{item.type === 1 && item.cover}}"/>
+          <view class="slide" bindtap="onCaseTap" data-id="{{item.id}}" style="height:{{swiperHeight}}px;">
+            <view class="slide-media" style="background:{{item.bg || '#F0EFED'}};height:{{mediaHeight}}px;">
+              <image src="{{item.cover || ''}}" mode="aspectFill" class="slide-thumb" wx:if="{{item.cover}}"/>
               <view class="badge-video" wx:if="{{item.type === 2}}">
                 <image src="/static/svg/media-play.svg" class="play-icon-svg"/>
               </view>
