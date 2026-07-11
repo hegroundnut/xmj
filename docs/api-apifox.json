@@ -63,6 +63,20 @@
         }
       }
     },
+    "/api/v2/product/detail/{id}": {
+      "get": {
+        "tags": ["产品"],
+        "summary": "获取产品详情",
+        "description": "无需登录。根据产品ID返回完整产品信息，含 banner、specs、category_name",
+        "security": [],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" }, "description": "产品ID" }
+        ],
+        "responses": {
+          "200": { "description": "成功" }
+        }
+      }
+    },
     "/api/v2/category/case": {
       "get": {
         "tags": ["分类"],
@@ -174,6 +188,29 @@
           { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" }, "description": "课程ID" }
         ],
         "responses": { "200": { "description": "成功" } }
+      }
+    },
+    "/api/v2/course/favorite/{id}": {
+      "post": {
+        "tags": ["课程"],
+        "summary": "收藏/取消收藏课程",
+        "description": "需要登录。已收藏则取消，未收藏则收藏，返回 action: favorited|unfavorited",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" }, "description": "课程ID" }
+        ],
+        "responses": { "200": { "description": "成功，返回 {action: 'favorited'|'unfavorited'}" } }
+      }
+    },
+    "/api/v2/course/favorites": {
+      "get": {
+        "tags": ["课程"],
+        "summary": "获取课程收藏列表",
+        "description": "需要登录。返回当前用户收藏的课程列表",
+        "parameters": [
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 10 } }
+        ],
+        "responses": { "200": { "description": "成功，返回 {list: [...], count: N}" } }
       }
     },
     "/api/v2/offline_class/list": {
@@ -528,6 +565,43 @@
             }
           }
         }
+      }
+    },
+    "/api/v2/my/favorites": {
+      "get": {
+        "tags": ["用户"],
+        "summary": "我的收藏聚合",
+        "description": "需要登录。type=moment 帖子收藏, type=case 案例收藏, type=course 课程收藏",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "type", "in": "query", "schema": { "type": "string", "default": "moment" }, "description": "收藏类型: moment|case|course" },
+          { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 10 } }
+        ],
+        "responses": { "200": { "description": "返回 {list: [...], count: N}" } }
+      }
+    },
+    "/api/v2/my/favorite/remove": {
+      "post": {
+        "tags": ["用户"],
+        "summary": "取消收藏（通用）",
+        "description": "需要登录。根据 type 取消对应收藏记录",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "integer", "description": "收藏项ID（moment_id/case_id/course_id）" },
+                  "type": { "type": "string", "description": "收藏类型: moment|case|course" }
+                },
+                "required": ["id", "type"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "已取消收藏" } }
       }
     },
     "/adminapi/login": {
