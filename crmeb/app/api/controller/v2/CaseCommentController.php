@@ -60,7 +60,7 @@ class CaseCommentController
             ['reply_uid', 0],
             ['reply_nickname', ''],
         ]);
-        $uid = request()->uid;
+        $uid = request()->uid();
         $this->services->addComment($uid, $data);
         return app('json')->success('评论成功');
     }
