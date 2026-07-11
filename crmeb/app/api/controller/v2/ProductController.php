@@ -44,4 +44,14 @@ class ProductController
         $list = $this->services->getActiveProductList();
         return app('json')->success($list);
     }
+
+    /**
+     * 获取产品详情
+     * GET /api/v2/product/detail/:id
+     */
+    public function get_detail($id)
+    {
+        $info = $this->services->getDetail((int)$id);
+        return app('json')->success($info);
+    }
 }

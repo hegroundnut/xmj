@@ -35,8 +35,8 @@
 .filter-tag.active { background: #1A1A1A; color: #fff; border-color: #1A1A1A; font-weight: 400; }
 
 /* ===== Product grid ===== */
-.product-grid { display: flex; flex-wrap: wrap; gap: 20rpx; padding: 0 40rpx 220rpx; }
-.prod-card { width: calc(50% - 10rpx); border-radius: 24rpx; overflow: hidden; background: #fff; border: 2rpx solid rgba(0,0,0,0.03); }
+.product-grid { display: flex; flex-wrap: wrap; justify-content: space-between; padding: 0 40rpx 220rpx; }
+.prod-card { width: 49%; margin-bottom: 20rpx; border-radius: 24rpx; overflow: hidden; background: #fff; border: 2rpx solid rgba(0,0,0,0.03); }
 
 /* Featured card */
 .featured { width: 100%; border-radius: 24rpx; overflow: hidden; background: #fff; display: flex; border: 2rpx solid rgba(0,0,0,0.03); }

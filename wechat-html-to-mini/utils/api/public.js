@@ -33,7 +33,7 @@ function getProductList(params) {
 }
 
 function getProductDetail(id) {
-  return api.get('product/info', {}, { noAuth: true })
+  return api.get('product/detail/' + id, {}, { noAuth: true })
 }
 
 module.exports = { authType, authLogin, routineBindingPhone, phoneLogin, silenceAuth, getUserAgreement, getProductCategories, getProductList, getProductDetail }

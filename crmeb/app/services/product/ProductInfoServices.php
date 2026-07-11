@@ -126,6 +126,22 @@ class ProductInfoServices extends BaseServices
     }
 
     /**
+     * 获取产品详情（前端用）
+     * @param int $id
+     * @return array
+     */
+    public function getDetail(int $id)
+    {
+        $info = $this->dao->get($id);
+        if (!$info || !$info['status']) {
+            throw new \crmeb\exceptions\ApiException('产品不存在或已下架');
+        }
+        $info = $this->formatInfo($info);
+        $list = $this->fillCategoryName([$info]);
+        return $list[0];
+    }
+
+    /**
      * 保存产品信息（指定 ID 则更新，否则新增）
      * @param array $data
      * @param int $id

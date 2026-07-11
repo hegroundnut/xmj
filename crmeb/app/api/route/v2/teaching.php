@@ -30,6 +30,7 @@ Route::group('category', function () {
 Route::group('product', function () {
     Route::get('info', 'v2.ProductController/get_info')->option(['real_name' => '产品信息']);
     Route::get('list', 'v2.ProductController/get_list')->option(['real_name' => '产品列表']);
+    Route::get('detail/:id', 'v2.ProductController/get_detail')->option(['real_name' => '产品详情']);
 });
 
 // 案例 — 无需登录
