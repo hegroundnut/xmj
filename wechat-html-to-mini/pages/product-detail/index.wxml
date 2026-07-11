@@ -6,7 +6,7 @@
 
   <block wx:if="{{product}}">
     <!-- Top nav (transparent over hero) -->
-    <view class="top-nav" style="padding-top: {{statusBarHeight + 10}}px;">
+    <view class="top-nav" style="padding-top: {{navHeight}}px;">
       <view class="nav-back" bindtap="onBack">
         <text class="nav-back-icon">‹</text>
       </view>

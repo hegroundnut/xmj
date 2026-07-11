@@ -7,12 +7,14 @@ Page({
     content: '',
     loading: true,
     error: false,
-    statusBarHeight: 20
+    statusBarHeight: 20,
+    navHeight: 0
   },
 
   onLoad(options) {
     const sys = wx.getSystemInfoSync()
-    this.setData({ statusBarHeight: sys.statusBarHeight })
+    const capsule = wx.getMenuButtonBoundingClientRect()
+    this.setData({ statusBarHeight: sys.statusBarHeight, navHeight: capsule.bottom + (capsule.top - sys.statusBarHeight) })
     const type = (options && options.type) || 'privacy'
     if (type === 'about') {
       this.setData({ type: 'about', title: '关于我们' })

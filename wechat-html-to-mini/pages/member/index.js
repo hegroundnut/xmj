@@ -7,12 +7,14 @@ Page({
     ],
     activePlan: 0,
     isLogin: false,
-    statusBarHeight: 20
+    statusBarHeight: 20,
+    navHeight: 0
   },
 
   onLoad() {
     const sys = wx.getSystemInfoSync()
-    this.setData({ statusBarHeight: sys.statusBarHeight, isLogin: app.globalData.isLogin })
+    const capsule = wx.getMenuButtonBoundingClientRect()
+    this.setData({ statusBarHeight: sys.statusBarHeight, navHeight: capsule.bottom + (capsule.top - sys.statusBarHeight), isLogin: app.globalData.isLogin })
   },
 
   onShow() {

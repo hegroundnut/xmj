@@ -10,6 +10,7 @@ Page({
     isLogin: false,
     isMember: false,
     statusBarHeight: 20,
+    navHeight: 0,
     showMoreComments: false,
     showEmptyComments: true
   },
@@ -17,10 +18,12 @@ Page({
   onLoad(options) {
     const app = getApp()
     const sys = wx.getSystemInfoSync()
+    const capsule = wx.getMenuButtonBoundingClientRect()
     this.setData({
       isLogin: app.globalData.isLogin,
       isMember: app.globalData.isMember,
-      statusBarHeight: sys.statusBarHeight
+      statusBarHeight: sys.statusBarHeight,
+      navHeight: capsule.bottom + (capsule.top - sys.statusBarHeight)
     })
     if (options.id) this.loadData(options.id)
   },

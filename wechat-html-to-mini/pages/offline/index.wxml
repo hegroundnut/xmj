@@ -2,7 +2,7 @@
   <!-- ========== LIST VIEW ========== -->
   <block wx:if="{{!viewingDetail}}">
     <!-- Nav bar -->
-    <view class="nav-bar" style="padding-top: {{statusBarHeight + 10}}px;">
+    <view class="nav-bar" style="padding-top: {{navHeight}}px;">
       <view class="nav-back" bindtap="onBack">
         <text class="nav-back-icon">‹</text>
       </view>
@@ -82,7 +82,7 @@
     </view>
 
     <!-- Nav bar overlay -->
-    <view class="nav-bar-overlay" style="padding-top: {{statusBarHeight + 10}}px;">
+    <view class="nav-bar-overlay" style="padding-top: {{navHeight}}px;">
       <view class="nav-back-circle" bindtap="onBackToList">
         <text class="nav-back-icon-circle">‹</text>
       </view>

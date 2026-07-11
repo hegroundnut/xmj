@@ -32,7 +32,7 @@
   </view>
 
   <!-- Nav bar (over hero) -->
-  <view class="nav-bar" style="padding-top: {{statusBarHeight + 10}}px;" wx:if="{{course}}">
+  <view class="nav-bar" style="padding-top: {{navHeight}}px;" wx:if="{{course}}">
     <view class="nav-back" bindtap="onBack">
       <text class="nav-back-icon">‹</text>
     </view>

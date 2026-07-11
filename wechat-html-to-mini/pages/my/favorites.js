@@ -5,12 +5,14 @@ Page({
     activeTab: 'all',
     list: [],
     loading: true,
-    statusBarHeight: 20
+    statusBarHeight: 20,
+    navHeight: 0
   },
 
   onLoad() {
     const sys = wx.getSystemInfoSync()
-    this.setData({ statusBarHeight: sys.statusBarHeight })
+    const capsule = wx.getMenuButtonBoundingClientRect()
+    this.setData({ statusBarHeight: sys.statusBarHeight, navHeight: capsule.bottom + (capsule.top - sys.statusBarHeight) })
     this.loadData()
   },
 

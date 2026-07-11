@@ -11,12 +11,14 @@ Page({
     qrCode: '',
     showLightbox: false,
     lightboxIndex: 0,
-    statusBarHeight: 20
+    statusBarHeight: 20,
+    navHeight: 0
   },
 
   onLoad(options) {
     const sys = wx.getSystemInfoSync()
-    this.setData({ statusBarHeight: sys.statusBarHeight })
+    const capsule = wx.getMenuButtonBoundingClientRect()
+    this.setData({ statusBarHeight: sys.statusBarHeight, navHeight: capsule.bottom + (capsule.top - sys.statusBarHeight) })
     if (options.id) {
       this.setData({ productId: options.id })
       this.loadData(options.id)

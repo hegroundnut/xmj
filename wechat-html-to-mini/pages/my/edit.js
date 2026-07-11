@@ -6,14 +6,16 @@ Page({
     avatar: '',
     nickname: '',
     submitting: false,
-    statusBarHeight: 20
+    statusBarHeight: 20,
+    navHeight: 0
   },
 
   onLoad() {
     const sys = wx.getSystemInfoSync()
+    const capsule = wx.getMenuButtonBoundingClientRect()
     const info = store.getUserInfo() || {}
     this.setData({
-      statusBarHeight: sys.statusBarHeight,
+      navHeight: capsule.bottom + (capsule.top - sys.statusBarHeight), statusBarHeight: sys.statusBarHeight,
       avatar: info.avatar || '',
       nickname: info.nickname || ''
     })

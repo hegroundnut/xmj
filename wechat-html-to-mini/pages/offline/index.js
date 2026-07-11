@@ -11,15 +11,18 @@ Page({
     isLogin: false,
     showQR: false,
     qrCode: '',
-    statusBarHeight: 20
+    statusBarHeight: 20,
+    navHeight: 0
   },
 
   onLoad(options) {
     const app = getApp()
     const sys = wx.getSystemInfoSync()
+    const capsule = wx.getMenuButtonBoundingClientRect()
     this.setData({
       isLogin: app.globalData.isLogin,
-      statusBarHeight: sys.statusBarHeight
+      statusBarHeight: sys.statusBarHeight,
+      navHeight: capsule.bottom + (capsule.top - sys.statusBarHeight)
     })
     this.loadQrCode()
     if (options.id) {

@@ -1,6 +1,6 @@
 <view class="page">
   <!-- Nav bar -->
-  <view class="nav-bar" style="padding-top: {{statusBarHeight + 10}}px;">
+  <view class="nav-bar" style="padding-top: {{navHeight}}px;">
     <text class="nav-cancel" bindtap="onCancel">取消</text>
     <text class="nav-title">发布动态</text>
     <view class="nav-publish" bindtap="onSubmit">

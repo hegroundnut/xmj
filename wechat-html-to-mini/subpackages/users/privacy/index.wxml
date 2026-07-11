@@ -1,6 +1,6 @@
 <view class="privacy-page">
   <!-- Nav bar -->
-  <view class="nav-bar" style="padding-top: {{statusBarHeight + 10}}px;">
+  <view class="nav-bar" style="padding-top: {{navHeight}}px;">
     <view class="nav-back" bindtap="onBack">
       <text class="nav-back-icon">‹</text>
     </view>
