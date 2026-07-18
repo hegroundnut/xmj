@@ -6,7 +6,11 @@
       </div>
       <el-table :data="list" border stripe v-loading="loading">
         <el-table-column prop="title" label="标题" />
-        <el-table-column prop="class_date" label="日期" width="120" />
+        <el-table-column label="日期" width="200">
+          <template slot-scope="{row}">
+            <span>{{ row.start_date }}<template v-if="row.end_date && row.end_date !== row.start_date"> ~ {{ row.end_date }}</template></span>
+          </template>
+        </el-table-column>
         <el-table-column prop="start_time" label="开始时间" width="100" />
         <el-table-column prop="end_time" label="结束时间" width="100" />
         <el-table-column prop="address" label="地址" />
@@ -38,8 +42,11 @@
         <el-form-item label="标题">
           <el-input v-model="classForm.title" />
         </el-form-item>
-        <el-form-item label="日期">
-          <el-date-picker v-model="classForm.class_date" type="date" placeholder="选择日期" value-format="yyyy-MM-dd" style="width:100%" />
+        <el-form-item label="开始日期">
+          <el-date-picker v-model="classForm.start_date" type="date" placeholder="选择开始日期" value-format="yyyy-MM-dd" style="width:100%" />
+        </el-form-item>
+        <el-form-item label="结束日期">
+          <el-date-picker v-model="classForm.end_date" type="date" placeholder="选择结束日期" value-format="yyyy-MM-dd" style="width:100%" />
         </el-form-item>
         <el-form-item label="开始时间">
           <el-time-picker v-model="classForm.start_time" placeholder="选择时间" value-format="HH:mm" style="width:100%" />
@@ -52,6 +59,15 @@
         </el-form-item>
         <el-form-item label="人数上限">
           <el-input-number v-model="classForm.max_people" :min="1" />
+        </el-form-item>
+        <el-form-item label="课程照片">
+          <el-button type="primary" size="small" @click="photosModal = true">选择图片</el-button>
+          <div v-if="classForm.photos && classForm.photos.length" style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+            <img v-for="(p, i) in classForm.photos" :key="i" :src="p" style="width:80px;height:80px;object-fit:cover;border-radius:4px" />
+          </div>
+          <el-dialog :visible.sync="photosModal" width="950px" title="选择课程照片" :close-on-click-modal="false" append-to-body>
+            <uploadPictures :isChoice="'多选'" @getPic="getPhotosPics" :gridBtn="gridBtn" :gridPic="gridPic" v-if="photosModal" />
+          </el-dialog>
         </el-form-item>
         <el-form-item label="二维码">
           <el-button type="primary" size="small" @click="qrcodeModal = true">选择图片</el-button>
@@ -97,8 +113,9 @@ export default {
       dialogVisible: false,
       dialogTitle: '添加排期',
       submitLoading: false,
-      classForm: { title: '', class_date: '', start_time: '', end_time: '', address: '', max_people: 1, qrcode: '', desc: '', sort: 0, status: 1 },
+      classForm: { title: '', start_date: '', end_date: '', start_time: '', end_time: '', address: '', max_people: 1, photos: [], qrcode: '', desc: '', sort: 0, status: 1 },
       editId: null,
+      photosModal: false,
       qrcodeModal: false,
       gridBtn: { xl: 6, lg: 8, md: 12, sm: 24, xs: 24 },
       gridPic: { xl: 6, lg: 8, md: 12, sm: 24, xs: 24 },
@@ -118,7 +135,7 @@ export default {
     handleAdd() {
       this.editId = null;
       this.dialogTitle = '添加排期';
-      this.classForm = { title: '', class_date: '', start_time: '', end_time: '', address: '', max_people: 1, qrcode: '', desc: '', sort: 0, status: 1 };
+      this.classForm = { title: '', start_date: '', end_date: '', start_time: '', end_time: '', address: '', max_people: 1, photos: [], qrcode: '', desc: '', sort: 0, status: 1 };
       this.dialogVisible = true;
     },
     handleEdit(row) {
@@ -126,17 +143,25 @@ export default {
       this.dialogTitle = '编辑排期';
       this.classForm = {
         title: row.title,
-        class_date: row.class_date || '',
+        start_date: row.start_date || '',
+        end_date: row.end_date || '',
         start_time: row.start_time || '',
         end_time: row.end_time || '',
         address: row.address || '',
         max_people: row.max_people || 1,
+        photos: row.photos || [],
         qrcode: row.qrcode || '',
         desc: row.desc || '',
         sort: row.sort || 0,
         status: row.status,
       };
       this.dialogVisible = true;
+    },
+    getPhotosPics(pc) {
+      // 多选时 pc 可能是数组
+      const pics = Array.isArray(pc) ? pc : [pc];
+      this.classForm.photos = pics.map(p => p.att_dir || p);
+      this.photosModal = false;
     },
     getQrcodePic(pc) {
       this.classForm.qrcode = pc.att_dir;

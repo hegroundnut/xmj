@@ -170,7 +170,7 @@
       "get": {
         "tags": ["课程"],
         "summary": "获取课程列表",
-        "description": "需要登录。返回含 member_level(1=普通会员可看 2=超级会员可看), can_watch, member_level_text, category_name",
+        "description": "需要登录。返回含 member_level(1=普通会员可看 2=超级会员可看), can_watch, member_level_text, category_name, type(1=视频 2=图片), images(图片URL数组)",
         "parameters": [
           { "name": "category_id", "in": "query", "schema": { "type": "integer" }, "description": "0=全部，其他=指定分类ID" },
           { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
@@ -183,7 +183,7 @@
       "get": {
         "tags": ["课程"],
         "summary": "获取课程详情",
-        "description": "需要登录。返回含 member_level, member_level_text, can_watch, member_type",
+        "description": "需要登录。返回含 member_level, member_level_text, can_watch, member_type, type(1=视频 2=图片), images(图片URL数组)",
         "parameters": [
           { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" }, "description": "课程ID" }
         ],
@@ -217,7 +217,7 @@
       "get": {
         "tags": ["线下课"],
         "summary": "获取线下排期列表",
-        "description": "无需登录",
+        "description": "无需登录。返回含 start_date(开始日期), end_date(结束日期), photos(课程照片数组), booked_count(已预约人数)",
         "security": [],
         "parameters": [
           { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
@@ -230,7 +230,7 @@
       "get": {
         "tags": ["线下课"],
         "summary": "获取排期详情",
-        "description": "无需登录",
+        "description": "无需登录。返回含 start_date, end_date, photos, booked_count, 以及完整的排期信息",
         "security": [],
         "parameters": [
           { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
@@ -849,7 +849,9 @@
                   "category_id": { "type": "integer", "default": 0, "description": "分类ID" },
                   "cover": { "type": "string" },
                   "desc": { "type": "string" },
-                  "video_url": { "type": "string" },
+                  "type": { "type": "integer", "enum": [1, 2], "default": 1, "description": "1=视频 2=图片" },
+                  "video_url": { "type": "string", "description": "视频URL（type=1时使用）" },
+                  "images": { "type": "array", "items": { "type": "string" }, "description": "图片URL数组（type=2时使用）" },
                   "member_level": { "type": "integer", "enum": [1, 2], "default": 1, "description": "1=普通会员可看 2=超级会员可看" },
                   "sort": { "type": "integer", "default": 0 },
                   "status": { "type": "integer", "enum": [0, 1], "default": 1 }
@@ -942,13 +944,15 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["title", "class_date", "start_time", "end_time"],
+                "required": ["title", "start_date", "end_date", "start_time", "end_time"],
                 "properties": {
                   "title": { "type": "string", "description": "课程标题" },
                   "cover": { "type": "string", "description": "封面图URL" },
-                  "class_date": { "type": "string", "description": "上课日期，如 2026-07-11" },
+                  "photos": { "type": "array", "items": { "type": "string" }, "description": "课程照片URL数组" },
+                  "start_date": { "type": "string", "description": "开始日期，如 2026-07-11" },
+                  "end_date": { "type": "string", "description": "结束日期，如 2026-07-13" },
                   "start_time": { "type": "string", "description": "开始时间，如 09:00" },
-                  "end_time": { "type": "string", "description": "结束时间，如 12:00" },
+                  "end_time": { "type": "string", "description": "结束时间，如 17:00" },
                   "address": { "type": "string", "description": "上课地址" },
                   "max_people": { "type": "integer", "default": 0, "description": "最大人数，0=不限" },
                   "qrcode": { "type": "string", "description": "二维码图片URL" },
@@ -1606,6 +1610,50 @@
           "status": { "type": "integer", "example": 200 },
           "msg": { "type": "string", "example": "success" },
           "data": { "type": "object" }
+        }
+      },
+      "Course": {
+        "type": "object",
+        "description": "课程对象",
+        "properties": {
+          "id": { "type": "integer" },
+          "title": { "type": "string", "description": "课程标题" },
+          "category_id": { "type": "integer", "description": "分类ID" },
+          "category_name": { "type": "string", "description": "分类名称" },
+          "cover": { "type": "string", "description": "封面图URL" },
+          "desc": { "type": "string", "description": "课程描述" },
+          "type": { "type": "integer", "description": "1=视频 2=图片" },
+          "video_url": { "type": "string", "description": "视频URL" },
+          "images": { "type": "array", "items": { "type": "string" }, "description": "图片URL数组" },
+          "member_level": { "type": "integer", "description": "1=普通会员可看 2=超级会员可看" },
+          "member_level_text": { "type": "string", "description": "会员等级文本" },
+          "can_watch": { "type": "boolean", "description": "当前用户能否观看" },
+          "member_type": { "type": "string", "description": "当前用户会员类型: super|regular|none" },
+          "is_favorited": { "type": "boolean", "description": "是否已收藏" },
+          "sort": { "type": "integer" },
+          "status": { "type": "integer", "description": "1=上架 0=下架" },
+          "add_time": { "type": "string", "description": "创建时间" }
+        }
+      },
+      "OfflineClass": {
+        "type": "object",
+        "description": "线下课程排期对象",
+        "properties": {
+          "id": { "type": "integer" },
+          "title": { "type": "string", "description": "课程标题" },
+          "cover": { "type": "string", "description": "封面图URL" },
+          "photos": { "type": "array", "items": { "type": "string" }, "description": "课程照片URL数组" },
+          "start_date": { "type": "string", "description": "开始日期，如 2026-07-11" },
+          "end_date": { "type": "string", "description": "结束日期，如 2026-07-13" },
+          "start_time": { "type": "string", "description": "开始时间，如 09:00" },
+          "end_time": { "type": "string", "description": "结束时间，如 17:00" },
+          "address": { "type": "string", "description": "上课地址" },
+          "max_people": { "type": "integer", "description": "最大人数，0=不限" },
+          "booked_count": { "type": "integer", "description": "已预约人数" },
+          "qrcode": { "type": "string", "description": "二维码图片URL" },
+          "desc": { "type": "string", "description": "课程描述" },
+          "status": { "type": "integer", "description": "1=启用 0=禁用" },
+          "add_time": { "type": "string", "description": "创建时间" }
         }
       },
       "Moment": {

@@ -13,6 +13,12 @@
           <template slot-scope="{row}"><img :src="row.cover" style="width:60px;height:60px;object-fit:cover" /></template>
         </el-table-column>
         <el-table-column prop="title" label="标题" />
+        <el-table-column prop="type" label="类型" width="80">
+          <template slot-scope="{row}">
+            <el-tag v-if="row.type == 2" type="info" size="small">图片</el-tag>
+            <el-tag v-else type="" size="small">视频</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="category_name" label="分类" width="120" />
         <el-table-column label="可看等级" width="120">
           <template slot-scope="{row}">
@@ -73,7 +79,13 @@
         <el-form-item label="描述">
           <el-input v-model="courseForm.desc" type="textarea" :rows="3" placeholder="课程描述" />
         </el-form-item>
-        <el-form-item label="视频">
+        <el-form-item label="类型">
+          <el-radio-group v-model="courseForm.type">
+            <el-radio :label="1">视频</el-radio>
+            <el-radio :label="2">图片</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="视频" v-if="courseForm.type === 1">
           <el-input v-model="courseForm.video_url" placeholder="视频链接（可手动填写，或点击右侧选择已有视频）" />
           <el-button type="primary" size="small" style="margin-left:8px" @click="videoModal = true">选择视频</el-button>
           <div style="font-size:12px;color:#999;margin-top:4px">
@@ -85,6 +97,15 @@
           </div>
           <el-dialog :visible.sync="videoModal" width="950px" title="选择视频" :close-on-click-modal="false" append-to-body>
             <uploadVideo :isChoice="'one'" @getVideo="getCourseVideo" v-if="videoModal" />
+          </el-dialog>
+        </el-form-item>
+        <el-form-item label="课程图片" v-if="courseForm.type === 2">
+          <el-button type="primary" size="small" @click="imagesModal = true">选择图片</el-button>
+          <div v-if="courseForm.images && courseForm.images.length" style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+            <img v-for="(img, i) in courseForm.images" :key="i" :src="img" style="width:80px;height:80px;object-fit:cover;border-radius:4px" />
+          </div>
+          <el-dialog :visible.sync="imagesModal" width="950px" title="选择课程图片" :close-on-click-modal="false" append-to-body>
+            <uploadPictures :isChoice="'多选'" @getPic="getImagesPics" :gridBtn="gridBtn" :gridPic="gridPic" v-if="imagesModal" />
           </el-dialog>
         </el-form-item>
         <el-form-item label="排序">
@@ -142,9 +163,10 @@ export default {
       dialogVisible: false,
       dialogTitle: '添加课程',
       submitLoading: false,
-      courseForm: { title: '', category_id: 0, cover: '', member_level: 1, desc: '', video_url: '', sort: 0, status: 1 },
+      courseForm: { title: '', category_id: 0, cover: '', member_level: 1, desc: '', type: 1, video_url: '', images: [], sort: 0, status: 1 },
       editId: null,
       coverModal: false,
+      imagesModal: false,
       gridBtn: { xl: 6, lg: 8, md: 12, sm: 24, xs: 24 },
       gridPic: { xl: 6, lg: 8, md: 12, sm: 24, xs: 24 },
       categoryList: [],
@@ -178,7 +200,7 @@ export default {
     handleAdd() {
       this.editId = null;
       this.dialogTitle = '添加课程';
-      this.courseForm = { title: '', category_id: 0, cover: '', member_level: 1, desc: '', video_url: '', sort: 0, status: 1 };
+      this.courseForm = { title: '', category_id: 0, cover: '', member_level: 1, desc: '', type: 1, video_url: '', images: [], sort: 0, status: 1 };
       this.dialogVisible = true;
     },
     handleEdit(row) {
@@ -190,7 +212,9 @@ export default {
         cover: row.cover,
         member_level: row.member_level || 1,
         desc: row.desc || '',
+        type: row.type || 1,
         video_url: row.video_url || '',
+        images: row.images || [],
         sort: row.sort || 0,
         status: row.status,
       };
@@ -199,6 +223,11 @@ export default {
     getCoverPic(pc) {
       this.courseForm.cover = pc.att_dir;
       this.coverModal = false;
+    },
+    getImagesPics(pc) {
+      const pics = Array.isArray(pc) ? pc : [pc];
+      this.courseForm.images = pics.map(p => p.att_dir || p);
+      this.imagesModal = false;
     },
     getCourseVideo(url) {
       this.courseForm.video_url = url;
