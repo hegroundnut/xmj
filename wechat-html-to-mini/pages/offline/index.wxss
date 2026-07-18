@@ -114,6 +114,7 @@
 .price-current { font-size: 48rpx; font-weight: 300; color: #1A1A1A; }
 .price-original { font-size: 26rpx; color: rgba(0,0,0,0.25); text-decoration: line-through; font-weight: 300; }
 .price-seats { font-size: 22rpx; color: rgba(0,0,0,0.35); font-weight: 300; }
+.price-seats.muted { color: rgba(0,0,0,0.2); }
 
 /* Booking form */
 .form-row { display: flex; align-items: center; gap: 24rpx; padding: 24rpx 0; border-bottom: 2rpx solid rgba(0,0,0,0.08); }

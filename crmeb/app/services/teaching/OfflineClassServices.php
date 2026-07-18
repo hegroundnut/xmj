@@ -40,8 +40,13 @@ class OfflineClassServices extends BaseServices
                 }
             }
             $item['booked_count'] = $bookingServices->getBookedCount($item['id']);
-            $item['remaining_seats'] = $item['max_people'] > 0 ? max(0, (int)$item['max_people'] - (int)$item['booked_count']) : 999;
-            $item['is_full'] = $item['max_people'] > 0 && (int)$item['booked_count'] >= (int)$item['max_people'];
+            if ($item['max_people'] > 0) {
+                $item['remaining_seats'] = max(0, (int)$item['max_people'] - (int)$item['booked_count']);
+                $item['is_full'] = (int)$item['booked_count'] >= (int)$item['max_people'];
+            } else {
+                $item['remaining_seats'] = null;
+                $item['is_full'] = false;
+            }
         }
         $count = $this->dao->offlineClassCount($where);
         return compact('list', 'count');
@@ -68,8 +73,13 @@ class OfflineClassServices extends BaseServices
             /** @var OfflineBookingServices $bookingServices */
             $bookingServices = app()->make(OfflineBookingServices::class);
             $info['booked_count'] = $bookingServices->getBookedCount($info['id']);
-            $info['remaining_seats'] = $info['max_people'] > 0 ? max(0, (int)$info['max_people'] - (int)$info['booked_count']) : 999;
-            $info['is_full'] = $info['max_people'] > 0 && (int)$info['booked_count'] >= (int)$info['max_people'];
+            if ($info['max_people'] > 0) {
+                $info['remaining_seats'] = max(0, (int)$info['max_people'] - (int)$info['booked_count']);
+                $info['is_full'] = (int)$info['booked_count'] >= (int)$info['max_people'];
+            } else {
+                $info['remaining_seats'] = null;
+                $info['is_full'] = false;
+            }
         }
         return $info ?: [];
     }
