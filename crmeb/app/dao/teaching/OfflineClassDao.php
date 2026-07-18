@@ -32,7 +32,7 @@ class OfflineClassDao extends BaseDao
         // 移除原来的 class_date >= today 过滤，历史状态由前端判断
     }
 
-    public function offlineClassList($where, $field, $page = 0, $limit = 0, $order = 'start_date asc')
+    public function offlineClassList($where, $field, $page = 0, $limit = 0, $order = 'start_date desc')
     {
         return $this->getConditionModel($where)
             ->field($field)
