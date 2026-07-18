@@ -50,11 +50,11 @@
         <view class="card-body">
           <view class="card-top">
             <text class="card-title">{{item.title}}</text>
-            <text class="status-badge {{item.is_full ? 'full' : 'open'}}">{{item.is_full ? '已满' : '报名中'}}</text>
+            <text class="status-badge {{item.is_ended ? 'ended' : (item.is_full ? 'full' : 'open')}}">{{item.status_label || '报名中'}}</text>
           </view>
           <text class="card-location">{{item.location_city || '合肥'}} · {{item.address_short || item.address}}</text>
           <view class="card-bottom">
-            <text class="card-time">{{item.start_time || '9:00'}}-{{item.end_time || '17:00'}} · {{item.duration || '2天'}}</text>
+            <text class="card-time">{{item.start_date || ''}}{{item.end_date && item.end_date !== item.start_date ? ' ~ ' + item.end_date : ''}} {{item.start_time || '9:00'}}-{{item.end_time || '17:00'}} · {{item.duration || ''}}</text>
             <text class="card-spots {{item.is_full ? 'muted' : ''}}">{{item.is_full ? '已满员' : '剩余 ' + (item.remaining_seats || 0) + ' 名额'}}</text>
           </view>
         </view>
@@ -100,7 +100,20 @@
             <image src="/static/svg/info-calendar.svg" class="d-icon-svg"/>
             <view class="d-content">
               <text class="d-label">培训时间</text>
-              <text class="d-value">{{classData.class_date || ''}} {{classData.start_time || ''}}-{{classData.end_time || ''}}</text>
+              <text class="d-value">{{classData.start_date || ''}}{{classData.end_date && classData.end_date !== classData.start_date ? ' ~ ' + classData.end_date : ''}} {{classData.start_time || ''}}-{{classData.end_time || ''}}</text>
+            </view>
+          </view>
+          <!-- 课程照片 -->
+          <view class="detail-row" wx:if="{{classData.photos && classData.photos.length}}">
+            <image src="/static/svg/info-calendar.svg" class="d-icon-svg"/>
+            <view class="d-content">
+              <text class="d-label">课程照片</text>
+              <view class="photo-grid">
+                <image wx:for="{{classData.photos}}" wx:key="*this"
+                  src="{{item}}" mode="aspectFill"
+                  class="photo-item"
+                  bindtap="onPreviewPhoto" data-url="{{item}}"/>
+              </view>
             </view>
           </view>
           <view class="detail-row">
@@ -178,6 +191,9 @@
         </view>
         <text class="modal-desc">打开微信扫描二维码，添加<text class="modal-strong">阿利老西</text>\n即可预约线下课程名额</text>
         <text class="modal-hint">长按识别二维码 · 添加微信好友</text>
+        <view class="modal-save-btn" bindtap="onSaveQR">
+          <text>保存二维码</text>
+        </view>
       </view>
     </view>
   </block>
