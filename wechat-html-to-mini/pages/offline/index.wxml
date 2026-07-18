@@ -55,7 +55,6 @@
           <text class="card-location">{{item.location_city || '合肥'}} · {{item.address_short || item.address}}</text>
           <view class="card-bottom">
             <text class="card-time">{{item.start_date || ''}}{{item.end_date && item.end_date !== item.start_date ? ' ~ ' + item.end_date : ''}} {{item.start_time || '9:00'}}-{{item.end_time || '17:00'}} · {{item.duration || ''}}</text>
-            <text class="card-spots {{item.is_full ? 'muted' : ''}}" wx:if="{{item.remaining_seats !== null}}">{{item.is_full ? '已满员' : '剩余 ' + item.remaining_seats + ' 名额'}}</text>
           </view>
         </view>
       </view>

@@ -26,9 +26,9 @@
 .media-video-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 48rpx; color: rgba(0,0,0,0.15); }
 .media-remove { position: absolute; top: 12rpx; right: 12rpx; width: 40rpx; height: 40rpx; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; }
 .media-remove text { font-size: 22rpx; color: #fff; }
-.media-add { width: 200rpx; height: 200rpx; border-radius: 16rpx; border: 2rpx dashed rgba(0,0,0,0.12); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12rpx; }
-.add-icon { font-size: 48rpx; color: rgba(0,0,0,0.2); line-height: 1; }
-.add-text { font-size: 20rpx; color: rgba(0,0,0,0.25); font-weight: 300; }
+.media-add { width: 100%; height: 160rpx; border-radius: 16rpx; border: 3rpx dashed rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8rpx; background: #FAFAF8; }
+.add-icon { font-size: 44rpx; color: rgba(0,0,0,0.15); line-height: 1; }
+.add-text { font-size: 22rpx; color: rgba(0,0,0,0.2); font-weight: 300; }
 
 /* ===== Options ===== */
 .options-section { padding: 0 40rpx 40rpx; }
