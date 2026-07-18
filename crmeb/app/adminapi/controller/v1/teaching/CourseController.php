@@ -49,11 +49,16 @@ class CourseController extends AuthController
             ['category_id', 0],
             ['cover', ''],
             ['desc', ''],
+            ['type', 1],
             ['video_url', ''],
+            ['images', ''],
             ['member_level', 1],
             ['sort', 0],
             ['status', 1],
         ]);
+        if (is_array($data['images'])) {
+            $data['images'] = json_encode($data['images'], JSON_UNESCAPED_UNICODE);
+        }
         $data['price'] = 0;
         $data['is_free_for_member'] = 1;
         $data['add_time'] = time();
@@ -68,11 +73,16 @@ class CourseController extends AuthController
             ['category_id', 0],
             ['cover', ''],
             ['desc', ''],
+            ['type', 1],
             ['video_url', ''],
+            ['images', ''],
             ['member_level', 1],
             ['sort', 0],
             ['status', 1],
         ]);
+        if (is_array($data['images'])) {
+            $data['images'] = json_encode($data['images'], JSON_UNESCAPED_UNICODE);
+        }
         $data['price'] = 0;
         $data['is_free_for_member'] = 1;
         $this->services->update((int)$id, $data);

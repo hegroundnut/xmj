@@ -66,7 +66,7 @@ class CourseServices extends BaseServices
     public function getList(array $where, int $uid)
     {
         [$page, $limit] = $this->getPageValue();
-        $field = 'id,title,category_id,cover,desc,member_level,sort,status,add_time';
+        $field = 'id,title,category_id,cover,desc,type,video_url,images,member_level,sort,status,add_time';
         $list = $this->dao->courseList($where, $field, $page, $limit);
         $memberType = $this->getUserMemberType($uid);
         /** @var TeachingCategoryDao $categoryDao */
@@ -80,6 +80,12 @@ class CourseServices extends BaseServices
             $item['member_level_text'] = $item['member_level'] == 2 ? '超级会员' : '普通会员';
             $item['add_time'] = date('Y-m-d H:i', $item['add_time']);
             $item['category_name'] = $categoryMap[$item['category_id']] ?? '';
+            $item['images'] = $item['images'] ? json_decode($item['images'], true) : [];
+            if (!empty($item['images'])) {
+                foreach ($item['images'] as &$img) {
+                    $img = media_url($img);
+                }
+            }
         }
         $count = $this->dao->courseCount($where);
         return compact('list', 'count');
@@ -111,6 +117,12 @@ class CourseServices extends BaseServices
             $info['is_favorited'] = $favDao->isFavorited($id, $uid);
         } else {
             $info['is_favorited'] = false;
+        }
+        $info['images'] = $info['images'] ? json_decode($info['images'], true) : [];
+        if (!empty($info['images'])) {
+            foreach ($info['images'] as &$img) {
+                $img = media_url($img);
+            }
         }
         return $info;
     }
