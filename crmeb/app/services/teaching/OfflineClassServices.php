@@ -26,13 +26,19 @@ class OfflineClassServices extends BaseServices
     public function getList(array $where)
     {
         [$page, $limit] = $this->getPageValue();
-        $field = 'id,title,cover,class_date,start_time,end_time,address,max_people,qrcode,desc,status,add_time';
+        $field = 'id,title,cover,start_date,end_date,start_time,end_time,address,max_people,qrcode,photos,desc,status,add_time';
         $list = $this->dao->offlineClassList($where, $field, $page, $limit);
         /** @var OfflineBookingServices $bookingServices */
         $bookingServices = app()->make(OfflineBookingServices::class);
         foreach ($list as &$item) {
             $item['cover'] = media_url($item['cover']);
             $item['qrcode'] = media_url($item['qrcode']);
+            $item['photos'] = $item['photos'] ? json_decode($item['photos'], true) : [];
+            if (!empty($item['photos'])) {
+                foreach ($item['photos'] as &$photo) {
+                    $photo = media_url($photo);
+                }
+            }
             $item['booked_count'] = $bookingServices->getBookedCount($item['id']);
         }
         $count = $this->dao->offlineClassCount($where);
@@ -51,6 +57,12 @@ class OfflineClassServices extends BaseServices
             $info = $info->toArray();
             $info['cover'] = media_url($info['cover']);
             $info['qrcode'] = media_url($info['qrcode']);
+            $info['photos'] = $info['photos'] ? json_decode($info['photos'], true) : [];
+            if (!empty($info['photos'])) {
+                foreach ($info['photos'] as &$photo) {
+                    $photo = media_url($photo);
+                }
+            }
             /** @var OfflineBookingServices $bookingServices */
             $bookingServices = app()->make(OfflineBookingServices::class);
             $info['booked_count'] = $bookingServices->getBookedCount($info['id']);

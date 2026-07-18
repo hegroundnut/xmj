@@ -28,12 +28,11 @@ class OfflineClassDao extends BaseDao
         return $this->getModel()->where('status', 1)
             ->when(isset($where['show_all']) && $where['show_all'] == 1, function ($query) {
                 // 管理后台看全部
-            }, function ($query) {
-                $query->where('class_date', '>=', date('Y-m-d'));
             });
+        // 移除原来的 class_date >= today 过滤，历史状态由前端判断
     }
 
-    public function offlineClassList($where, $field, $page = 0, $limit = 0, $order = 'class_date asc')
+    public function offlineClassList($where, $field, $page = 0, $limit = 0, $order = 'start_date asc')
     {
         return $this->getConditionModel($where)
             ->field($field)
