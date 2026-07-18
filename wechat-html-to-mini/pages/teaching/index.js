@@ -110,6 +110,23 @@ Page({
     this.setData({ showQR: false })
   },
 
+  onSaveQR() {
+    const qrCode = this.data.qrCode
+    if (!qrCode) return
+    wx.showLoading({ title: '保存中...' })
+    wx.getImageInfo({
+      src: qrCode,
+      success: (res) => {
+        wx.saveImageToPhotosAlbum({
+          filePath: res.path,
+          success: () => { wx.hideLoading(); wx.showToast({ title: '已保存到相册' }) },
+          fail: () => { wx.hideLoading(); wx.showToast({ title: '保存失败', icon: 'none' }) }
+        })
+      },
+      fail: () => { wx.hideLoading(); wx.showToast({ title: '下载失败', icon: 'none' }) }
+    })
+  },
+
   onOfflineTap() {
     wx.navigateTo({ url: '/pages/offline/index' })
   },

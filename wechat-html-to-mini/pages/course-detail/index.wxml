@@ -122,6 +122,9 @@
       </view>
       <text class="modal-desc">本课程需<text class="modal-strong">{{course.member_level_text || '会员'}}</text>可观看\n添加客服微信开通会员</text>
       <text class="modal-hint">长按识别二维码 · 添加微信好友</text>
+      <view class="modal-save-btn" bindtap="onSaveQR">
+        <text>保存二维码</text>
+      </view>
     </view>
   </view>
 </view>
