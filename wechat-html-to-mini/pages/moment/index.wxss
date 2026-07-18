@@ -32,14 +32,13 @@
 
 .post-text { font-size: 26rpx; color: rgba(0,0,0,0.6); line-height: 1.8; margin-bottom: 24rpx; font-weight: 300; }
 
-/* Image grid */
+/* Image grid - square 1:1 */
 .post-images { display: flex; gap: 6rpx; margin-bottom: 24rpx; border-radius: 16rpx; overflow: hidden; }
 .post-images.g3 { display: flex; flex-wrap: wrap; }
-.post-images.g3 .post-img { width: calc(33.33% - 4rpx); }
-.post-images.g2 .post-img { width: calc(50% - 3rpx); }
-.post-images.g1 .post-img { width: 100%; }
-.post-img { height: 200rpx; background: #EDEBE8; overflow: hidden; }
-.post-images.g1 .post-img { height: 280rpx; }
+.post-images.g3 .post-img { width: calc(33.33% - 4rpx); height: 219rpx; }
+.post-images.g2 .post-img { width: calc(50% - 3rpx); height: 332rpx; }
+.post-images.g1 .post-img { width: 100%; height: 420rpx; }
+.post-img { overflow: hidden; border-radius: 6rpx; background: #EDEBE8; }
 .post-img-src { width: 100%; height: 100%; }
 
 /* Actions */

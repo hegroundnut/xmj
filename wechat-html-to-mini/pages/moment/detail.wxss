@@ -23,9 +23,10 @@
 
 .post-content { font-size: 28rpx; color: #1A1A1A; line-height: 1.8; font-weight: 300; margin-bottom: 32rpx; display: block; }
 
-/* Post images grid */
+/* Post images grid - square 1:1 */
 .post-images { display: flex; flex-wrap: wrap; gap: 8rpx; margin-bottom: 32rpx; border-radius: 16rpx; overflow: hidden; }
-.post-img { width: calc((100% - 16rpx) / 3); height: 220rpx; background: #F0EFED; }
+.post-img { width: calc((100% - 16rpx) / 3); height: 219rpx; border-radius: 6rpx; background: #F0EFED; }
+.post-img:nth-child(1) { background: #F0EFED; }
 .post-img:nth-child(2) { background: #EBE9E6; }
 .post-img:nth-child(3) { background: #E8E6E3; }
 .post-img:nth-child(4) { background: #F2F0ED; }
