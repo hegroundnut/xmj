@@ -141,5 +141,13 @@ Page({
 
   onMember() {
     wx.navigateTo({ url: '/pages/member/index' })
+  },
+
+  onPreviewCourseImage(e) {
+    const url = e.currentTarget.dataset.url
+    const images = this.data.course.images || []
+    if (url && images.length) {
+      wx.previewImage({ current: url, urls: images })
+    }
   }
 })

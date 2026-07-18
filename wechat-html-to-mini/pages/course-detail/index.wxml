@@ -1,7 +1,7 @@
 <view class="page">
   <!-- Video player overlay -->
   <view class="video-modal" wx:if="{{showVideo}}">
-    <view class="video-close" bindtap="onCloseVideo"><text>✕</text></view>
+    <view class="video-close" style="top: {{navHeight + 20}}rpx;" bindtap="onCloseVideo"><text>✕</text></view>
     <video wx:if="{{!videoError}}"
       class="video-player"
       src="{{course.video_url}}"
@@ -34,14 +34,34 @@
 
   <scroll-view scroll-y class="content-area" wx:if="{{course}}">
     <!-- Hero / Cover centered -->
-    <view class="course-hero">
-      <image src="{{course.cover || ''}}" mode="aspectFill" class="hero-bg" wx:if="{{course.cover}}"/>
-      <view class="hero-placeholder" wx:else/>
-      <text class="hero-tag">{{course.category_name || '入门必修'}}</text>
-      <view class="hero-play" bindtap="onPlay" wx:if="{{course.video_url}}">
-        <text class="hero-play-icon">▶</text>
+    <!-- 视频类型 -->
+    <block wx:if="{{course.type !== 2}}">
+      <view class="course-hero">
+        <image src="{{course.cover || ''}}" mode="aspectFill" class="hero-bg" wx:if="{{course.cover}}"/>
+        <view class="hero-placeholder" wx:else/>
+        <text class="hero-tag">{{course.category_name || '入门必修'}}</text>
+        <view class="hero-play" bindtap="onPlay" wx:if="{{course.video_url}}">
+          <text class="hero-play-icon">▶</text>
+        </view>
       </view>
-    </view>
+    </block>
+    <!-- 图片类型 -->
+    <block wx:if="{{course.type === 2}}">
+      <view class="course-hero">
+        <image src="{{course.cover || ''}}" mode="aspectFill" class="hero-bg" wx:if="{{course.cover}}"/>
+        <view class="hero-placeholder" wx:else/>
+        <text class="hero-tag">{{course.category_name || '入门必修'}}</text>
+      </view>
+      <view class="course-images-section" wx:if="{{course.images && course.images.length}}">
+        <text class="section-title">课程图片</text>
+        <view class="course-photo-grid">
+          <image wx:for="{{course.images}}" wx:key="*this"
+            src="{{item}}" mode="aspectFill"
+            class="course-photo-item"
+            bindtap="onPreviewCourseImage" data-url="{{item}}"/>
+        </view>
+      </view>
+    </block>
 
     <!-- Info section -->
     <view class="info-section">
