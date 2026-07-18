@@ -3,7 +3,7 @@
   <view class="offline-info">
     <text class="offline-title">{{item.title}}</text>
     <view class="offline-meta">
-      <text class="meta-item">🕐 {{item.class_date}} {{item.start_time}}-{{item.end_time}}</text>
+      <text class="meta-item">🕐 {{item.start_date}}{{item.end_date && item.end_date !== item.start_date ? ' ~ ' + item.end_date : ''}} {{item.start_time}}-{{item.end_time}}</text>
       <text class="meta-item">📍 {{item.address}}</text>
       <text class="meta-item" wx:if="{{item.max_people}}">👤 限额 {{item.max_people}} 人</text>
     </view>
