@@ -37,7 +37,8 @@
 .post-images.g3 { display: flex; flex-wrap: wrap; }
 .post-images.g3 .post-img { width: calc(33.33% - 4rpx); height: 219rpx; }
 .post-images.g2 .post-img { width: calc(50% - 3rpx); height: 332rpx; }
-.post-images.g1 .post-img { width: 100%; height: 420rpx; }
+.post-images.g1 .post-img { width: 420rpx; max-width: 100%; }
+.post-images.g1 .post-img-src { width: 100%; height: auto; }
 .post-img { overflow: hidden; border-radius: 6rpx; background: #EDEBE8; }
 .post-img-src { width: 100%; height: 100%; }
 

@@ -31,8 +31,8 @@
       <text class="post-content">{{moment.content}}</text>
 
       <!-- Post images grid -->
-      <view class="post-images" wx:if="{{moment.images && moment.images.length}}">
-        <image src="{{item}}" mode="aspectFill" class="post-img" wx:for="{{moment.images}}" wx:key="*this" wx:if="{{index < 9}}" bindtap="onPreviewImage" data-urls="{{moment.images}}" data-current="{{item}}"/>
+      <view class="post-images {{moment.images.length === 1 ? 'g1' : ''}}" wx:if="{{moment.images && moment.images.length}}">
+        <image src="{{item}}" mode="{{moment.images.length === 1 ? 'widthFix' : 'aspectFill'}}" class="post-img" wx:for="{{moment.images}}" wx:key="*this" wx:if="{{index < 9}}" bindtap="onPreviewImage" data-urls="{{moment.images}}" data-current="{{item}}"/>
       </view>
 
       <!-- Post location -->

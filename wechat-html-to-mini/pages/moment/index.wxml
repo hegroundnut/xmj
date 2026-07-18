@@ -35,11 +35,11 @@
       <text class="post-text">{{item.content}}</text>
 
       <!-- Image grid -->
-      <view class="post-images {{item.images && item.images.length === 3 ? 'g3' : ''}} {{item.images && item.images.length === 2 ? 'g2' : ''}} {{item.images && item.images.length === 1 ? 'g1' : ''}}" wx:if="{{item.images && item.images.length}}">
+      <view class="post-images {{item.images && item.images.length === 1 ? 'g1' : ''}} {{item.images && item.images.length === 2 ? 'g2' : ''}} {{item.images && item.images.length >= 3 ? 'g3' : ''}}" wx:if="{{item.images && item.images.length}}">
         <view class="post-img" wx:for="{{item.images}}" wx:key="*this" wx:for-item="img"
           catchtap="onPreviewImage" data-urls="{{item.images}}" data-current="{{img}}"
           style="background:#EDEBE8;">
-          <image src="{{img || ''}}" mode="aspectFill" class="post-img-src" wx:if="{{img}}"/>
+          <image src="{{img || ''}}" mode="{{item.images.length === 1 ? 'widthFix' : 'aspectFill'}}" class="post-img-src" wx:if="{{img}}"/>
         </view>
       </view>
 
