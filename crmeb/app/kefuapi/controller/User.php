@@ -177,7 +177,10 @@ class User extends AuthController
         $start_uploads++;
         CacheService::set('start_uploads_' . $request->kefuId(), $start_uploads, 86400);
         $res['dir'] = path_to_url($res['dir']);
-        if (strpos($res['dir'], 'http') === false) $res['dir'] = $request->domain() . $res['dir'];
+        if (strpos($res['dir'], 'http') === false) {
+            $siteUrl = rtrim((string)sys_config('site_url'), '/');
+            $res['dir'] = ($siteUrl ?: $request->domain()) . $res['dir'];
+        }
         return app('json')->success('图片上传成功', ['name' => $res['name'], 'url' => $res['dir']]);
     }
 

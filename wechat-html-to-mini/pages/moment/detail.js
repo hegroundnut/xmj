@@ -43,12 +43,8 @@ Page({
       if (data) {
         if (!data.comments) data.comments = []
         if (data.images && Array.isArray(data.images)) {
-          data.images = data.images
-            .filter(url => url && !url.startsWith('http://tmp/'))
-            .map(url => url.replace(/^http:\/\//, 'https://'))
+          data.images = data.images.filter(url => url && !url.startsWith('http://tmp/'))
         }
-        if (data.video_url) data.video_url = data.video_url.replace(/^http:\/\//, 'https://')
-        if (data.user_avatar) data.user_avatar = data.user_avatar.replace(/^http:\/\//, 'https://')
       }
       const len = data && data.comments ? data.comments.length : 0
       this.setData({

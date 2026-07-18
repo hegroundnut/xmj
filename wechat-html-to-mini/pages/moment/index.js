@@ -37,12 +37,8 @@ Page({
     return momentApi.getMomentList({ page: this.data.page, limit: this.data.limit }).then(res => {
       const newList = ((res.data && res.data.list) || []).map(item => {
         if (item.images && Array.isArray(item.images)) {
-          item.images = item.images
-            .filter(url => url && !url.startsWith('http://tmp/'))
-            .map(url => url.replace(/^http:\/\//, 'https://'))
+          item.images = item.images.filter(url => url && !url.startsWith('http://tmp/'))
         }
-        if (item.video_url) item.video_url = item.video_url.replace(/^http:\/\//, 'https://')
-        if (item.user_avatar) item.user_avatar = item.user_avatar.replace(/^http:\/\//, 'https://')
         return item
       })
       this.setData({

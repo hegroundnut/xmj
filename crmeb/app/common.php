@@ -333,7 +333,8 @@ if (!function_exists('media_url')) {
             $path = '/' . $path;
         }
         try {
-            $domain = rtrim(request()->domain(), '/');
+            $siteUrl = rtrim((string)sys_config('site_url'), '/');
+            $domain = $siteUrl ?: rtrim(request()->domain(), '/');
         } catch (\Throwable $e) {
             $domain = '';
         }
