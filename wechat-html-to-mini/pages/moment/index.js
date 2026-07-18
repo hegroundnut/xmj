@@ -36,10 +36,13 @@ Page({
     this.setData({ loading: true, error: false })
     return momentApi.getMomentList({ page: this.data.page, limit: this.data.limit }).then(res => {
       const newList = ((res.data && res.data.list) || []).map(item => {
-        // 修复服务器返回的无效图片URL (http://tmp/... → 空)
         if (item.images && Array.isArray(item.images)) {
-          item.images = item.images.filter(url => url && !url.startsWith('http://tmp/'))
+          item.images = item.images
+            .filter(url => url && !url.startsWith('http://tmp/'))
+            .map(url => url.replace(/^http:\/\//, 'https://'))
         }
+        if (item.video_url) item.video_url = item.video_url.replace(/^http:\/\//, 'https://')
+        if (item.user_avatar) item.user_avatar = item.user_avatar.replace(/^http:\/\//, 'https://')
         return item
       })
       this.setData({

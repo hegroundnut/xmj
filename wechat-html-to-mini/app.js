@@ -31,5 +31,10 @@ App({
     }
 
     wx.getSystemInfo({ success: () => {} })
+
+    // 防截屏/录屏
+    if (wx.setVisualEffectOnCapture) {
+      wx.setVisualEffectOnCapture({ visualEffect: 'hidden' })
+    }
   }
 })
