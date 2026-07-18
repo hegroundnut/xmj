@@ -44,7 +44,9 @@ class OfflineClassController extends AuthController
         $data = $this->request->getMore([
             ['title', ''],
             ['cover', ''],
-            ['class_date', ''],
+            ['photos', ''],
+            ['start_date', ''],
+            ['end_date', ''],
             ['start_time', ''],
             ['end_time', ''],
             ['address', ''],
@@ -53,6 +55,9 @@ class OfflineClassController extends AuthController
             ['desc', ''],
             ['status', 1],
         ]);
+        if (is_array($data['photos'])) {
+            $data['photos'] = json_encode($data['photos'], JSON_UNESCAPED_UNICODE);
+        }
         $data['add_time'] = time();
         $this->services->save($data);
         return app('json')->success('添加成功');
@@ -63,7 +68,9 @@ class OfflineClassController extends AuthController
         $data = $this->request->getMore([
             ['title', ''],
             ['cover', ''],
-            ['class_date', ''],
+            ['photos', ''],
+            ['start_date', ''],
+            ['end_date', ''],
             ['start_time', ''],
             ['end_time', ''],
             ['address', ''],
@@ -72,6 +79,9 @@ class OfflineClassController extends AuthController
             ['desc', ''],
             ['status', 1],
         ]);
+        if (is_array($data['photos'])) {
+            $data['photos'] = json_encode($data['photos'], JSON_UNESCAPED_UNICODE);
+        }
         $this->services->update((int)$id, $data);
         return app('json')->success('修改成功');
     }
