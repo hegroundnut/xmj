@@ -319,8 +319,8 @@ if (!function_exists('media_url')) {
         if (!is_string($image) || $image === '') {
             return $image;
         }
-        // 本机地址（localhost / 127.0.0.1，带或不带端口）统一剥离，仅保留路径
-        $normalized = preg_replace('#^https?://(localhost|127\.0\.0\.1)(:\d+)?#i', '', $image);
+        // 本机/内网地址（localhost / 127.0.0.1 / 任意IPv4，带或不带端口）统一剥离，仅保留路径
+        $normalized = preg_replace('#^https?://(localhost|127\.0\.0\.1|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?#i', '', $image);
         if ($normalized === $image && preg_match('#^(https?:)?//#i', $image)) {
             // 非本机的绝对地址（COS/CDN/真实域名）保持不变
             return $image;
