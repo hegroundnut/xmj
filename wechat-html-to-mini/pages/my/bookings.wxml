@@ -26,7 +26,7 @@
       <view class="booking-meta">
         <view class="meta-row">
           <text class="meta-icon">📅</text>
-          <text>{{item.class_date || ''}} {{item.start_time || ''}}-{{item.end_time || ''}}</text>
+          <text>{{item.start_date || ''}}{{item.end_date && item.end_date !== item.start_date ? ' ~ ' + item.end_date : ''}} {{item.start_time || ''}}-{{item.end_time || ''}}</text>
         </view>
         <view class="meta-row">
           <text class="meta-icon">📍</text>
