@@ -333,12 +333,11 @@ if (!function_exists('media_url')) {
             $path = '/' . $path;
         }
         try {
-            $siteUrl = rtrim((string)sys_config('site_url'), '/');
-            $domain = $siteUrl ?: rtrim(request()->domain(), '/');
+            $domain = rtrim(request()->domain(), '/');
         } catch (\Throwable $e) {
             $domain = '';
         }
-        if ($domain === '' || stripos($domain, 'localhost') !== false || strpos($domain, '127.0.0.1') !== false) {
+        if ($domain === '' || stripos($domain, 'localhost') !== false || strpos($domain, '127.0.0.1') !== false || preg_match('#^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}#', $domain)) {
             $domain = rtrim((string)sys_config('site_url'), '/');
         }
         return $domain . $path;
