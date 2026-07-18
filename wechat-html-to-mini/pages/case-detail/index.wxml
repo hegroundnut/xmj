@@ -18,9 +18,10 @@
         <image src="{{caseData.media_url}}" mode="aspectFill" class="hero-img" wx:if="{{caseData.media_url}}"/>
         <view class="hero-placeholder" wx:else/>
         <view class="hero-label">{{caseData.category_name || '案例'}}</view>
-      </view>
-      <view class="save-bar" wx:if="{{caseData.media_url}}">
-        <view class="save-btn" bindtap="onSaveAllImages">保存图片</view>
+        <view class="action-btn save-btn" wx:if="{{caseData.media_url}}" catchtap="onSaveAllImages">
+          <text class="action-icon">↓</text>
+          <text>保存图片</text>
+        </view>
       </view>
     </block>
 
@@ -142,7 +143,7 @@
   <!-- Comment input bar -->
   <view class="comment-input-bar" wx:if="{{caseData}}">
     <block wx:if="{{isLogin && isMember}}">
-      <input class="comment-input" placeholder="写评论..." value="{{commentText}}"
+      <input class="comment-input" placeholder="" value="{{commentText}}"
         bindinput="onCommentInput" confirm-type="send" bindconfirm="onSendComment"/>
       <text class="send-btn" bindtap="onSendComment">发送</text>
     </block>

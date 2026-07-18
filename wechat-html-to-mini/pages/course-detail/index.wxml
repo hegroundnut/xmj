@@ -1,15 +1,4 @@
 <view class="page">
-  <!-- Hero (behind nav) -->
-  <view class="course-hero" wx:if="{{course}}">
-    <image src="{{course.cover || ''}}" mode="aspectFill" class="hero-bg" wx:if="{{course.cover}}"/>
-    <view class="hero-placeholder" wx:else/>
-    <view class="hero-overlay"/>
-    <text class="hero-tag">{{course.category_name || '入门必修'}}</text>
-    <view class="hero-play" bindtap="onPlay" wx:if="{{course.video_url}}">
-      <text class="hero-play-icon">▶</text>
-    </view>
-  </view>
-
   <!-- Video player overlay -->
   <view class="video-modal" wx:if="{{showVideo}}">
     <view class="video-close" bindtap="onCloseVideo"><text>✕</text></view>
@@ -31,13 +20,10 @@
     </view>
   </view>
 
-  <!-- Nav bar (over hero) -->
+  <!-- Nav bar -->
   <view class="nav-bar" style="padding-top: {{navHeight}}px;" wx:if="{{course}}">
     <view class="nav-back" bindtap="onBack">
       <text class="nav-back-icon">‹</text>
-    </view>
-    <view class="nav-share">
-      <text class="nav-share-icon">◎</text>
     </view>
   </view>
 
@@ -47,15 +33,20 @@
   <view class="state-box" wx:elif="{{!course}}"><text class="state-text">课程不存在</text></view>
 
   <scroll-view scroll-y class="content-area" wx:if="{{course}}">
+    <!-- Hero / Cover centered -->
+    <view class="course-hero">
+      <image src="{{course.cover || ''}}" mode="aspectFill" class="hero-bg" wx:if="{{course.cover}}"/>
+      <view class="hero-placeholder" wx:else/>
+      <text class="hero-tag">{{course.category_name || '入门必修'}}</text>
+      <view class="hero-play" bindtap="onPlay" wx:if="{{course.video_url}}">
+        <text class="hero-play-icon">▶</text>
+      </view>
+    </view>
+
     <!-- Info section -->
     <view class="info-section">
       <text class="info-title">{{course.title}}</text>
       <text class="info-sub">{{course.description || course.desc || '系统掌握洗眉核心技术'}}</text>
-      <view class="info-row">
-        <text class="info-badge">📹 {{course.lesson_count || '12'}}课时</text>
-        <text class="info-badge">👤 {{course.student_count || '1286'}}人已学</text>
-        <text class="info-badge">⭐ {{course.rating || '4.9'}}分</text>
-      </view>
     </view>
 
     <view class="divider"/>
@@ -95,10 +86,6 @@
     <view class="bottom-action {{course.is_favorited ? 'fav-active' : ''}}" bindtap="onToggleFav">
       <image src="/static/svg/action-bookmark.svg" class="bottom-action-svg {{course.is_favorited ? 'active' : ''}}"/>
       <text class="action-label">{{course.is_favorited ? '已收藏' : '收藏'}}</text>
-    </view>
-    <view class="bottom-action">
-      <image src="/static/svg/action-share.svg" class="bottom-action-svg"/>
-      <text class="action-label">分享</text>
     </view>
     <button class="buy-btn" bindtap="onBuy">开始学习</button>
   </view>

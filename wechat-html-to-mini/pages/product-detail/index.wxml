@@ -47,6 +47,11 @@
         </view>
       </view>
 
+      <!-- Product detail HTML -->
+      <view class="detail-html" wx:if="{{product.detail}}">
+        <rich-text nodes="{{product.detail}}"/>
+      </view>
+
       <!-- Action bar -->
       <view class="action-bar">
         <button class="btn-primary" bindtap="onOpenQR">💬 联系客服</button>

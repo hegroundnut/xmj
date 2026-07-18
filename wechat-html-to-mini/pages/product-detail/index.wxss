@@ -42,6 +42,10 @@
 .unit { font-size: 22rpx; color: rgba(0,0,0,0.25); font-weight: 300; }
 .price-note { font-size: 20rpx; color: rgba(0,0,0,0.2); font-weight: 300; letter-spacing: 0.6rpx; line-height: 1.5; display: block; }
 
+/* ===== Product detail HTML ===== */
+.detail-html { margin: 32rpx 0; padding: 0; }
+.detail-html rich-text { font-size: 26rpx; color: rgba(0,0,0,0.5); line-height: 1.9; font-weight: 300; letter-spacing: 0.6rpx; }
+
 /* ===== Action bar ===== */
 .action-bar { display: flex; gap: 20rpx; margin-top: 24rpx; margin-bottom: 16rpx; }
 .btn-primary { flex: 1; height: 96rpx; border-radius: 48rpx; background: #1A1A1A; color: #fff; border: none; font-size: 26rpx; font-weight: 400; letter-spacing: 4rpx; display: flex; align-items: center; justify-content: center; gap: 16rpx; line-height: 1.2; }

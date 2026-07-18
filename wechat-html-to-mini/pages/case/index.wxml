@@ -65,10 +65,6 @@
                 <image src="/static/svg/action-heart.svg" class="action-svg {{liked[item.id] ? 'active' : ''}}"/>
                 <text>{{liked[item.id] ? '已收藏' : '收藏'}}</text>
               </view>
-              <view class="action-btn save-btn" catchtap="onSaveAlbum" data-id="{{item.id}}">
-                <text class="action-icon">↓</text>
-                <text>保存至相册</text>
-              </view>
             </view>
           </view>
         </swiper-item>

@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://124.221.194.43:8011/api/v2'
+const API_BASE_URL = 'https://alilaoxi.cn/api/v2'
 const VERSION = '1.0.0'
 
 // 上传资源基础URL（去除 /api/v2 拼接上传路径）

@@ -58,11 +58,14 @@
 .comment-more { text-align: center; padding: 24rpx 0; font-size: 24rpx; color: rgba(0,0,0,0.3); font-weight: 300; }
 .comment-empty { text-align: center; padding: 40rpx 0; font-size: 24rpx; color: rgba(0,0,0,0.2); font-weight: 300; }
 
+/* Child comments (replies) */
+.comment-children { margin-top: 16rpx; padding-left: 16rpx; border-left: 2rpx solid rgba(0,0,0,0.06); }
+.comment-item.child { margin-bottom: 20rpx; }
+.comment-item.child:last-child { margin-bottom: 0; }
+.child-avatar { width: 48rpx; height: 48rpx; }
+
 /* ===== Input bar ===== */
-.input-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 16rpx 40rpx 40rpx; display: flex; align-items: center; gap: 24rpx; background: rgba(255,255,255,0.95); border-top: 2rpx solid rgba(0,0,0,0.04); z-index: 100; }
-.input-field { flex: 1; padding: 20rpx 32rpx; border: 2rpx solid rgba(0,0,0,0.08); border-radius: 40rpx; font-size: 26rpx; color: rgba(0,0,0,0.3); background: #FAFAF8; }
-.input-actions { display: flex; gap: 16rpx; }
-.input-action { width: 72rpx; height: 72rpx; display: flex; align-items: center; justify-content: center; }
-.input-action-svg { width: 32rpx; height: 32rpx; opacity: 0.35; }
-.input-action-svg.liked { opacity: 1; }
+.input-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 28rpx 40rpx 44rpx; display: flex; align-items: center; gap: 20rpx; background: rgba(255,255,255,0.95); border-top: 2rpx solid rgba(0,0,0,0.04); z-index: 100; }
+.input-field { flex: 1; padding: 24rpx 28rpx; border: 2rpx solid rgba(0,0,0,0.08); border-radius: 40rpx; font-size: 26rpx; color: rgba(0,0,0,0.3); background: #FAFAF8; line-height: 1.4; }
+.send-btn { padding: 24rpx 24rpx; color: #1A1A1A; font-size: 26rpx; font-weight: 500; }
 .login-tip { flex: 1; text-align: center; font-size: 26rpx; color: rgba(0,0,0,0.3); font-weight: 300; }

@@ -20,8 +20,8 @@
     </view>
 
     <!-- Post list -->
-    <view class="post" wx:for="{{list}}" wx:key="id" wx:for-index="index" style="{{item.is_member_only ? 'opacity:0.6;' : ''}}">
-      <view class="post-header" bindtap="onContentTap" data-id="{{item.id}}">
+    <view class="post" wx:for="{{list}}" wx:key="id" wx:for-index="index" style="{{item.is_member_only ? 'opacity:0.6;' : ''}}" bindtap="onContentTap" data-id="{{item.id}}">
+      <view class="post-header">
         <view class="avatar" style="background:linear-gradient(135deg, #E8E6E3, #D5D3D0);">
           <image src="{{item.user_avatar || item.avatar || ''}}" mode="aspectFill" class="avatar-img" wx:if="{{item.user_avatar || item.avatar}}"/>
         </view>
@@ -32,12 +32,12 @@
           <text class="post-meta">{{item.add_time || item.time}} · {{item.location || ''}}</text>
         </view>
       </view>
-      <text class="post-text" bindtap="onContentTap" data-id="{{item.id}}">{{item.content}}</text>
+      <text class="post-text">{{item.content}}</text>
 
       <!-- Image grid -->
       <view class="post-images {{item.images && item.images.length === 3 ? 'g3' : ''}} {{item.images && item.images.length === 2 ? 'g2' : ''}} {{item.images && item.images.length === 1 ? 'g1' : ''}}" wx:if="{{item.images && item.images.length}}">
         <view class="post-img" wx:for="{{item.images}}" wx:key="*this" wx:for-item="img"
-          bindtap="onPreviewImage" data-urls="{{item.images}}" data-current="{{img}}"
+          catchtap="onPreviewImage" data-urls="{{item.images}}" data-current="{{img}}"
           style="background:#EDEBE8;">
           <image src="{{img || ''}}" mode="aspectFill" class="post-img-src" wx:if="{{img}}"/>
         </view>

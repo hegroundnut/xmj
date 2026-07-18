@@ -59,14 +59,28 @@
       <text class="comments-title">评论 · {{moment.comment_count || 0}}</text>
 
       <view class="comment-item" wx:for="{{moment.comments || []}}" wx:key="id">
-        <image src="{{item.avatar || '/static/images/def_avatar.png'}}" class="comment-avatar" mode="aspectFill"/>
+        <image src="{{item.user_avatar || '/static/images/def_avatar.png'}}" class="comment-avatar" mode="aspectFill"/>
         <view class="comment-body">
-          <text class="comment-name">{{item.nickname || '用户'}}</text>
+          <text class="comment-name">{{item.user_nickname || '用户'}}</text>
           <text class="comment-text">{{item.content}}</text>
           <view class="comment-meta">
             <text>{{item.add_time || '刚刚'}}</text>
-            <text catchtap="onReply" data-parent-id="{{item.id}}" data-nickname="{{item.nickname}}">回复</text>
+            <text catchtap="onReply" data-parent-id="{{item.id}}" data-nickname="{{item.user_nickname}}">回复</text>
             <text>♡ {{item.like_count || 0}}</text>
+          </view>
+          <!-- Child comments (replies) -->
+          <view class="comment-children" wx:if="{{item.children && item.children.length}}">
+            <view class="comment-item child" wx:for="{{item.children}}" wx:key="id" wx:for-item="child">
+              <image src="{{child.user_avatar || '/static/images/def_avatar.png'}}" class="comment-avatar child-avatar" mode="aspectFill"/>
+              <view class="comment-body">
+                <text class="comment-name">{{child.user_nickname || '用户'}}</text>
+                <text class="comment-text">{{child.content}}</text>
+                <view class="comment-meta">
+                  <text>{{child.add_time || '刚刚'}}</text>
+                  <text catchtap="onReply" data-parent-id="{{item.id}}" data-nickname="{{child.user_nickname}}">回复</text>
+                </view>
+              </view>
+            </view>
           </view>
         </view>
       </view>
@@ -86,14 +100,10 @@
   <!-- Input bar -->
   <view class="input-bar" wx:if="{{moment}}">
     <block wx:if="{{isLogin && isMember}}">
-      <input class="input-field" placeholder="写评论..." value="{{commentText}}" bindinput="onCommentInput" confirm-type="send" bindconfirm="onSendComment"/>
+      <input class="input-field" placeholder="" value="{{commentText}}" bindinput="onCommentInput" confirm-type="send" bindconfirm="onSendComment"/>
+      <text class="send-btn" bindtap="onSendComment">发送</text>
     </block>
     <text wx:elif="{{!isLogin}}" class="login-tip" bindtap="onGoLogin">登录后评论</text>
     <text wx:else class="login-tip" bindtap="onGoTeaching">开通会员后可评论</text>
-    <view class="input-actions">
-      <view class="input-action" bindtap="onToggleLike">
-        <image src="/static/svg/action-heart.svg" class="input-action-svg {{moment.is_liked ? 'liked' : ''}}"/>
-      </view>
-    </view>
   </view>
 </view>
