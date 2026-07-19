@@ -51,12 +51,13 @@ Page({
             '<h2 style="font-size:13px;font-weight:500;color:#1A1A1A;margin:24px 0 10px;letter-spacing:1px;">五、您的权利</h2>' +
             '<p style="font-size:13px;color:rgba(0,0,0,0.5);line-height:2;margin-bottom:10px;font-weight:300;">您有权访问、更正、删除您的个人信息，也有权撤回您的授权同意。如需行使相关权利，请通过小程序内"联系客服"功能与我们联系。</p>' +
             '<h2 style="font-size:13px;font-weight:500;color:#1A1A1A;margin:24px 0 10px;letter-spacing:1px;">六、联系我们</h2>' +
-            '<p style="font-size:13px;color:rgba(0,0,0,0.5);line-height:2;margin-bottom:10px;font-weight:300;">如果您对本隐私政策有任何疑问，请联系客服热线 400-888-9999，或发送邮件至 privacy@alilaoxi.com。</p>',
+            '<p style="font-size:13px;color:rgba(0,0,0,0.5);line-height:2;margin-bottom:10px;font-weight:300;">如果您对本隐私政策有任何疑问，请联系客服热线 15956920979。</p>',
           loading: false
         })
       } else {
         this.setData({
-          content: '<p>阿利老西 —— 专业洗眉设备与教学平台</p><p>我们致力于提供高品质的洗眉设备和专业教学服务，帮助美业从业者提升技术水平。</p><p>联系我们：13355535553</p>',
+          content: '<h1 style="font-size:22px;font-weight:300;color:#1A1A1A;margin-bottom:6px;letter-spacing:2px;">ALI LAOXI STUDIO</h1>' +
+            '<p style="font-size:13px;color:rgba(0,0,0,0.5);line-height:2;font-weight:300;">客服热线：15956920979</p>',
           loading: false
         })
       }

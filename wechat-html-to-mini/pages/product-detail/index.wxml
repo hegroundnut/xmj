@@ -52,7 +52,7 @@
           <text class="price">¥{{product.price}}</text>
           <text class="unit">/ 件</text>
         </view>
-        <text class="price-note">价格仅供参考，具体请咨询客服</text>
+        <text class="price-note">具体请咨询客服</text>
       </view>
 
       <!-- Product detail HTML -->

@@ -102,7 +102,7 @@
             <text class="course-desc">{{item.desc || ''}}</text>
             <view class="course-price-row">
               <text class="course-level-tag {{item.member_level === 2 ? 'super' : 'regular'}}">{{item.member_level_text || (item.member_level === 2 ? '超级会员' : '普通会员')}}</text>
-              <view class="course-add" bindtap="onCourseTap" data-id="{{item.id}}">学习</view>
+              <view class="course-add" catchtap="onCourseTap" data-id="{{item.id}}">学习</view>
             </view>
           </view>
         </view>

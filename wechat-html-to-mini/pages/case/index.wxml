@@ -4,9 +4,6 @@
   <view class="state-box" wx:elif="{{error}}" bindtap="loadData"><text class="state-text">加载失败，点击重试</text></view>
 
   <block wx:if="{{!loading && !error}}">
-    <!-- Safe area spacer for capsule button -->
-    <view class="nav-spacer" style="height: {{navHeight}}px;"/>
-
     <!-- Page header with watermark -->
     <view class="page-header">
       <view class="wm-wrap">
@@ -34,7 +31,7 @@
     </view>
 
     <!-- Category filter -->
-    <scroll-view scroll-x class="cat-bar">
+    <scroll-view scroll-x class="cat-bar" wx:if="{{categories.length > 1}}">
       <view class="cat-inner">
         <text class="cat-tag {{activeCat === item ? 'active' : ''}}"
           wx:for="{{categories}}" wx:key="*this"
@@ -42,42 +39,36 @@
       </view>
     </scroll-view>
 
-    <!-- Carousel (container always present for measurement) -->
-    <view class="carousel-wrap" wx:if="{{!loading && !error}}">
-      <swiper class="carousel" bindchange="onCarouselChange" current="{{currentSlide}}"
-        previous-margin="60rpx" next-margin="60rpx" style="height:{{swiperHeight}}px;"
-        wx:if="{{list.length}}">
-        <swiper-item wx:for="{{list}}" wx:key="id">
-          <view class="slide" bindtap="onCaseTap" data-id="{{item.id}}" style="height:{{swiperHeight}}px;">
-            <view class="slide-media" style="background:{{item.bg || '#F0EFED'}};height:{{mediaHeight}}px;">
-              <image src="{{item.cover || ''}}" mode="aspectFill" class="slide-thumb" wx:if="{{item.cover}}"/>
-              <view class="trial-wm" wx:if="{{!isMember}}"/>
-              <view class="badge-video" wx:if="{{item.type === 2}}">
-                <image src="/static/svg/media-play.svg" class="play-icon-svg"/>
-              </view>
-              <text class="badge-compare">{{item.category_name || '对比'}}</text>
-            </view>
-            <view class="slide-info">
-              <text class="slide-name">{{item.title}}</text>
-              <text class="slide-meta">{{item.category_name}}</text>
-            </view>
-            <view class="slide-actions">
-              <view class="action-btn {{liked[item.id] ? 'fav-active' : ''}}" catchtap="onToggleFav" data-id="{{item.id}}">
-                <image src="/static/svg/action-heart.svg" class="action-svg {{liked[item.id] ? 'active' : ''}}"/>
-                <text>{{liked[item.id] ? '已收藏' : '收藏'}}</text>
-              </view>
-            </view>
+    <!-- Case grid (双列) -->
+    <view class="case-grid">
+      <view class="case-card" wx:for="{{list}}" wx:key="id"
+        bindtap="onCaseTap" data-id="{{item.id}}">
+        <view class="card-thumb">
+          <image src="{{item.cover || ''}}" mode="aspectFill" class="thumb-img" wx:if="{{item.cover}}"/>
+          <view class="thumb-placeholder" wx:else/>
+          <!-- 游客试看水印 -->
+          <view class="trial-wm" wx:if="{{!isMember}}"/>
+          <!-- 视频标记 -->
+          <view class="badge-video" wx:if="{{item.type === 2}}">
+            <image src="/static/svg/media-play.svg" class="play-icon-svg"/>
           </view>
-        </swiper-item>
-      </swiper>
-      <view class="carousel-nav" wx:if="{{list.length > 1}}">
-        <view class="dots">
-          <view class="dot {{currentSlide === index ? 'active' : ''}}" wx:for="{{list.length > 7 ? 7 : list.length}}" wx:key="*this"/>
+          <text class="thumb-tag">{{item.category_name || '对比'}}</text>
         </view>
-        <text class="counter">{{currentSlide + 1}} / {{list.length}}</text>
+        <view class="card-info">
+          <text class="card-name">{{item.title}}</text>
+          <view class="card-action" catchtap="onToggleFav" data-id="{{item.id}}">
+            <image src="/static/svg/action-heart.svg" class="action-svg {{liked[item.id] ? 'active' : ''}}"/>
+          </view>
+        </view>
+      </view>
+
+      <!-- Empty state -->
+      <view class="empty-case" wx:if="{{!list.length}}">
+        <text>暂无案例</text>
       </view>
     </view>
 
-    <view class="empty-case" wx:if="{{!list.length}}"><text>暂无案例</text></view>
+    <!-- Bottom spacer for tab bar -->
+    <view style="height: 160rpx;"/>
   </block>
 </view>
