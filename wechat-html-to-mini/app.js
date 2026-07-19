@@ -33,8 +33,21 @@ App({
     wx.getSystemInfo({ success: () => {} })
 
     // 防截屏/录屏
+    this.applyCaptureProtection()
+  },
+
+  onShow() {
+    // 热启动/切后台回来后部分机型设置会丢失，每次前台重新应用
+    this.applyCaptureProtection()
+  },
+
+  // 防截屏/录屏（Android 防截图+录屏；iOS 仅防录屏且需 iOS16+ 与新基础库，截图 iOS 系统层面无法拦截）
+  applyCaptureProtection() {
     if (wx.setVisualEffectOnCapture) {
-      wx.setVisualEffectOnCapture({ visualEffect: 'hidden' })
+      wx.setVisualEffectOnCapture({
+        visualEffect: 'hidden',
+        fail: (err) => console.warn('setVisualEffectOnCapture fail:', err)
+      })
     }
   }
 })

@@ -17,6 +17,7 @@
       <view class="hero-image" bindtap="onPreviewImage" data-url="{{caseData.media_url}}" data-urls="{{caseData.images}}">
         <image src="{{caseData.media_url}}" mode="aspectFill" class="hero-img" wx:if="{{caseData.media_url}}"/>
         <view class="hero-placeholder" wx:else/>
+        <view class="trial-wm" wx:if="{{!isMember}}"/>
         <view class="hero-label">{{caseData.category_name || '案例'}}</view>
         <view class="action-btn save-btn" wx:if="{{caseData.media_url}}" catchtap="onSaveAllImages">
           <text class="action-icon">↓</text>
@@ -31,6 +32,7 @@
         <!-- Cover + play button (before playing) -->
         <view class="video-cover-wrap" wx:if="{{!showVideoPlayer && caseData.cover}}" bindtap="onPlayVideo">
           <image src="{{caseData.cover}}" mode="aspectFill" class="video-cover-img"/>
+          <view class="trial-wm" wx:if="{{!isMember}}"/>
           <view class="video-play-btn">
             <text class="video-play-icon">▶</text>
           </view>
@@ -58,6 +60,10 @@
           <text class="info-tag" wx:for="{{caseData.tags || []}}" wx:key="*this">{{item}}</text>
         </view>
         <text class="info-desc">{{caseData.title}}</text>
+        <view class="save-video-btn" wx:if="{{caseData.media_url}}" bindtap="onSaveVideo">
+          <text class="save-video-icon">↓</text>
+          <text>保存视频</text>
+        </view>
       </view>
 
       <view class="divider"/>

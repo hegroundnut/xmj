@@ -26,7 +26,8 @@
 
       <!-- Post images -->
       <view class="post-images" wx:if="{{item.images && item.images.length}}">
-        <image src="{{img}}" mode="aspectFill" class="post-img" wx:for="{{item.images}}" wx:key="*this" wx:if="{{index < 9}}"/>
+        <image src="{{img}}" mode="aspectFill" class="post-img" wx:for="{{item.images}}" wx:for-item="img" wx:key="*this" wx:if="{{index < 9}}"
+          catchtap="onPreviewImage" data-urls="{{item.images}}" data-current="{{img}}"/>
       </view>
 
       <view class="post-footer">

@@ -1,5 +1,5 @@
 /* ===== Page ===== */
-.page { background: #fff; min-height: 100vh; position: relative; display: flex; flex-direction: column; }
+.page { background: #fff; min-height: 100vh; position: relative; display: flex; flex-direction: column; overflow-x: hidden; }
 
 /* ===== Safe area spacer ===== */
 .nav-spacer { background: #E8DDD3; }
@@ -51,6 +51,9 @@
 .action-svg { width: 24rpx; height: 24rpx; opacity: 0.35; }
 .action-svg.active { opacity: 1; }
 .badge-duration { position: absolute; bottom: 24rpx; right: 24rpx; background: rgba(0,0,0,0.6); color: #fff; font-size: 22rpx; padding: 6rpx 20rpx; border-radius: 20rpx; font-weight: 400; }
+
+/* ===== 游客试看水印（平铺） ===== */
+.trial-wm { position: absolute; inset: 0; pointer-events: none; background-repeat: repeat; background-size: 200rpx 160rpx; background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='150'%20height='120'%3E%3Ctext%20x='75'%20y='66'%20font-size='26'%20font-weight='600'%20fill='rgba(255,255,255,0.45)'%20stroke='rgba(0,0,0,0.15)'%20stroke-width='1'%20text-anchor='middle'%20transform='rotate(-18%2075%2060)'%3EALILAOXI%3C/text%3E%3C/svg%3E"); }
 
 .slide-info { padding: 32rpx 36rpx 0; }
 .slide-name { font-size: 30rpx; font-weight: 500; color: #1A1A1A; margin-bottom: 10rpx; letter-spacing: 0.6rpx; display: block; }

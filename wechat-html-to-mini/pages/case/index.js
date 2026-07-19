@@ -13,10 +13,13 @@ Page({
     error: false,
     swiperHeight: 500,
     mediaHeight: 300,
-    navHeight: 0
+    navHeight: 0,
+    isLogin: false,
+    isMember: false
   },
 
   onLoad() {
+    const app = getApp()
     const sys = wx.getSystemInfoSync()
     const capsule = wx.getMenuButtonBoundingClientRect()
     const navHeight = capsule.bottom + (capsule.top - sys.statusBarHeight)
@@ -31,8 +34,18 @@ Page({
     const swiperHeight = Math.max(h, 350)
     // slide内部元素(info+actions+padding)约200rpx
     const mediaHeight = Math.max(swiperHeight - r2p(200) - 10, 200)
-    this.setData({ swiperHeight, mediaHeight, navHeight })
+    this.setData({ swiperHeight, mediaHeight, navHeight, isLogin: app.globalData.isLogin, isMember: app.globalData.isMember })
     this.loadData()
+  },
+
+  onShow() {
+    // 登录/会员状态可能在其他页面变化（tab 页常驻），回来时刷新水印显隐
+    const app = getApp()
+    const isLogin = app.globalData.isLogin
+    const isMember = app.globalData.isMember
+    if (isLogin !== this.data.isLogin || isMember !== this.data.isMember) {
+      this.setData({ isLogin, isMember })
+    }
   },
 
   loadData() {

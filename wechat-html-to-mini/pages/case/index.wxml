@@ -51,6 +51,7 @@
           <view class="slide" bindtap="onCaseTap" data-id="{{item.id}}" style="height:{{swiperHeight}}px;">
             <view class="slide-media" style="background:{{item.bg || '#F0EFED'}};height:{{mediaHeight}}px;">
               <image src="{{item.cover || ''}}" mode="aspectFill" class="slide-thumb" wx:if="{{item.cover}}"/>
+              <view class="trial-wm" wx:if="{{!isMember}}"/>
               <view class="badge-video" wx:if="{{item.type === 2}}">
                 <image src="/static/svg/media-play.svg" class="play-icon-svg"/>
               </view>

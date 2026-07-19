@@ -7,7 +7,7 @@
     <!-- Hero swiper -->
     <view class="hero">
       <swiper bindchange="onSwiperChange" indicator-dots="{{false}}" class="hero-swiper" autoplay="{{true}}" interval="{{4000}}" circular="{{true}}" wx:if="{{banners.length}}">
-        <swiper-item wx:for="{{banners}}" wx:key="*this">
+        <swiper-item wx:for="{{banners}}" wx:key="*this" bindtap="onPreviewBanner">
           <image src="{{item.image || ''}}" mode="aspectFill" class="hero-img" wx:if="{{item.image}}"/>
           <view class="hero-overlay" style="background:{{item.bg || 'linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.35) 100%)'}}"/>
         </swiper-item>
@@ -120,16 +120,23 @@
       <view class="contact-card">
         <view class="contact-row">
           <image src="/static/svg/contact-phone.svg" class="contact-icon-svg"/>
-          <view>
+          <view class="contact-info">
             <text class="contact-text">{{contact.phone || '400-888-9999'}}</text>
             <text class="contact-label">客服热线</text>
+          </view>
+          <view class="contact-actions">
+            <view class="contact-btn primary" catchtap="onCallPhone">拨打</view>
+            <view class="contact-btn" catchtap="onCopyPhone">复制</view>
           </view>
         </view>
         <view class="contact-row">
           <image src="/static/svg/contact-wechat.svg" class="contact-icon-svg"/>
-          <view>
+          <view class="contact-info">
             <text class="contact-text">微信号: {{contact.wechat || 'alilaoxi_official'}}</text>
             <text class="contact-label">微信客服</text>
+          </view>
+          <view class="contact-actions">
+            <view class="contact-btn" catchtap="onCopyWechat">复制</view>
           </view>
         </view>
         <view class="contact-row">

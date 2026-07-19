@@ -10,7 +10,6 @@
       <view class="nav-back" bindtap="onBack">
         <text class="nav-back-icon">‹</text>
       </view>
-      <text class="nav-title">产品详情</text>
       <view class="nav-placeholder"/>
     </view>
 
@@ -145,19 +144,6 @@
       </view>
 
       <view style="height: 120rpx;"/>
-    </view>
-
-    <!-- Lightbox -->
-    <view class="lightbox {{showLightbox ? 'show' : ''}}" wx:if="{{showLightbox}}">
-      <view class="lightbox-close" bindtap="onCloseLightbox">
-        <text class="lightbox-close-icon">✕</text>
-      </view>
-      <swiper bindchange="onLightboxChange" class="lightbox-swiper" current="{{lightboxIndex}}" indicator-dots="{{false}}">
-        <swiper-item wx:for="{{product.images || []}}" wx:key="*this">
-          <image src="{{item}}" mode="aspectFit" class="lightbox-img"/>
-        </swiper-item>
-      </swiper>
-      <text class="lightbox-counter">{{lightboxIndex + 1}} / {{product.images.length}}</text>
     </view>
 
     <!-- QR Modal overlay -->

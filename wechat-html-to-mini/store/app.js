@@ -14,12 +14,25 @@ const store = {
   KEYS,
   EVENTS,
 
+  // 统一判定：是否会员（单一真相来源，所有页面读这个值，不要各自算）
+  // 用 == 而非 === 兼容后端可能返回字符串 "1" 而非数字 1
+  computeIsMember(info) {
+    if (!info) return false
+    const now = Math.floor(Date.now() / 1000)
+    return !!(info.is_member == 1 || info.is_teaching_member == 1 || (info.overdue_time && info.overdue_time > now))
+  },
+
+  // 统一判定：是否超级会员
+  computeIsSuperMember(info) {
+    return !!(info && info.is_teaching_member == 1)
+  },
+
   init(app) {
     app = app || getApp()
     app.globalData.token = wx.getStorageSync(KEYS.TOKEN) || ''
     app.globalData.userInfo = wx.getStorageSync(KEYS.USER_INFO) || null
     app.globalData.isLogin = !!app.globalData.token
-    app.globalData.isMember = !!(app.globalData.userInfo && (app.globalData.userInfo.is_member === 1 || app.globalData.userInfo.is_teaching_member === 1 || (app.globalData.userInfo.overdue_time && app.globalData.userInfo.overdue_time > Math.floor(Date.now() / 1000))))
+    app.globalData.isMember = this.computeIsMember(app.globalData.userInfo)
   },
 
   getToken() { return getApp().globalData.token },
@@ -43,7 +56,7 @@ const store = {
   setUserInfo(info) {
     const app = getApp()
     app.globalData.userInfo = info
-    app.globalData.isMember = !!(info && (info.is_member === 1 || info.is_teaching_member === 1 || (info.overdue_time && info.overdue_time > Math.floor(Date.now() / 1000))))
+    app.globalData.isMember = this.computeIsMember(info)
     wx.setStorageSync(KEYS.USER_INFO, info)
   },
 

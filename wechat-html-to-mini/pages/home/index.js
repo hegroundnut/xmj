@@ -67,6 +67,16 @@ Page({
     this.setData({ currentSlide: e.detail.current })
   },
 
+  // 案例式：点击 banner 用系统全屏预览
+  onPreviewBanner() {
+    const { banners, currentSlide } = this.data
+    const urls = banners.map(b => b.image).filter(Boolean)
+    if (!urls.length) return
+    const item = banners[currentSlide]
+    const current = (item && item.image) || urls[0]
+    wx.previewImage({ current, urls })
+  },
+
   onProductTap(e) {
     const id = e.currentTarget.dataset.id
     if (id) wx.navigateTo({ url: '/pages/product-detail/index?id=' + id })
@@ -101,5 +111,23 @@ Page({
 
   onMoreCourses() {
     wx.switchTab({ url: '/pages/teaching/index' })
+  },
+
+  // 拨打客服电话
+  onCallPhone() {
+    const phone = (this.data.contact && this.data.contact.phone) || '400-888-9999'
+    wx.makePhoneCall({ phoneNumber: phone.replace(/[^0-9+]/g, '') })
+  },
+
+  // 复制客服电话
+  onCopyPhone() {
+    const phone = (this.data.contact && this.data.contact.phone) || '400-888-9999'
+    wx.setClipboardData({ data: phone })
+  },
+
+  // 复制微信号
+  onCopyWechat() {
+    const wechat = (this.data.contact && this.data.contact.wechat) || 'alilaoxi_official'
+    wx.setClipboardData({ data: wechat })
   }
 })

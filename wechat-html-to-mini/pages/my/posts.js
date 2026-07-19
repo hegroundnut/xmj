@@ -26,6 +26,14 @@ Page({
     if (id) wx.navigateTo({ url: '/pages/moment/detail?id=' + id })
   },
 
+  // 案例式：点击图片用系统全屏预览
+  onPreviewImage(e) {
+    const { urls, current } = e.currentTarget.dataset
+    if (urls && urls.length) {
+      wx.previewImage({ urls, current: current || urls[0] })
+    }
+  },
+
   onDelete(e) {
     const id = e.currentTarget.dataset.id
     wx.showModal({

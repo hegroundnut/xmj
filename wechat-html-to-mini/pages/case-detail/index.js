@@ -112,6 +112,11 @@ Page({
   onGoLogin() { wx.navigateTo({ url: '/subpackages/users/wechat_login/index' }) },
 
   onPreviewImage(e) {
+    // 非会员不提供无水印原图预览
+    if (!this.data.isMember) {
+      wx.showToast({ title: '成为会员后可查看原图', icon: 'none' })
+      return
+    }
     const { url } = e.currentTarget.dataset
     if (url) {
       wx.previewImage({ current: url, urls: [url] })

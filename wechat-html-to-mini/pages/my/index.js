@@ -49,11 +49,13 @@ Page({
         const info = res.data
         if (info) {
           store.setUserInfo(info)
-          const memberType = info.member_type || (info.is_teaching_member === 1 ? 'super' : (info.is_member === 1 ? 'regular' : 'none'))
+          // 会员判定统一读 store 的单一来源，不做页面级重复计算
+          // member_type 以后端返回为准，不覆盖计算
+          const memberType = info.member_type || 'none'
           this.setData({
             userInfo: info,
-            isMember: info.is_member === 1,
-            isSuperMember: info.is_teaching_member === 1,
+            isMember: app.globalData.isMember,
+            isSuperMember: store.computeIsSuperMember(info),
             memberType: memberType
           })
         }

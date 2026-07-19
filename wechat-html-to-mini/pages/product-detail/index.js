@@ -9,8 +9,6 @@ Page({
     currentSlide: 0,
     showQR: false,
     qrCode: '',
-    showLightbox: false,
-    lightboxIndex: 0,
     statusBarHeight: 20,
     navHeight: 0
   },
@@ -51,20 +49,13 @@ Page({
     this.setData({ currentSlide: e.detail.current })
   },
 
-  onPreviewImage(e) {
-    const { product } = this.data
+  // 案例式：点击图片用系统全屏预览
+  onPreviewImage() {
+    const { product, currentSlide } = this.data
     const urls = (product && product.images) || []
     if (urls.length) {
-      this.setData({ showLightbox: true, lightboxIndex: this.data.currentSlide })
+      wx.previewImage({ current: urls[currentSlide] || urls[0], urls })
     }
-  },
-
-  onLightboxChange(e) {
-    this.setData({ lightboxIndex: e.detail.current })
-  },
-
-  onCloseLightbox() {
-    this.setData({ showLightbox: false })
   },
 
   onOpenQR() {
