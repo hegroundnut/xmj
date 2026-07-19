@@ -13,6 +13,7 @@ Page({
     error: false,
     isMember: false,
     showQR: false,
+    showGateQR: false,
     qrCode: '',
     navHeight: 0
   },
@@ -80,7 +81,14 @@ Page({
 
   onCourseTap(e) {
     const id = e.currentTarget.dataset.id
-    if (id) wx.navigateTo({ url: '/pages/course-detail/index?id=' + id })
+    if (!id) return
+    // 非会员拦截：直接弹不可关闭的会员码，不进课程详情
+    if (!this.data.isMember) {
+      this.setData({ showGateQR: true })
+      if (!this.data.qrCode) this.loadQrCode()
+      return
+    }
+    wx.navigateTo({ url: '/pages/course-detail/index?id=' + id })
   },
 
   onBuyCourse(e) {
@@ -90,6 +98,12 @@ Page({
     const app = getApp()
     if (!app.globalData.isLogin) {
       wx.navigateTo({ url: '/subpackages/users/wechat_login/index' })
+      return
+    }
+    // 非会员拦截
+    if (!app.globalData.isMember) {
+      this.setData({ showGateQR: true })
+      if (!this.data.qrCode) this.loadQrCode()
       return
     }
     wx.navigateTo({ url: '/pages/course-detail/index?id=' + id })
@@ -108,6 +122,10 @@ Page({
 
   onCloseQR() {
     this.setData({ showQR: false })
+  },
+
+  onCloseGateQR() {
+    this.setData({ showGateQR: false })
   },
 
   onSaveQR() {

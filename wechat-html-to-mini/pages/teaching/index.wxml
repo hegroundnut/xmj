@@ -76,7 +76,7 @@
     </view>
   </block>
 
-  <!-- QR Modal -->
+  <!-- QR Modal (可关闭，联系客服入口) -->
   <view class="modal-overlay {{showQR ? 'show' : ''}}" catchtap="onCloseQR" wx:if="{{showQR}}">
     <view class="modal-card">
       <view class="modal-close" bindtap="onCloseQR">✕</view>
@@ -89,6 +89,25 @@
       <text class="modal-desc">打开微信扫描二维码，添加<text class="modal-strong">阿利老西</text>\n即可咨询详情</text>
       <view class="modal-save-btn" bindtap="onSaveQR">
         <text>保存二维码</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 会员门槛弹窗（不可关闭，拦截非会员进入课程） -->
+  <view class="modal-overlay show" wx:if="{{showGateQR}}">
+    <view class="modal-card">
+      <text class="modal-label">ALI LAOXI MEMBER</text>
+      <text class="modal-title">会员专属课程</text>
+      <view class="modal-qr">
+        <image src="{{qrCode}}" mode="aspectFit" class="modal-qr-img" wx:if="{{qrCode}}"/>
+        <text class="modal-qr-loading" wx:else>加载中…</text>
+      </view>
+      <text class="modal-desc">开通会员后免费观看全部课程\n扫码添加客服开通</text>
+      <view class="modal-save-btn" bindtap="onSaveQR">
+        <text>保存二维码</text>
+      </view>
+      <view class="modal-back-btn" bindtap="onCloseGateQR">
+        <text>返回</text>
       </view>
     </view>
   </view>

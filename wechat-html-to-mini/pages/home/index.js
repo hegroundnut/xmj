@@ -13,20 +13,36 @@ Page({
     contact: null,
     loading: true,
     error: false,
-    navHeight: 0
+    navHeight: 0,
+    isMember: false,
+    showGateQR: false,
+    qrCode: ''
   },
 
   onLoad() {
+    const app = getApp()
     const sys = wx.getSystemInfoSync()
     const capsule = wx.getMenuButtonBoundingClientRect()
-    this.setData({ navHeight: capsule.bottom + (capsule.top - sys.statusBarHeight) })
+    this.setData({ navHeight: capsule.bottom + (capsule.top - sys.statusBarHeight), isMember: app.globalData.isMember })
     this.loadData()
+    this.loadQrCode()
   },
 
   onShow() {
+    const app = getApp()
+    this.setData({ isMember: app.globalData.isMember })
     if (!this.data.loading && !this.data.error && (!this.data.banners.length || !this.data.products.length)) {
       this.loadData()
     }
+  },
+
+  loadQrCode() {
+    const { homeApi } = require('../../utils/api/index')
+    homeApi.getHomeConfig().then(res => {
+      const config = res.data || {}
+      const qrCode = (config.contact && config.contact.qrcode) || ''
+      if (qrCode) this.setData({ qrCode })
+    }).catch(() => {})
   },
 
   loadData() {
@@ -101,7 +117,14 @@ Page({
 
   onCourseTap(e) {
     const id = e.currentTarget.dataset.id
-    if (id) wx.navigateTo({ url: '/pages/course-detail/index?id=' + id })
+    if (!id) return
+    // 非会员拦截：弹不可关闭的会员码，不进课程详情
+    if (!this.data.isMember) {
+      this.setData({ showGateQR: true })
+      if (!this.data.qrCode) this.loadQrCode()
+      return
+    }
+    wx.navigateTo({ url: '/pages/course-detail/index?id=' + id })
   },
 
   onBuyCourse(e) {
@@ -129,5 +152,26 @@ Page({
   onCopyWechat() {
     const wechat = (this.data.contact && this.data.contact.wechat) || 'alilaoxi_official'
     wx.setClipboardData({ data: wechat })
+  },
+
+  onCloseGateQR() {
+    this.setData({ showGateQR: false })
+  },
+
+  onSaveQR() {
+    const qrCode = this.data.qrCode
+    if (!qrCode) return
+    wx.showLoading({ title: '保存中...' })
+    wx.getImageInfo({
+      src: qrCode,
+      success: (res) => {
+        wx.saveImageToPhotosAlbum({
+          filePath: res.path,
+          success: () => { wx.hideLoading(); wx.showToast({ title: '已保存到相册' }) },
+          fail: () => { wx.hideLoading(); wx.showToast({ title: '保存失败', icon: 'none' }) }
+        })
+      },
+      fail: () => { wx.hideLoading(); wx.showToast({ title: '下载失败', icon: 'none' }) }
+    })
   }
 })
