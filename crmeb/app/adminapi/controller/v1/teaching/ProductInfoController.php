@@ -68,6 +68,7 @@ class ProductInfoController extends AuthController
             ['status', 1],
             ['is_home', 0],
             ['category_id', 0],
+            ['price', 0],
         ]);
         $id = (int)$data['id'];
         unset($data['id']);

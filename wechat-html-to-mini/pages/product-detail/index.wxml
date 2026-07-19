@@ -46,6 +46,15 @@
         </view>
       </view>
 
+      <!-- Price -->
+      <view class="price-section" wx:if="{{product.price > 0}}">
+        <view class="price-row">
+          <text class="price">¥{{product.price}}</text>
+          <text class="unit">/ 件</text>
+        </view>
+        <text class="price-note">价格仅供参考，具体请咨询客服</text>
+      </view>
+
       <!-- Product detail HTML -->
       <view class="detail-html" wx:if="{{product.detail}}">
         <rich-text nodes="{{product.detail}}"/>

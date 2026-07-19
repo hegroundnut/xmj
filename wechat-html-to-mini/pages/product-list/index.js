@@ -34,7 +34,8 @@ Page({
         image: (p.banner && p.banner[0]) || p.image || p.thumb || '',
         is_hot: p.is_hot,
         tag: p.tag,
-        category_name: p.category_name
+        category_name: p.category_name,
+        price: p.price || 0
       }))
       this.setData({
         categories: ['全部', ...cats],

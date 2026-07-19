@@ -16,6 +16,12 @@
         </el-table-column>
         <el-table-column prop="title" label="产品标题" />
         <el-table-column prop="category_name" label="分类" width="120" />
+        <el-table-column label="价格" width="100">
+          <template slot-scope="{row}">
+            <span v-if="row.price > 0">¥{{ row.price }}</span>
+            <span v-else>-</span>
+          </template>
+        </el-table-column>
         <el-table-column label="首页显示" width="100">
           <template slot-scope="{row}">
             <el-tag :type="row.is_home ? 'success' : 'info'" size="small">{{ row.is_home ? '是' : '否' }}</el-tag>
@@ -59,6 +65,9 @@
         </el-form-item>
         <el-form-item label="产品描述">
           <el-input v-model="form.desc" type="textarea" :rows="4" placeholder="请输入产品描述" />
+        </el-form-item>
+        <el-form-item label="价格">
+          <el-input-number v-model="form.price" :precision="2" :min="0" :step="1" placeholder="请输入价格" style="width:200px" />
         </el-form-item>
         <el-form-item label="图文详情">
           <WangEditor :content="form.detail" @editorContent="(v) => form.detail = v" />
@@ -140,6 +149,7 @@ export default {
         is_home: 0,
         status: 1,
         category_id: 0,
+        price: 0,
       },
       categoryList: [],
       categoryDialogVisible: false,
@@ -175,7 +185,7 @@ export default {
     handleAdd() {
       this.editId = 0;
       this.dialogTitle = '添加产品';
-      this.form = { banner: [], title: '', desc: '', detail: '', specs: [], video_url: '', is_home: 0, status: 1, category_id: 0 };
+      this.form = { banner: [], title: '', desc: '', detail: '', specs: [], video_url: '', is_home: 0, status: 1, category_id: 0, price: 0 };
       this.dialogVisible = true;
     },
     handleEdit(row) {
@@ -191,6 +201,7 @@ export default {
         is_home: row.is_home ?? 0,
         status: row.status ?? 1,
         category_id: row.category_id || 0,
+        price: row.price ?? 0,
       };
       this.dialogVisible = true;
     },
