@@ -156,8 +156,12 @@ Page({
     if (!this.data.isMember) {
       return wx.showToast({ title: '开通会员后可保存视频', icon: 'none' })
     }
-    const videoUrl = this.data.caseData.media_url
+    let videoUrl = this.data.caseData.media_url
     if (!videoUrl) return
+    // 确保使用 HTTPS，否则微信小程序会报 downloadFile 合法域名错误
+    if (videoUrl.startsWith('http://')) {
+      videoUrl = videoUrl.replace('http://', 'https://')
+    }
     wx.showLoading({ title: '保存中...' })
     wx.downloadFile({
       url: videoUrl,

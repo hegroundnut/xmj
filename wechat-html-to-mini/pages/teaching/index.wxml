@@ -26,7 +26,7 @@
       <view class="member-content">
         <text class="member-label">ALI LAOXI MEMBER</text>
         <text class="member-title">成为会员 · 全部课程免费学</text>
-        <text class="member-desc">解锁128+精品课程，持续更新</text>
+        <text class="member-desc">解锁除色精品课程，持续更新</text>
         <view class="member-btn" bindtap="onOpenQR">联系客服</view>
       </view>
     </view>
