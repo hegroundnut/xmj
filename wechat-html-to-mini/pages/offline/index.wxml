@@ -54,7 +54,7 @@
           </view>
           <text class="card-location">{{item.location_city || '合肥'}} · {{item.address_short || item.address}}</text>
           <view class="card-bottom">
-            <text class="card-time">{{item.start_date || ''}}{{item.end_date && item.end_date !== item.start_date ? ' ~ ' + item.end_date : ''}} {{item.start_time || '9:00'}}-{{item.end_time || '17:00'}} · {{item.duration || ''}}</text>
+            <text class="card-time">{{item.start_date || ''}}{{item.end_date && item.end_date !== item.start_date ? ' ~ ' + item.end_date : ''}} · {{item.duration || ''}}</text>
           </view>
         </view>
       </view>
@@ -99,7 +99,7 @@
             <image src="/static/svg/info-calendar.svg" class="d-icon-svg"/>
             <view class="d-content">
               <text class="d-label">培训时间</text>
-              <text class="d-value">{{classData.start_date || ''}}{{classData.end_date && classData.end_date !== classData.start_date ? ' ~ ' + classData.end_date : ''}} {{classData.start_time || ''}}-{{classData.end_time || ''}}</text>
+              <text class="d-value">{{classData.start_date || ''}}{{classData.end_date && classData.end_date !== classData.start_date ? ' ~ ' + classData.end_date : ''}}</text>
             </view>
           </view>
           <!-- 课程照片 -->

@@ -1,5 +1,5 @@
 /* ===== Page ===== */
-.page { background: #F8F7F5; min-height: 100vh; position: relative; }
+.page { background: #F8F7F5; min-height: 100vh; position: relative; width: 100vw; overflow-x: hidden; }
 
 /* ===== Top nav ===== */
 .top-nav { display: flex; align-items: center; padding: 0 40rpx 24rpx; position: sticky; top: 0; z-index: 10; background: rgba(248,247,245,0.95); }
@@ -10,7 +10,7 @@
 .nav-placeholder { width: 68rpx; }
 
 /* ===== Page header ===== */
-.page-header { padding: 16rpx 48rpx 32rpx; background: linear-gradient(180deg, #E8DDD3 0%, #EDE4DA 40%, #F3ECE5 70%, #F8F7F5 100%); }
+.page-header { padding: 16rpx 48rpx 32rpx; background: linear-gradient(180deg, #E8DDD3 0%, #EDE4DA 40%, #F3ECE5 70%, #F8F7F5 100%); overflow: hidden; }
 .page-title { font-size: 52rpx; font-weight: 300; color: #1A1A1A; letter-spacing: 6rpx; animation: titleFadeIn 0.8s ease-out 0.6s both; }
 
 /* Watermark animated text */

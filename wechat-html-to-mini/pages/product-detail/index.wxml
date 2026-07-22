@@ -55,9 +55,58 @@
         <text class="price-note">具体请咨询客服</text>
       </view>
 
+      <!-- Product videos from detail HTML -->
+      <view class="product-video-list" wx:if="{{product.detailVideos && product.detailVideos.length}}">
+        <text class="gallery-title">产品演示视频</text>
+        <view class="product-video" wx:for="{{product.detailVideos}}" wx:key="*this" wx:for-index="vi">
+          <!-- Cover + play button -->
+          <view class="video-cover-wrap" wx:if="{{activeVideoIndex !== vi}}" bindtap="onPlayVideo" data-index="{{vi}}">
+            <image src="{{product.images[0] || ''}}" mode="aspectFill" class="video-cover-img" wx:if="{{product.images && product.images.length}}"/>
+            <view class="video-cover-placeholder" wx:else>
+              <text class="video-placeholder-text">演示视频 {{vi + 1}}</text>
+            </view>
+            <view class="video-play-btn">
+              <text class="video-play-icon">▶</text>
+            </view>
+            <text class="video-index-tag">视频 {{vi + 1}}/{{product.detailVideos.length}}</text>
+          </view>
+          <!-- Inline video player + close -->
+          <block wx:else>
+            <video wx:if="{{!videoErrors[vi]}}"
+              class="product-video-player"
+              src="{{item}}"
+              controls
+              autoplay="{{true}}"
+              show-fullscreen-btn
+              object-fit="contain"
+              enable-progress-gesture
+              binderror="onVideoError"
+              data-index="{{vi}}"
+            ></video>
+            <view class="product-video-error" wx:else>
+              <text class="video-error-icon">⚠</text>
+              <text class="video-error-title">视频暂时无法播放</text>
+            </view>
+            <view class="video-close-btn" bindtap="onCloseVideo">
+              <text>收起视频 ▲</text>
+            </view>
+          </block>
+        </view>
+      </view>
+
       <!-- Product detail HTML -->
       <view class="detail-html" wx:if="{{product.detail}}">
         <rich-text nodes="{{product.detail}}"/>
+      </view>
+
+      <!-- Product image gallery (banner + detail images) -->
+      <view class="product-gallery" wx:if="{{product.images && product.images.length}}">
+        <text class="gallery-title">产品图集</text>
+        <view class="gallery-grid">
+          <image src="{{item}}" mode="aspectFill" class="gallery-img"
+            wx:for="{{product.images}}" wx:key="*this"
+            bindtap="onPreviewGalleryImage" data-url="{{item}}"/>
+        </view>
       </view>
 
       <!-- Action bar -->

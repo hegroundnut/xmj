@@ -45,6 +45,7 @@
           controls
           autoplay="{{true}}"
           show-fullscreen-btn
+          show-center-play-btn
           object-fit="contain"
           enable-progress-gesture
         ></video>
