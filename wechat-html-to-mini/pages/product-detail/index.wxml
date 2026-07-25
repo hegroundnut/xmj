@@ -72,17 +72,17 @@
           </view>
           <!-- Inline video player + close -->
           <block wx:else>
-            <video wx:if="{{!videoErrors[vi]}}"
-              class="product-video-player"
+            <t-video wx:if="{{!videoErrors[vi]}}"
+              style="width:100%;"
               src="{{item}}"
               controls
               autoplay="{{true}}"
-              show-fullscreen-btn
-              object-fit="contain"
-              enable-progress-gesture
-              binderror="onVideoError"
+              show_fullscreen_btn
+              object_fit="contain"
+              enable_progress_gesture
+              bindError="onVideoError"
               data-index="{{vi}}"
-            ></video>
+            ></t-video>
             <view class="product-video-error" wx:else>
               <text class="video-error-icon">⚠</text>
               <text class="video-error-title">视频暂时无法播放</text>

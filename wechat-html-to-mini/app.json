@@ -1,4 +1,10 @@
 {
+  "plugins": {
+    "t-video": {
+      "version": "1.0.11",
+      "provider": "wx5474241b2a65b906"
+    }
+  },
   "pages": [
     "pages/guide/index",
     "pages/home/index",

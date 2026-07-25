@@ -27,16 +27,16 @@
         </block>
         <!-- 内联播放器（点击播放后） -->
         <block wx:else>
-          <video wx:if="{{!videoError}}"
-            class="video-player"
+          <t-video wx:if="{{!videoError}}"
+            style="width:100%;"
             src="{{course.video_url}}"
             controls
             autoplay="{{true}}"
-            show-fullscreen-btn
-            object-fit="contain"
-            enable-progress-gesture
-            binderror="onVideoError"
-          ></video>
+            show_fullscreen_btn
+            object_fit="contain"
+            enable_progress_gesture
+            bindError="onVideoError"
+          ></t-video>
           <view class="video-error" wx:else>
             <text class="video-error-icon">⚠</text>
             <text class="video-error-title">视频暂时无法播放</text>

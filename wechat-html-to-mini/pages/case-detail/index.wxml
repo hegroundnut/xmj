@@ -39,16 +39,16 @@
           <view class="video-badge">▶ 实操视频</view>
         </view>
         <!-- Video player (after tapping play) -->
-        <video wx:if="{{showVideoPlayer && caseData.media_url}}"
-          class="video-player"
+        <t-video wx:if="{{showVideoPlayer && caseData.media_url}}"
+          style="width:100%;"
           src="{{caseData.media_url}}"
           controls
           autoplay="{{true}}"
-          show-fullscreen-btn
-          show-center-play-btn
-          object-fit="contain"
-          enable-progress-gesture
-        ></video>
+          show_fullscreen_btn
+          show_center_play_btn
+          object_fit="contain"
+          enable_progress_gesture
+        ></t-video>
       </view>
 
       <view class="info-section">
